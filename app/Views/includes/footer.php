@@ -1,3 +1,6 @@
+<?php
+  $webSite = 'Virtual Army 5tore ' . date('Y');
+?>
 </div>
   </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -14,10 +17,9 @@
                 </footer>
             </div>
         </div>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/scripts.js"></script>
-        <script src="js/simple-datatables.js"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+        <script src="<?=base_url()?>/js/bootstrap.bundle.min.js"></script>
+        <script src="<?=base_url()?>/js/scripts.js"></script>
+        <script src="<?=base_url()?>/js/simple-datatables.js"></script>
+        <script src="<?=base_url()?>/js/datatables-simple-demo.js"></script>
     </body>
 </html>
-

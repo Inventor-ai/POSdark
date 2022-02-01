@@ -1,3 +1,8 @@
+<?php
+  $runEngine = '/index.php'; // temporal
+  $tabTitle  = 'Army 5tore - VS';
+  $brandName = 'POS - VS';
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -7,9 +12,9 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title><?= $tabTitle ?></title>
-        <link href="css/datatables/style.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
-        <script src="js/all.min.js"></script>
+        <link href="<?=base_url()?>/css/datatables/style.css" rel="stylesheet" />
+        <link href="<?=base_url()?>/css/styles.css" rel="stylesheet" />
+        <script src="<?=base_url()?>/js/all.min.js"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -31,14 +36,14 @@
             <!-- <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"> -->
              <!-- edit it to display this -->
             <!-- <div class="sb-nav-link-icon"> -->
-            <div class="sb-sidenav-dark ms-auto me-3">
-               <div class="input-group">Logged in as: Start Bootstrap</div>
-            </div>
-
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto me-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- <div class="d-none d-md-inline-block">Start Bootstrap</div> -->
+                        Start Bootstrap
+                        <i class="fas fa-user fa-fw"></i>
+                    </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
                         <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -61,7 +66,7 @@
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="layout-static.html">Artículos</a>
-                                    <a class="nav-link" href="<?=base_url()?>/index.php/unidades">Unidades</a>
+                                    <a class="nav-link" href="<?=base_url().$runEngine?>/unidades">Unidades</a>
                                     <a class="nav-link" href="layout-sidenav-light.html">Categorias</a>
                                 </nav>
                             </div>
