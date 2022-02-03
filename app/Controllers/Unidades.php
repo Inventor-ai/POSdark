@@ -37,12 +37,16 @@ class Unidades extends BaseController
                        ->findAll();
      $dataWeb   = [
         // 'titulo' => 'Unidades - Listado', //'Lista de unidades', //
-        'titulo' => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
-        'ruta'   => "$this->module",
-        'onOff'  => $activo,
-        'switch' => $activo == 0 ? $this->enabled : $this->disabled,
-        // 'switch' => $activo == 0 ? $this->enabled : $this->disabled,
-        'datos'  => $dataModel
+        // 'titulo'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
+        'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
+        'item'    => $this->item,
+        'path'    => "$this->module",
+        'onOff'   => $activo,
+        'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
+        'delete'  => 'eliminar',
+        'recover' => 'recuperar',
+        // 'switch'   => $activo == 0 ? $this->enabled : $this->disabled,
+        'data'    => $dataModel
      ];
      echo view('/includes/header');
     //  echo view('unidades/unidades', $dataWeb);
@@ -51,24 +55,33 @@ class Unidades extends BaseController
     //  var_dump($dataWeb);
     }
 
-    private function setDataSet($titulo = '', $action = "", $method = "post", $dataWeb = [])
+    private function getDataSet( 
+        $titulo    = '',  $ruta      = '',   $action = "", 
+        $method = "post", $validador = null, $dataSet = []) 
     {
       return [
-        'titulo'     => "$this->item - Agregando...",
-        'ruta'       => "$this->module",
-        'action'     => "insertar",
-        'method'     => 'post',
-        'validation' => $this->validator,
-        'datos'      => ['id'           => '',
+        // 'titulo'     => "$this->item - Agregando...",
+        'title'      => $titulo,
+        // 'ruta'       => "$this->module",
+        'path'       => $ruta,
+        // 'action'     => "insertar",
+        'action'     => $action,
+        // 'method'     => 'post',
+        'method'     => $method,
+        // 'validation' => $this->validator,
+        'validation' => $validador,
+        // 'datos'      => $dataSet,
+        'data'       => ['id'           => '',
                          'nombre'       => $dataWeb['nombre'],
                          'nombre_corto' => $dataWeb['nombre_corto']
-                    ]
+                        ]
       ];
     }
 
     public function agregar()
     {
-    //   echo "Editando id: $id";
+      //   echo "Editando id: $id";
+      /*
       $dataWeb = [
         // 'titulo' => 'Unidad - Agregando...', //'Agregar unidad', //
         'titulo' => "$this->item - Agregando...", //"Agregar $this->item", //
@@ -80,8 +93,26 @@ class Unidades extends BaseController
                      'nombre_corto' => ''
                     ]
       ];
+      */
+      $dataWeb = $this->getDataSet( 
+        $titulo    = "$this->item - Agregando...", //"Agregar $this->item", //
+        $ruta      = "$this->module",
+        $action    = "insertar",
+        $method    = 'post',
+        $validador = null,
+        $dataSet   = ['id'           => '',
+                      'nombre'       => '',
+                      'nombre_corto' => ''
+                     ]
+      );
+     /*
+      $dataWeb = $this->getDataSet(
+         "$this->item - Agregando...",
+        , $action = "", $method = "post", $dataSet = []
+      );
+     */
       echo view('/includes/header');
-    //   echo view("$this->module/nuevo", $dataWeb);
+     //   echo view("$this->module/nuevo", $dataWeb);
       echo view("$this->module/form", $dataWeb);
       echo view('/includes/footer');        
     }
