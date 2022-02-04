@@ -9,12 +9,6 @@
     <?php } ?>
   </div>
 </div>
-<!-- 
-<h4 class="mt-4"><?=$title?></h4>
-<div class="mb-3">
-    <a href="<?=base_url()?>/unidades/agregar" class="btn btn-primary">Agregar</a>
-    <a href="<?=base_url()?>/unidades/eliminados" class="btn btn-warning">Eliminados</a>
-</div> -->
 
 <div class="mt-3">
   <table id="datatablesSimple">
@@ -24,8 +18,6 @@
         <th>Nombre</th>
         <th>Nombre corto</th>
         <th class="text-center">Acciones</th>
-        <!-- <th class="text-center">Borrar</th>
-        <th class="text-center">Editar</th> -->
       </tr>
     </thead>
     <tfoot>
@@ -34,8 +26,6 @@
         <th>Nombre</th>
         <th>Nombre corto</th>
         <th class="text-center">Acciones</th>
-        <!-- <th class="text-center">Borrar</th>
-        <th class="text-center">Editar</th> -->
       </tr>
     </tfoot>
     <tbody>
@@ -48,50 +38,25 @@
 
             <td class="text-center">
 
-              <a href="#confirmar" data-bs-toggle="modal"
+              <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
-                 data-action="<?=$delete?>" class="btn btn-danger">
+                 data-actionText="<?=$delete?>" class="btn btn-danger">
                 <i class="fas fa-trash"></i>
               </a>
-              <!-- <a href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
-                class="btn btn-danger"><i class="fas fa-trash"></i>
-              </a> -->
-
-              <!-- </td>
-              <td class="text-center"> -->
               <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
                 class="btn btn-success"><i class="fas fa-pencil-alt"></i>
               </a>
             </td>
-              <!-- 
-            <td class="text-center">
-              <div class="row">
-                <div class="col">
-                  <a href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
-                    class="btn btn-danger"><i class="fas fa-trash"></i>
-                  </a>
-                </div>
-                <div class="col">
-                  <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
-                    class="btn btn-success"><i class="fas fa-pencil-alt"></i>
-                  </a>
-                </div>
-              </div>
-               -->
-              <!-- </td>
-              <td class="text-center"> -->
           <?php } else {?>
             </td>
             <td class="text-center">
-              <a href="#confirmar" data-bs-toggle="modal" id="borrarOk" 
+              <a href="#confirm" data-bs-toggle="modal" id="borrarOk" 
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/recuperar/".$dato['id']?>"
-                 data-action="<?=$recover?>"
-                 class="btn btn-dark">
-                <!-- class="btn btn-warning"> -->
-                <i class="fas fa-level-up-alt"></i>
-                <!-- <i class="fas fa-retweet"></i> -->
+                 data-actionText="<?=$recover?>"
+                 class="btn btn-warning">
+                 <i class="fas fa-undo"></i>
               </a>
             </td>
           <?php } ?>
