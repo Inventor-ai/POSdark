@@ -19,11 +19,6 @@
             <input class="form-control" type="text" name="nombre" 
                    id="nombre" value="<?=$data['nombre']?>" autofocus required>
          </div>
-         <div class="col-12 col-sm-6">
-            <label class="mb-2" for="nombre_corto">Nombre corto</label> 
-            <input class="form-control" type="text" name="nombre_corto" 
-                   id="nombre_corto" value="<?=$data['nombre_corto']?>" required>
-         </div>
        </div>
     </div>
    </form> 

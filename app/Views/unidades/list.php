@@ -51,7 +51,7 @@
           <?php } else {?>
             </td>
             <td class="text-center">
-              <a href="#confirm" data-bs-toggle="modal" id="borrarOk" 
+              <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/recuperar/".$dato['id']?>"
                  data-actionText="<?=$recover?>"

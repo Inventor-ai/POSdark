@@ -2,12 +2,12 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-use App\Models\UnidadesModel;
+use App\Models\CategoriasModel;
 
-class Unidades extends BaseController
+class Categorias extends BaseController
 {
-  protected $item     = 'Unidad'; 
-  protected $items    = 'es';
+  protected $item     = 'Categoria'; 
+  protected $items    = 's';
   protected $enabled  = 'Disponibles';
   protected $disabled = 'Eliminadas';
   protected $insert   = 'insertar';
@@ -18,11 +18,18 @@ class Unidades extends BaseController
 
   public function __construct()
   {
-    $search          = array(explode(',',"á,é,í,ó,ú,ñ")[0]); // "á", "é", "í", "í", "í"
-    $replaceBy       = array(explode(',',"a,e,i,o,u,ni")[0]);
+    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ"); // "á", "é", "í", "í", "í"
+    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items     = $this->item.$this->items;
-    $this->module    = str_replace($search, $replaceBy, strtolower($this->items));
-    $this->dataModel = new UnidadesModel();
+
+    $modulePath      = strtolower($this->items);
+    // var_dump($search);
+    // var_dump($modulePath);
+    $modulePath          = str_replace($search, $replaceBy, $modulePath );
+    // var_dump($modulePath);
+    str_replace($search, $replaceBy, $modulePath );
+    $this->module    = str_replace($search, $replaceBy, $modulePath );
+    $this->dataModel = new CategoriasModel();
   }
 
   // método innecesario (D)escartado)
@@ -39,7 +46,7 @@ class Unidades extends BaseController
                       ->where('activo', $activo)
                       ->findAll();
     $dataWeb   = [
-       // 'titulo' => 'Unidades - Listado', //'Lista de unidades', //
+       // 'titulo' => 'Categorias - Listado', //'Lista de Categorias', //
        // 'titulo'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
        'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
        'item'    => $this->item,
@@ -51,8 +58,9 @@ class Unidades extends BaseController
        'data'    => $dataModel
     ];
     echo view('/includes/header');
-    //  echo view('unidades/unidades', $dataWeb);
+    //  echo view('Categorias/Categorias', $dataWeb);
     //  echo view("$this->module/$this->module", $dataWeb);
+    // var_dump( $this->module);
     echo view("$this->module/list", $dataWeb);
     echo view('/includes/footer');
     //  var_dump($dataWeb);
@@ -87,8 +95,7 @@ class Unidades extends BaseController
   private function getValidate($method = "post")
   {
     $rules = [
-        'nombre'       => 'required',
-        'nombre_corto' => 'required'
+        'nombre'       => 'required'
     ];
     return ($this->request->getMethod() == $method &&
             $this->validate($rules) );
@@ -163,7 +170,7 @@ class Unidades extends BaseController
     if ($this->getValidate( $this->request->getMethod() )) {
         $msg = "Insercci´n";
         $this->dataModel->save($dataWeb); // Ok
-        //   return redirect()->to(base_url().'/unidades');
+        //   return redirect()->to(base_url().'/Categorias');
         return redirect()->to(base_url()."/$this->module");
     }
      // else {

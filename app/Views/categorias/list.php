@@ -15,20 +15,14 @@
     <thead>
       <tr>
         <th>Id</th>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Existencias</th>
+        <th>Nombre</th>        
         <th class="text-center">Acciones</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
         <th>Id</th>
-        <th>Código</th>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Existencias</th>
+        <th>Nombre</th>        
         <th class="text-center">Acciones</th>
       </tr>
     </tfoot>
@@ -36,12 +30,11 @@
       <?php foreach($data as $dato) {?>
         <tr>
           <td><?=$dato['id']?></td>
-          <td><?=$dato['codigo']?></td>
-          <td><?=$dato['nombre']?></td>
-          <td><?=$dato['precio']?></td>
-          <td><?=$dato['existencias']?></td>
+          <td><?=$dato['nombre']?></td>          
           <?php if ($onOff) {?>
+
             <td class="text-center">
+
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"

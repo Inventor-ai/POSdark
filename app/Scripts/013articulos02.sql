@@ -1,0 +1,1 @@
+ALTER TABLE `articulos` ADD `fecha_alta` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP AFTER `activo`, ADD `fecha_edit` TIMESTAMP NULL AFTER `fecha_alta`;
