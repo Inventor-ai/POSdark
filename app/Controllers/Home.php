@@ -16,8 +16,8 @@ class Home extends BaseController
         // ];
         echo view('includes/header');
         // echo view('includes/header', $dataHead);
-        // echo view('tables');
-        echo view('includes/content');
+        echo view('tables');
+        // echo view('includes/content');
         // echo view('includes/footer', $dataFoot);
         echo view('includes/footer');
     }

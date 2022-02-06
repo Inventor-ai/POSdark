@@ -14,32 +14,38 @@
   <table id="datatablesSimple">
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Código</th>
         <th>Nombre</th>
         <th>Precio</th>
-        <th>Existencias</th>
+        <th>Unidad</th>
+        <th>Existen</th>
+        <th>Categoría</th>
+        <th>Código</th>
+        <th>Precio compra</th>
         <th class="text-center">Acciones</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th>Id</th>
-        <th>Código</th>
         <th>Nombre</th>
         <th>Precio</th>
-        <th>Existencias</th>
+        <th>Unidad</th>
+        <th>Existen</th>
+        <th>Categoría</th>
+        <th>Código</th>
+        <th>Precio compra</th>
         <th class="text-center">Acciones</th>
       </tr>
     </tfoot>
     <tbody>
       <?php foreach($data as $dato) {?>
         <tr>
-          <td><?=$dato['id']?></td>
-          <td><?=$dato['codigo']?></td>
           <td><?=$dato['nombre']?></td>
-          <td><?=$dato['precio']?></td>
-          <td><?=$dato['existencias']?></td>
+          <td class="text-end"><?=$dato['precio_venta']?></td>
+          <td><?=$dato['id_unidad']?></td>
+          <td ><?=$dato['existencias']?></td>
+          <td><?=$dato['id_categoria']?></td>
+          <td><?=$dato['codigo']?></td>
+          <td class="text-end"><?=$dato['precio_compra']?></td>
           <?php if ($onOff) {?>
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"

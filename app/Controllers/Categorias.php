@@ -6,7 +6,7 @@ use App\Models\CategoriasModel;
 
 class Categorias extends BaseController
 {
-  protected $item     = 'Categoria'; 
+  protected $item     = 'Categoría'; 
   protected $items    = 's';
   protected $enabled  = 'Disponibles';
   protected $disabled = 'Eliminadas';
@@ -18,39 +18,65 @@ class Categorias extends BaseController
 
   public function __construct()
   {
-    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ"); // "á", "é", "í", "í", "í"
+    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
     $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items     = $this->item.$this->items;
-
-    $modulePath      = strtolower($this->items);
-    // var_dump($search);
-    // var_dump($modulePath);
-    $modulePath          = str_replace($search, $replaceBy, $modulePath );
-    // var_dump($modulePath);
-    str_replace($search, $replaceBy, $modulePath );
-    $this->module    = str_replace($search, $replaceBy, $modulePath );
+    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
     $this->dataModel = new CategoriasModel();
   }
 
-  // método innecesario (D)escartado)
-  public function eliminados()
+  private function setDataSet()
   {
-    $this->index(0);
-    //  echo "donas";
+    $dataSet = [
+      'nombre' => trim( $this->request->getPost('nombre') ),
+      
+    ];
+    // Custom initialize section. Set default value by field
+    if ($dataSet['nombre'] == '') $dataSet['nombre'] = '';    
+    return $dataSet;
+  }
+
+  private function getValidate($method = "post")
+  {
+    $rules = [
+       'nombre' => 'required'
+    ];
+    return ($this->request->getMethod() == $method &&
+            $this->validate($rules) );
   }
   
-   
+  private function getDataSet( 
+        $titulo    = '',  $ruta      = '',   $action = "", 
+        $method = "post", $validador = null, $dataSet = [])
+  {
+    return [
+      'title'      => $titulo,
+      'path'       => $ruta,
+      'action'     => $action,
+      'method'     => $method,
+      'validation' => $validador,
+      'data'       => $dataSet
+    ];
+  }
+
+  private function setCarrier($dataWeb, $value = '', $key = 'id')
+  {
+    $dataWeb[$key] = $value;
+    $this->carrier = [
+      'validation' => $this->validator,
+      'datos'      => $dataWeb
+    ];
+  }
+
   public function index($activo = 1)
   {
     $dataModel = $this->dataModel
                       ->where('activo', $activo)
                       ->findAll();
     $dataWeb   = [
-       // 'titulo' => 'Categorias - Listado', //'Lista de Categorias', //
-       // 'titulo'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
        'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
        'item'    => $this->item,
-       'path'    => "$this->module",
+       'path'    => $this->module,
        'onOff'   => $activo,
        'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
        'delete'  => 'eliminar',
@@ -58,77 +84,21 @@ class Categorias extends BaseController
        'data'    => $dataModel
     ];
     echo view('/includes/header');
-    //  echo view('Categorias/Categorias', $dataWeb);
-    //  echo view("$this->module/$this->module", $dataWeb);
-    // var_dump( $this->module);
     echo view("$this->module/list", $dataWeb);
     echo view('/includes/footer');
-    //  var_dump($dataWeb);
-  }
-
-  private function getDataSet( 
-        $titulo    = '',  $ruta      = '',   $action = "", 
-        $method = "post", $validador = null, $dataSet = [])
-  {
-    //   $id = ($action == $this->insert ? '' : $dataSet['id']);
-      // $edit
-    return [
-      // 'titulo'     => "$this->item - Agregando...",
-      'title'      => $titulo,
-      // 'ruta'       => "$this->module",
-      'path'       => $ruta,
-      // 'action'     => "insertar",
-      'action'     => $action,
-      // 'method'     => 'post',
-      'method'     => $method,
-      // 'validation' => $this->validator,
-      'validation' => $validador,
-      // 'datos'      => $dataSet,
-      'data'       => $dataSet
-    //   'data'       => ['id'           => $dataSet['id'],
-    //                    'nombre'       => $dataSet['nombre'],
-    //                    'nombre_corto' => $dataSet['nombre_corto']
-    //                   ]
-    ];
-  }
-
-  private function getValidate($method = "post")
-  {
-    $rules = [
-        'nombre'       => 'required'
-    ];
-    return ($this->request->getMethod() == $method &&
-            $this->validate($rules) );
- 
   }
 
   public function agregar()
   { 
-      /*
-       $dataWeb = [
-         // 'titulo' => 'Unidad - Agregando...', //'Agregar unidad', //
-         'titulo' => "$this->item - Agregando...", //"Agregar $this->item", //
-         'ruta'   => "$this->module",
-         'action' => "insertar",
-         'method' => 'post',
-         'datos'  => ['id'           => '',
-                      'nombre'       => '',
-                      'nombre_corto' => ''
-                     ]
-       ];
-      */
-
     if ( count ($this->carrier) > 0 ) {
          $dataSet    = $this->carrier['datos'];
          $validation = $this->carrier['validation'];
      } else { # Registro nuevo y en blanco
          $validation = null;
-         $dataSet = ['id'           => '',
-                     'nombre'       => '',
-                     'nombre_corto' => ''
-         ];
+         $dataSet    = $this->setDataSet();
+         $dataSet['id'] = '';
     }
-    $this->carrier = [];
+    // $this->carrier = [];
     $dataWeb = $this->getDataSet( 
         "$this->item - Agregando...", //"Agregar $this->item", //
         "$this->module",
@@ -136,89 +106,25 @@ class Categorias extends BaseController
         'post',
         $validation,
         $dataSet
-     ); 
-
+    ); 
     echo view('/includes/header');
-    //   echo view("$this->module/nuevo", $dataWeb);
     echo view("$this->module/form", $dataWeb);
-    echo view('/includes/footer');        
-  }
-
-  // private function setDataSet(Request $request)
-  private function setDataSet()
-  {
-    return [
-      'nombre'       => $this->request->getPost('nombre'),
-      'nombre_corto' => $this->request->getPost('nombre_corto')
-    ];
+    echo view('/includes/footer');
   }
 
   public function insertar()
   {
-    // $dataWeb = [
-    //    'nombre'       => $this->request->getPost('nombre'),
-    //    'nombre_corto' => $this->request->getPost('nombre_corto')
-    // ];
     $dataWeb = $this->setDataSet();
-    // $rules = [
-    //    'nombre'       => 'required',
-    //    'nombre_corto' => 'required'
-    // ];
-
-    // if ($this->request->getMethod() == "post" &&
-    //     $this->validate($rules) ) {
     if ($this->getValidate( $this->request->getMethod() )) {
-        $msg = "Insercci´n";
-        $this->dataModel->save($dataWeb); // Ok
-        //   return redirect()->to(base_url().'/Categorias');
+        // $msg = "Insercci´n";
+        $this->dataModel->save($dataWeb);
         return redirect()->to(base_url()."/$this->module");
     }
      // else {
-
-        //   $data = [
-        //     'titulo'     => "$this->item - Agregando...",
-        //     'ruta'       => "$this->module",
-        //     'action'     => "insertar",
-        //     'method'     => 'post',
-        //     'validation' => $this->validator,
-        //     'datos'      => ['id'           => '',
-        //                      'nombre'       => $dataWeb['nombre'],
-        //                      'nombre_corto' => $dataWeb['nombre_corto']
-        //                 ]
-        //   ];
-
-        $this->carrier = [
-           'validation' => $this->validator,
-           'datos'      => ['id'           => '',
-                            'nombre'       => $dataWeb['nombre'],
-                            'nombre_corto' => $dataWeb['nombre_corto']
-                       ]
-        ];
-        //   echo count($this->carrier);
-        //   var_dump($this->carrier);
-        $this->agregar();
-        return;
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * *          
-          /*
-          $data        = $this->getDataSet( 
-            $titulo    = "$this->item - Agregando...", //"Agregar $this->item", //
-            $ruta      = "$this->module",
-            // $action    = "insertar",
-            $action    = $this->insert,
-            $method    = 'post',
-            $validador = null,
-            $dataSet   = ['id'           => '',
-                          'nombre'       => '',
-                          'nombre_corto' => ''
-                         ]
-          );
-          */
-
-          echo view('/includes/header');
-          echo view("$this->module/form", $data);
-          echo view('/includes/footer');          
-     //   }
-        // * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+      // $dataWeb       = $this->setDataSet();
+    $this->setCarrier($dataWeb, '');
+    $this->agregar();
+    // }
   }
 
   public function editar($id)
@@ -232,30 +138,16 @@ class Categorias extends BaseController
                             ->where('id', $id)
                             ->first();
     }
-    $this->carrier = [];
-    /*
-    $dataWeb   = [
-        // 'titulo' => 'Unidad - Editando...', //'Editar unidad', //
-       'titulo' => "$this->item - Editando...", //"Editar $this->item", //
-       'ruta'   => "$this->module",
-       'action' => "actualizar",
-       'method' => 'post', //'put', //
-       'datos'  => $dataModel
-    ];
-    */
-
-    // 
-    // $validation = null;
+    // $this->carrier = [];
     $dataWeb = $this->getDataSet( 
         "$this->item - Editando...", //"Editar $this->item", //
-        "$this->module",
-        $this->update,//
-        'post',  //'put', //
+        $this->module,
+        $this->update, //
+        'post',        //'put', //
         $validation,
         $dataModel
     );
     echo view('/includes/header');
-    //   echo view("$this->module/editar", $dataWeb);
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
   }
@@ -263,40 +155,29 @@ class Categorias extends BaseController
   public function actualizar()
   {
     $id      = $this->request->getPost('id');
-    // $dataWeb = [
-    //   'nombre'       => $this->request->getPost('nombre'),
-    //   'nombre_corto' => $this->request->getPost('nombre_corto')
-    // ];
     $dataWeb = $this->setDataSet();
     if ($this->getValidate( $this->request->getMethod() )) {
-        $msg = "¡Actualización exitosa!";
+        // $msg = "¡Actualización exitosa!";
         $this->dataModel->update( $id, $dataWeb );
         return redirect()->to(base_url()."/$this->module");
     }
-    $this->carrier = [
-      'validation' => $this->validator,
-      'datos'      => ['id'           => $id,
-                       'nombre'       => $dataWeb['nombre'],
-                       'nombre_corto' => $dataWeb['nombre_corto']
-                      ]
-    ];
+    $this->setCarrier($dataWeb, $id);
     $this->editar($id);
-    return;
   }
 
-    public function eliminar($id, $activo = 0)
-    {
-      $dataWeb = ['activo' => $activo];
-      $msg = "¡Eliminación exitosa!";
-      $this->dataModel->update($id, $dataWeb);
-      return redirect()->to(base_url()."/$this->module");
-    }
+  public function eliminar($id, $activo = 0)
+  {
+    $dataWeb = ['activo' => $activo];
+    // $msg = "¡Eliminación exitosa!";
+    $this->dataModel->update($id, $dataWeb);
+    return redirect()->to(base_url()."/$this->module");
+  }
 
-    public function recuperar($id)
-    {
+  public function recuperar($id)
+  {
     //   return $this->eliminar($id, 1);
-      $this->eliminar($id, 1);
-      return redirect()->to(base_url()."/$this->module/index/0");
+    $this->eliminar($id, 1);
+    return redirect()->to(base_url()."/$this->module/index/0");
   }
 
 }

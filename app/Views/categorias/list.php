@@ -9,20 +9,19 @@
     <?php } ?>
   </div>
 </div>
-
 <div class="mt-3">
   <table id="datatablesSimple">
     <thead>
       <tr>
         <th>Id</th>
-        <th>Nombre</th>        
+        <th>Nombre</th>
         <th class="text-center">Acciones</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
         <th>Id</th>
-        <th>Nombre</th>        
+        <th>Nombre</th>
         <th class="text-center">Acciones</th>
       </tr>
     </tfoot>
@@ -30,11 +29,9 @@
       <?php foreach($data as $dato) {?>
         <tr>
           <td><?=$dato['id']?></td>
-          <td><?=$dato['nombre']?></td>          
+          <td><?=$dato['nombre']?></td>
           <?php if ($onOff) {?>
-
             <td class="text-center">
-
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"

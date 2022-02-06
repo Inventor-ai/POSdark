@@ -48,7 +48,7 @@
                                             <td>2011/04/25</td>
                                             <td>$320,800</td>
                                         </tr>
-                                      <!-- 
+                                      <!-- -->
                                         <tr>
                                             <td>Garrett Winters</td>
                                             <td>Accountant</td>
@@ -497,7 +497,7 @@
                                             <td>2011/01/25</td>
                                             <td>$112,000</td>
                                         </tr>
-                                       -->
+                                       
                                     </tbody>
                                 </table>
                             </div>
