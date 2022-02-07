@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 31-01-2022 a las 04:08:33
+-- Tiempo de generación: 07-02-2022 a las 01:43:17
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.3.21
 
@@ -41,6 +41,8 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `id_categoria` smallint NOT NULL,
   `activo` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `codigo` (`codigo`),
+  UNIQUE KEY `nombre` (`nombre`),
   KEY `fk_producto_unidad` (`id_unidad`),
   KEY `fk_producto_categoria` (`id_categoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;

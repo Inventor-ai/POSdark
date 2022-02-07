@@ -2,14 +2,14 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-use App\Models\CategoriasModel;
+use App\Models\ClientesModel;
 
-class Categorias extends BaseController
+class Clientes extends BaseController
 {
-  protected $item     = 'Categoría'; 
+  protected $item     = 'Cliente'; 
   protected $items    = 's';
   protected $enabled  = 'Disponibles';
-  protected $disabled = 'Eliminadas';
+  protected $disabled = 'Eliminados';
   protected $insert   = 'insertar';
   protected $update   = 'actualizar';
   protected $carrier  = [];
@@ -22,14 +22,16 @@ class Categorias extends BaseController
     $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items     = $this->item.$this->items;
     $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
-    $this->dataModel = new CategoriasModel();
+    $this->dataModel = new ClientesModel();
   }
 
   private function setDataSet()
   {
     $dataSet = [
       'nombre' => trim( $this->request->getPost('nombre') ),
-      
+      'telefono' => trim( $this->request->getPost('telefono') ),
+      'correo' => trim( $this->request->getPost('correo') ),
+      'direccion' => trim( $this->request->getPost('direccion') )
     ];
     // Custom initialize section. Set default value by field
     if ($dataSet['nombre'] == '') $dataSet['nombre'] = '';    
@@ -38,17 +40,31 @@ class Categorias extends BaseController
 
   private function getValidate($method = "post")
   {
-    // $rules = [
-    //    'nombre' => 'required'
-    // ];
     $rules = [
-      'nombre' => [
-         'rules' => 'required|is_unique[categorias.nombre]',
-         'errors' => [
-            'required'  => "Debe proporcionarse el {field}|{field}",
-            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!"
-         ]
-      ]
+       'nombre' => [
+          'rules' => 'required',
+          'errors' => [
+            'required' => "Debe proporcionarse el {field}"
+          ],
+        ],
+      //  'telefono' => [
+      //     'rules' => 'required',
+      //     'errors' => [
+      //       'required' => "Debe proporcionarse el {field}"
+      //     ],
+      //   ],
+      //  'correo' => [
+      //     'rules' => 'required',
+      //     'errors' => [
+      //       'required' => "Debe proporcionarse el {field}"
+      //     ],
+      //   ],
+      //  'direccion' => [
+      //     'rules' => 'required',
+      //     'errors' => [
+      //       'required' => "Debe proporcionarse el {field}"
+      //     ],
+      //   ],
     ];
     return ($this->request->getMethod() == $method &&
             $this->validate($rules) );

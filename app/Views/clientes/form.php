@@ -19,6 +19,23 @@
             <input class="form-control" type="text" name="nombre" 
                    id="nombre" value="<?=$data['nombre']?>" autofocus required>
          </div>
+         <div class="col-12 col-sm-6">
+            <label class="mb-2" for="telefono">Teléfono</label> 
+            <input class="form-control" type="text" name="telefono" 
+                   id="telefono" value="<?=$data['telefono']?>">
+         </div>
+       </div>
+       <div class="row">
+         <div class="col-12 col-sm-6">
+            <label class="mb-2" for="correo">Correo</label> 
+            <input class="form-control" type="text" name="correo" 
+                   id="correo" value="<?=$data['correo']?>">
+         </div>
+         <div class="col-12 col-sm-6">
+            <label class="mb-2" for="direccion">Dirección</label> 
+            <input class="form-control" type="text" name="direccion" 
+                   id="direccion" value="<?=$data['direccion']?>">
+         </div>
        </div>
     </div>
    </form> 
@@ -26,12 +43,12 @@
 <?php if ($validation) {?>
   <div class="alert alert-danger">
     <?php 
-    // $xx = \Config\Services::validation()->listErrors();
-    // echo "$xx";
+    $xx = \Config\Services::validation()->listErrors();
+    echo "$xx";
     // echo "count ". count($xx);
     // echo "json_encode ". json_encode($xx);
     // echo "<br>xx $xx";
-    echo $validation->listErrors();
+    // echo $validation->listErrors();
     ?>
   </div>
 <?php }?>
