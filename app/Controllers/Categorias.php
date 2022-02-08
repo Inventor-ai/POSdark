@@ -6,8 +6,8 @@ use App\Models\CategoriasModel;
 
 class Categorias extends BaseController
 {
-  protected $item     = 'Categoría'; 
-  protected $items    = 's';
+  protected $item     = 'Categoría'; // Examen
+  protected $items    = 's';         // Exámenes
   protected $enabled  = 'Disponibles';
   protected $disabled = 'Eliminadas';
   protected $insert   = 'insertar';
@@ -20,9 +20,16 @@ class Categorias extends BaseController
   {
     $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
     $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
-    $this->items     = $this->item.$this->items;
+    $this->items     = $this->item.$this->items; // Exámenes - No concatenate
     $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
     $this->dataModel = new CategoriasModel();
+    /*
+    // helper (['setupController', $this]);
+    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
+    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
+    $this->items     = $this->item.$this->items;
+    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
+    */
   }
 
   private function setDataSet()

@@ -1,6 +1,13 @@
 <?php  
+use App\Models\ConfiguracionesModel;
+$dataModel = new ConfiguracionesModel();
+$data = $dataModel->select('valor')
+                  ->where('nombre', 'tienda_nombre')
+                  ->first();
+// var_dump($data);
   $tabTitle  = 'Army 5tore - VS';
-  $brandName = 'POS - VS';
+//   $brandName = 'POS - VS';
+  $brandName = $data['valor'];
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -103,14 +110,14 @@
                 </div>
                 <a class="nav-link" href="<?=base_url()?>/clientes"><i class="fas fa-users"></i>  Clientes</a>
                 <div class="nav">
-                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseClientes" aria-expanded="false" aria-controls="collapseClientes">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                      Clientes
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmon" aria-expanded="false" aria-controls="collapseAdmon">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                      Administración
                      <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
-                  <div class="collapse" id="collapseClientes" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                  <div class="collapse" id="collapseAdmon" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="<?=base_url()?>/clientes">Clientes</a>
+                      <a class="nav-link" href="<?=base_url()?>/configurar">Configuración</a>
                       <a class="nav-link" href="<?=base_url()?>/unidades">Unidades</a>
                       <a class="nav-link" href="<?=base_url()?>/categorias">Categorias</a>
                     </nav>

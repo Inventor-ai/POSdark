@@ -8,7 +8,7 @@ use App\Models\CategoriasModel;
 
 class Articulos extends BaseController
 {
-  protected $item     = 'Articulo'; 
+  protected $item     = 'Artículo'; 
   protected $items    = 's';
   protected $enabled  = 'Disponibles';
   protected $disabled = 'Eliminados';
@@ -140,8 +140,17 @@ class Articulos extends BaseController
     $dataModel = $this->dataModel
                       ->where('id', $id)
                       ->first();
-    echo view("$this->module/dummy", $dataModel);
-
+    $dataWeb = $this->getDataSet( 
+        "$this->item - Detalle",
+        "$this->module",
+        "",
+        '',
+        null,
+        $dataModel
+    );                  
+    echo view('/includes/header');
+    echo view("$this->module/detail", $dataWeb);
+    echo view('/includes/footer');
   }
 
   // ++++++++++++++++++++++++++++++++++++++++

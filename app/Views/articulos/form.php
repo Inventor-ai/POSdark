@@ -6,10 +6,12 @@
       <div class="col-12 col-sm-9">
          <h4 class=""><?=$title?></h4>
       </div>
-      <div class="col-12 col-sm-3">
-         <button type="submit" class="btn btn-success mb-3">Guardar</button>
-         <a href="<?=base_url()."/$path"?>" class="btn btn-primary mb-3">Regresar</a>
-      </div>
+      <div class="col-12 col-sm-3 text-end">
+          <?php if ($method != '') {?>
+           <button type="submit" class="btn btn-success mb-3">Guardar</button>
+           <?php }?>
+           <a href="<?=base_url()."/$path"?>" class="btn btn-primary mb-3">Regresar</a>
+        </div>
     </div>
     <input type="hidden" name="id" value="<?=$data['id']?>">
     <!-- <div class="row mt-4">      
@@ -73,7 +75,7 @@
     <div class="form-group mt-2">
       <div class="row">
         <div class="col-12 col-sm-6">
-          <label class="mb-2" for="stock_minimo">Stock minimo</label> 
+          <label class="mb-2" for="stock_minimo">Stock mínimo</label> 
           <input class="form-control" type="text" name="stock_minimo" id="stock_minimo"
                  value="<?= $data['stock_minimo']?>" required>
         </div>
