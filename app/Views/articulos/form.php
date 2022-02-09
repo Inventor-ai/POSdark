@@ -92,7 +92,7 @@
       <div class="row">
         <div class="col-12 col-sm-6">
           <label class="mb-2" for="precio_compra">Precio de compra</label> 
-          <input class="form-control" type="text" name="precio_compra" id="precio_compra"
+          <input class="form-control text-end" type="text" name="precio_compra" id="precio_compra"
                  value="<?=$data['precio_compra']?>" required >
         </div>
       </div>
@@ -113,12 +113,12 @@
 <?php if ($validation) {?>
   <div class="alert alert-danger">
     <?php 
-    $xx = \Config\Services::validation()->listErrors();
-    echo "$xx";
+    // $xx = \Config\Services::validation()->listErrors();
+    // echo "$xx";
     // echo "count ". count($xx);
     // echo "json_encode ". json_encode($xx);
     // echo "<br>xx $xx";
-    // echo $validation->listErrors();
+    echo $validation->listErrors();
     ?>
   </div>
 <?php }?>

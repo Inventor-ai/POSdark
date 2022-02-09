@@ -1,13 +1,45 @@
-<?php  
+<?php
 use App\Models\ConfiguracionesModel;
-$dataModel = new ConfiguracionesModel();
-$data = $dataModel->select('valor')
-                  ->where('nombre', 'tienda_nombre')
-                  ->first();
+
+function getSettingValue($keyName)
+{
+  $dataModel = new ConfiguracionesModel();
+  $data = $dataModel->select('valor')
+                    ->where('nombre', $keyName)
+                    ->first();
+  $dataModel = Null;
+  return $data['valor'];
+}
+
+function getSettingOf($keyName = '')
+{
+  $defaultPage = 'http://mamiyasedonde.com/';
+  $keyName = trim($keyName);
+//   $result  = '';
+//   $switch  = 0;
+  if ($keyName == '') return '';
+  if ($keyName == 'tienda_pagweb') {
+      $switch = getSettingValue('tienda_vincularchk');
+      if ($switch == 0 ) {
+          return '';
+        //   return '#';
+      } else {
+          $result = getSettingValue($keyName);
+          if ($result == '') return $defaultPage;
+          else return $result;
+      }
+  } else if ($keyName == 'tienda_siglas') {
+      $result = getSettingValue($keyName);
+      if ($result  == '') return 'POS - VS';
+      return $result;
+  }
+}
 // var_dump($data);
-  $tabTitle  = 'Army 5tore - VS';
+  $tabTitle  = 'Top - SP';
 //   $brandName = 'POS - VS';
-  $brandName = $data['valor'];
+  $brandName = getSettingOf('tienda_siglas');
+  $webpage   = getSettingOf('tienda_pagweb');
+//   $webpage   = '//';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -28,7 +60,7 @@ $data = $dataModel->select('valor')
                <i class="fas fa-laugh-wink"></i>
             </div> -->
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html"><?= $brandName ?></a>
+            <a class="navbar-brand ps-3" href="<?=$webpage?>" target="blank"><?= $brandName ?></a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -118,8 +150,9 @@ $data = $dataModel->select('valor')
                   <div class="collapse" id="collapseAdmon" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="<?=base_url()?>/configurar">Configuración</a>
-                      <a class="nav-link" href="<?=base_url()?>/unidades">Unidades</a>
-                      <a class="nav-link" href="<?=base_url()?>/categorias">Categorias</a>
+                      <a class="nav-link" href="<?=base_url()?>/usuarios">Usuarios</a>
+                      <a class="nav-link" href="<?=base_url()?>/roles">Roles</a>
+                      <a class="nav-link" href="<?=base_url()?>/cajas">Cajas</a>
                     </nav>
                   </div>
 

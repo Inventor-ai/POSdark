@@ -113,15 +113,18 @@ class Articulos extends BaseController
       //  'id'            => 'required',
        'codigo'        => 'required',
        'nombre'        => 'required',
-       'precio_venta'  => 'required',
-       'existencias'   => 'required',
+       'precio_venta'  => 'required|decimal',
+       'existencias'   => 'required|numeric',
        'id_unidad'     => 'required',
        'id_categoria'  => 'required',
-       'stock_minimo'  => 'required',
+       'stock_minimo'  => 'required|is_natural_no_zero',
        'inventariable' => 'required',
-       'precio_compra' => 'required'
+       'precio_compra' => 'required|decimal'
       //  'activo'        => 'required'
     ];
+    // Validar que:
+    //  El precio de venta sea mayor que el de compra
+    //  por lo menos, x $ / %, ó ?...
     return ($this->request->getMethod() == $method &&
             $this->validate($rules) );
   }
