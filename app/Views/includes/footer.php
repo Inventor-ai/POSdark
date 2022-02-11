@@ -27,6 +27,23 @@
         <!-- <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script> -->
         <script>
            //
+function getErrorsBS() {
+
+  // var alert = document.getElementsByClassName('errors');
+  // if (alert) {
+     
+  //   alert alert-danger
+  // }
+
+  /*
+  var fldNames = document.getElementsByName('nombre')
+  var 
+  errLst
+  errLst[0].children[0].children.length
+  fldNames[0].className = fldNames[0].className + ' is-invalid';
+  */
+}
+
         </script>
         
     </body>

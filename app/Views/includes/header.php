@@ -1,45 +1,14 @@
 <?php
-use App\Models\ConfiguracionesModel;
+$session_user = session();
 
-function getSettingValue($keyName)
-{
-  $dataModel = new ConfiguracionesModel();
-  $data = $dataModel->select('valor')
-                    ->where('nombre', $keyName)
-                    ->first();
-  $dataModel = Null;
-  return $data['valor'];
-}
+$tabTitle  = $session_user->tabTitle;
+$brandName = $session_user->brandName;
+$webpage   = $session_user->webpage;
 
-function getSettingOf($keyName = '')
-{
-  $defaultPage = 'http://mamiyasedonde.com/';
-  $keyName = trim($keyName);
-//   $result  = '';
-//   $switch  = 0;
-  if ($keyName == '') return '';
-  if ($keyName == 'tienda_pagweb') {
-      $switch = getSettingValue('tienda_vincularchk');
-      if ($switch == 0 ) {
-          return '';
-        //   return '#';
-      } else {
-          $result = getSettingValue($keyName);
-          if ($result == '') return $defaultPage;
-          else return $result;
-      }
-  } else if ($keyName == 'tienda_siglas') {
-      $result = getSettingValue($keyName);
-      if ($result  == '') return 'POS - VS';
-      return $result;
-  }
-}
-// var_dump($data);
-  $tabTitle  = 'Top - SP';
-//   $brandName = 'POS - VS';
-  $brandName = getSettingOf('tienda_siglas');
-  $webpage   = getSettingOf('tienda_pagweb');
-//   $webpage   = '//';
+
+// if ($session_user->nombre == null) {
+//     return redirect()->to(base_url().'/');
+// }
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -82,19 +51,21 @@ function getSettingOf($keyName = '')
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <!-- <div class="d-none d-md-inline-block">Start Bootstrap</div> -->
-                        Start Bootstrap
+                        <?=substr($session_user->nombre, 0, 15)?>
+                        <!-- Start Bootstrap
+                        123456789012345 -->
                         <i class="fas fa-user fa-fw"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">
-                           <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Settings
+                        <li><a class="dropdown-item" href="<?=base_url()?>/usuarios/cambia_password">
+                           <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Cambiar contraseña
                         </a></li>
                         <li><a class="dropdown-item" href="#!">
                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i> Activity Log
                         </a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">
-                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+                        <li><a class="dropdown-item" href="<?=base_url()?>/usuarios/logout">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Cerrar sesión
                         </a></li>
                     </ul>
                 </li>
@@ -160,7 +131,7 @@ function getSettingOf($keyName = '')
               </div>
             </nav>
           </div>
-
-            <div id="layoutSidenav_content">
-                <main>
-                  <div class="container-fluid px-4">
+          <div id="layoutSidenav_content">
+            <main>
+              <div class="container-fluid px-4">
+              <?php //var_dump ($session_user->mainWebPg) ?>

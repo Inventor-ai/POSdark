@@ -6,12 +6,12 @@ use App\Models\ConfiguracionesModel;
 
 class Configurar extends BaseController
 {
-  protected $item     = 'Configuración'; 
-  protected $items    = 'Configurar';
+  protected $item      = 'Configuración'; 
+  protected $items     = 'Configurar';
   // Use it to add automatic chk input support
-  protected $chkFind  = "'%chk%'";  // Returns records with 'chk' at any position - Default
-  // protected $chkFind  = "'%chk'";  // Returns records with 'chk' at end of string
-  // protected $chkFind  = "'chk%'";  // Returns records with 'chk' at begining of string
+  protected $chkFind   = "'%chk%'";  // Returns records with 'chk' at any position - Default
+  // protected $chkFind   = "'%chk'";  // Returns records with 'chk' at end of string
+  // protected $chkFind   = "'chk%'";  // Returns records with 'chk' at begining of string
   protected $module;
   protected $dataModel;
 
@@ -25,9 +25,6 @@ class Configurar extends BaseController
 
   private function getValidate($method = "post")
   {
-    // $rules = [
-    //    'nombre' => 'required'
-    // ];
     $rules = [
       'tienda_siglas' => [
               'rules' => 'max_length[12]',
@@ -57,10 +54,43 @@ class Configurar extends BaseController
        'action'     => 'revisar',
        'validation' => null,
     ];
-    $dataModel = $this->dataModel
-                      ->findAll();
-    foreach ($dataModel as $value)
+    $switch      = false;
+    $webPage     = '';
+    $brandName   = '';
+    $dataSession = [];
+    $cfgSesion   = session();
+    $dataModel   = $this->dataModel
+                        ->findAll();
+    foreach ($dataModel as $value) {
       $dataWeb[$value['nombre']] = $value['valor'];
+
+      // if ($value['nombre'] == 'tienda_siglas') {
+      //     $brandName = $value['valor'];
+      //     // $dataSession['brandName'] = $value['valor'];
+      // }
+      // if ($value['nombre'] == 'tienda_pagweb') {
+      //     $webPage = $value['valor'];
+      //     // $dataSession['webpage'] = $v1alue['valor'];
+      // }
+      // if ($value['nombre'] == 'tienda_vincularchk')
+      //     $switch = $value['valor'];
+
+    }
+    // if ($switch) {
+    //    if ($webPage == '')
+    //        $webPage = $cfgSesion->mainWebPg;
+    // } else {
+    //    $webPage = '';
+    // }
+    // if ($brandName == '') {
+    //     $brandName = $cfgSesion->mainBrand;
+    // }
+    // $dataSession['brandName'] = $brandName;
+    // $dataSession['webpage']   = $webPage;
+    // $cfgSesion->set($dataSession);
+    $settings = new Usuarios();
+    $settings->loadSettings();
+    unset($settings);
 
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
@@ -77,9 +107,8 @@ class Configurar extends BaseController
       $this->dataModel->update( $value['id'], [ 'valor' => 0 ]);
     }
     
-    // Get all control names and it's values sent by POST method
+    // Get all the names of the controls and their values sent by the POST method
     foreach ($_POST as $nombre => $valor) {
-      // echo "$nombre => $valor <br>";
       $dataModel = $this->dataModel
                         ->select('id')
                         ->where('nombre', $nombre)

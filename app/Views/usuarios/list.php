@@ -1,5 +1,15 @@
 <?php
-var_dump($data);
+// var_dump($data);
+// $test = null;
+// $test = '';
+// $test = 0;
+// $test = '0';
+
+// $test = 'w';
+// $test = ' ';
+// $test = 1;
+// $test = '00';
+// echo $test ? "set" : "no";
 ?>
 <div class="row mt-4">
   <div class="col-12 col-sm-8">
@@ -19,6 +29,8 @@ var_dump($data);
         <th>Id</th>
         <th>Usuario</th>
         <th>Nombre</th>
+        <th>Rol</th>
+        <th>Caja</th>
         <th class="text-center">Acciones</th>
       </tr>
     </thead>
@@ -27,6 +39,8 @@ var_dump($data);
         <th>Id</th>
         <th>Usuario</th>
         <th>Nombre</th>
+        <th>Rol</th>
+        <th>Caja</th>
         <th class="text-center">Acciones</th>
       </tr>
     </tfoot>
@@ -36,6 +50,8 @@ var_dump($data);
           <td><?=$dato['id']?></td>
           <td><?=$dato['usuario']?></td>
           <td><?=$dato['nombre']?></td>
+          <td><?=$dato['rol_id']?></td>
+          <td><?=$dato['caja_id']?></td>
           <?php if ($onOff) {?>
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
