@@ -27,4 +27,28 @@ class UsuariosModel extends Model
   protected $validationRules    = [];
   protected $validationMessages = [];
   protected $skipValidation     = false;
+
+  /*
+  public function indexTable($activo = 1)
+  {
+    // $builder = $db->table($this->table);
+    $builder->select('*');
+    $builder->join('cajas', 'cajas.id = cajas_id');
+    $builder->join('roles', 'roles.id = roles_id');
+    $builder->where("$this->table.activo", $activo);
+    $query = $builder->get();
+    return $query;
+  }
+    $dataModel = $this->dataModel
+                      ->select('id, usuario, nombre, rol_id, caja_id')
+                      ->join('cajas', 'cajas.id = cajas_id')
+                      ->where('activo', $activo)
+                      ->findAll();
+                      
+    $builder->select('*');
+    $builder->join('cajas', 'cajas.id = cajas_id');
+    $builder->join('roles', 'roles.id = roles_id');
+    $builder->where("$this->table.activo", $activo);
+    $query = $builder->get();
+*/
 }

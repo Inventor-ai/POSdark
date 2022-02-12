@@ -1,34 +1,5 @@
 <?php
-
-/*
-$overrule = ['password', 'repassword']; // clear these rules
-// protected $refuseOn
-// $disallow = [], 
-$disallow = $overrule;
-// $exception = 'noExceptions')
-
-foreach ($disallow as $key => $value) {
-  echo "disallows: $key => $value <br>";
-}
-// $disallow
-
-var_dump($data);
-echo "0: ";
-echo isset($data['nombre']) ? $data['nombre'] . ' nombre':"010";
-echo "<br>";
-if (isset($data['nombre'])) {
-  unset($data['nombre']);
-}
-echo "1: ";
-echo isset($data['nombre'])?$data['nombre']:"w1w";
-var_dump($data);
-$demo = 1;
-$demo = 2;
-$demo = 0;
-echo $demo ? "trueno: $demo":"falso: $demo";
-// $data['nombre'] = "qq";
-*/
-
+// var_dump($data);
 ?>
 <div class="mb-3">
    <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>"
@@ -61,13 +32,14 @@ echo $demo ? "trueno: $demo":"falso: $demo";
          </div>
        </div>
     </div>
-     <div class="form-group mt-4">
+    <div class="form-group mt-4">
        <div class="row">
          <div class="col-12 col-sm-6">
-            <label class="mb-2" for="password">Constraseña</label> 
+            <label class="mb-2" for="password">Contraseña</label> 
             <input class="form-control" type="password" name="password" 
                    id="password" value="<?=isset($data['password'])?$data['password']:''?>" 
-                   <?=$data['id']==''?'required':''?>>
+                   minlength="<?=$minLength?>" maxlength="<?=$maxLength?>"
+            <?=$data['id']==''?'required':''?>>
          </div>
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="repassword">Repetir contraseña</label> 
@@ -113,15 +85,14 @@ echo $demo ? "trueno: $demo":"falso: $demo";
     </div>
    </form> 
 </div>
-<?php if ($validation) {?>
-  <div class="alert alert-danger">
-    <?php 
-    // $xx = \Config\Services::validation()->listErrors();
-    // echo "$xx";
-    // echo "count ". count($xx);
-    // echo "json_encode ". json_encode($xx);
-    // echo "<br>xx $xx";
-    echo $validation->listErrors();
-    ?>
-  </div>
-<?php }?>
+<div class="mt-4" style="padding: 10px 0px;">
+<!-- <div class="mt-5"> -->
+  <?php if ($validation) {?>
+    <div class="alert alert-danger">
+      <?php 
+      echo $validation->listErrors();
+      // echo \Config\Services::validation()->listErrors();
+      ?>
+    </div>
+  <?php }?>
+</div>

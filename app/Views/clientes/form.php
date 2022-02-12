@@ -40,15 +40,17 @@
     </div>
    </form> 
 </div>
-<?php if ($validation) {?>
-  <div class="alert alert-danger">
-    <?php 
-    $xx = \Config\Services::validation()->listErrors();
-    echo "$xx";
-    // echo "count ". count($xx);
-    // echo "json_encode ". json_encode($xx);
-    // echo "<br>xx $xx";
-    // echo $validation->listErrors();
-    ?>
-  </div>
-<?php }?>
+<div class="mt-4" style="padding: 10px 0px;">
+  <?php if ($validation) {?>
+   <div class="alert alert-danger">
+     <?=$validation->listErrors()?>
+     <!--      
+     //  $xx = \Config\Services::validation()->listErrors();
+     //  echo "$xx";
+     // echo "count ". count($xx);
+     // echo "json_encode ". json_encode($xx);
+     // echo "<br>xx $xx";
+     -->
+   </div>
+  <?php }?>
+</div>

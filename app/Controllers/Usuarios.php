@@ -9,16 +9,19 @@ use App\Models\RolesModel;
 
 class Usuarios extends BaseController
 {
-  protected $item     = 'Usuario'; // Examen
-  protected $items    = 's';         // Exámenes
-  protected $enabled  = 'Disponibles';
-  protected $disabled = 'Eliminados';
-  protected $insert   = 'insertar';
-  protected $update   = 'actualizar';
-  protected $recAdd   = 'Agregando...';
-  protected $recEdit  = 'Editando...';
-  // protected $login    = false;
-  protected $carrier  = [];
+  protected $item      = 'Usuario';   // Examen
+  protected $items     = 's';         // Exámenes
+  protected $enabled   = 'Disponibles';
+  protected $disabled  = 'Eliminados';
+  protected $insert    = 'insertar';
+  protected $update    = 'actualizar';
+  protected $recAdd    = 'Agregando...';
+  protected $recEdit   = 'Editando...';
+  protected $loadAll   = true;
+  protected $minLength = 3;  // Fix Settings for tests
+  protected $maxLength = 5;  // Fix Settings for tests
+  // protected $session   = false;
+  protected $carrier   = [];
   protected $module;
   protected $dataModel;
 
@@ -35,95 +38,35 @@ class Usuarios extends BaseController
 
   private function setDataSet()
   {
-    // Ajustar las reglas según el aeereglo de datos
     $password   = trim( $_POST['password'] );
     $repassword = trim( $_POST['repassword'] );
     if ($_POST['id'] != '' && $password == '' && $repassword == '') {
        unset( $_POST['password'] );
        unset( $_POST['repassword'] );
     } 
-    // elseif ($password == $repassword ) {
-    //   # encriptar $password y buscar que sea único en la tabla
-    //   # Esto tiene que hacerse justo antes de guardar / insertar
-    //   # y después de haber pasado la primera validación
-    //   # siempre y cuando $password != ''
-    // }
     return $_POST;
   }
-
- /* nullify
-  private function nullify($group = [], $overrule = [], $exception = 'noExceptions' )
-  {
-    if (count ($group) == 0 || count ($overrule) == 0) return $group;
-    echo '<script>
-      console.log("0 group: ", "|'. count ($group) .'|");
-      console.log("0 overrule: ", "|'. count ($overrule) .'|");
-      console.log("0 exception: ", "|'. $exception .'|");';
-    echo "</script>";
-    
-    //  echo "
-    //     // console.log(' disable: ');
-    //     // console.log(". json_encode($disable) .");
-    //     // console.log(' rules: ');
-    //     // console.log(". json_encode($rules) .");
-    // </script>";
-    // echo '<script>
-    //   console.log("exception 1: ", "|'. $exception .'|");';
-    //  echo "
-    //     console.log(' disable: ');
-    //     console.log(". json_encode($disable) .");
-    //     console.log(' rules: ');
-    //     console.log(". json_encode($rules) .");
-    // </script>";
-    //     console.log("1 datarule: ", "|'. $dataRule[$dissmiss] .'|");
-    
-    $dataRule = $group;
-    foreach ($overrule as $dissmiss) {
-      echo '<script>
-      console.log("1 dissmiss: ", "|'. $dissmiss .'|");
-      console.log("1 post: ", "|'. $_POST[$dissmiss] .'|");
-      console.log("1 data unset?: ", "|'. ($_POST[$dissmiss] === $exception ? 'eliminar': 'dejar') .'|");        
-      console.log("1 post count: ", "|'. count ($_POST) .'|");
-      console.log("1 rule unset?: ", "|'. ($dataRule[$dissmiss] === $exception ? 'eliminar': 'dejar') .'|");        
-      console.log("1 rule count: ", "|'. count ($dataRule) .'|");
-        ';
-     echo "
-        console.log(' _POST: ');
-        console.log(". json_encode($_POST) .");
-        console.log(' dataRule: ');
-        console.log(". json_encode($dataRule) .");";
-      echo "</script>";
-
-      if (isset ($dataRule[$dissmiss]))
-          if (
-              // is_array($dataRule[$dissmiss]) ||
-              $_POST[$dissmiss] == $exception)
-              unset ($dataRule[$dissmiss]);
-    }
-    return $dataRule;  
-  }
- */
 
   private function getValidate($method = "post")
   {
     $rules = [
-      // Validar que la contraseña sea diferente al usuario (May/Min)
-      // Validar que la contraseña no esté dentro del nombre, ni del usuario
-      // Un mínimo de 12 caracteres, sin espacios, ...
-      // .Algún otro detalle para hacerla segura
       'password' => [
-         'rules' => "required",
+         'rules' => "required|min_length[$this->minLength]|max_length[$this->maxLength]",
         // Encriptar en el control antes de validar esta regla
         //  'rules' => "required|is_unique[$this->module.password]", 
          'errors' => [
-            'required'  => "Teclear la contraseña|{field}",
+            // 'required'  => "Teclear la contraseña|{field}",
+            'required'   => "Falta teclear la contraseña|{field}",
+            'min_length' => "La contraseña debe tener entre $this->minLength y $this->maxLength caracteres|{field}",
+            'max_length' => "La contraseña debe tener entre $this->minLength y $this->maxLength caracteres|{field}",
             // 'is_unique' => "¡La contraseña DEBE ser ÚNICA y ya fue usada antes!|{field}"
          ]
       ],
       'repassword' => [
          'rules' => "required|matches[password]",
          'errors' => [
-            'required' => "Teclear la confirmación de la contraseña|{field}",
+            // 'required' => "Teclear la confirmación de la contraseña|{field}",
+            'required' => "Falta teclear la confirmación de la contraseña|{field}",
             'matches'  => "La contraseña no coincide con su confirmación|{field}"
          ]
       ],
@@ -147,7 +90,8 @@ class Usuarios extends BaseController
         $rules['nombre'] = [
                 'rules'  => "required|is_unique[$this->module.nombre]",
                 'errors' => [
-                    'required'  => "Teclear el {field}|{field}",
+                    // 'required'  => "Teclear el {field}|{field}",
+                    'required'  => "Falta teclear el {field}|{field}",
                     'is_unique' => "¡Este {field} y ya existe! DEBE ser ÚNICO|{field}"
                 ]
         ];
@@ -155,17 +99,19 @@ class Usuarios extends BaseController
                 'rules'   => "required|is_unique[$this->module.usuario]",
                   //  'rules' => "required|email|is_unique[$this->module.usuario]",
                 'errors'  => [
-                    'required'  => "Teclear el {field}|{field}",
+                    // 'required'  => "Teclear el {field}|{field}",
+                    'required'  => "Falta teclear el {field}|{field}",
                     // 'email'     => "Proporcionar un email como {field}|{field}",
                     'is_unique' => "¡Este $this->item ya existe y DEBE ser ÚNICO!|{field}"
                 ]
         ];
-    } else {  // Editando
+    } else {  // Editando / Cambiando contraseña
         $rules['nombre'] = [
             //  'rules' => "required|is_unique[$this->module.nombre]",
                 'rules'  => "required",
                 'errors' => [
-                    'required'  => "Teclear el {field}|{field}",
+                    // 'required'  => "Teclear el {field}|{field}",
+                    'required'  => "Falta teclear el {field}|{field}",
                      // 'is_unique' => "¡Este {field} y ya existe! DEBE ser ÚNICO|{field}"
                 ]
         ];
@@ -173,18 +119,19 @@ class Usuarios extends BaseController
                 'rules'   => "required",
                   //  'rules' => "required|email",
                 'errors' => [
-                      'required'  => "Teclear el {field}|{field}",
+                      // 'required'  => "Teclear el {field}|{field}",
+                      'required'  => "Falta teclear el {field}|{field}",
                       // 'email'     => "Proporcionar un email como {field}|{field}",
                       // 'is_unique' => "¡Este $this->item ya existe y DEBE ser ÚNICO!|{field}"
                 ]
         ];
     }    
 
+    // debug - section -
     echo '<script>
     console.log("0 getValidate post count: ", "|'. count ($_POST) .'|");';
-    echo "
-      console.log('getValidate _POST: ');
-      console.log(". json_encode($_POST) .");";
+    echo "console.log('getValidate _POST: ');
+          console.log(". json_encode($_POST) .");";
     echo "</script>";
 
     $ruleSet = [];
@@ -192,87 +139,39 @@ class Usuarios extends BaseController
       if (isset($rules[$include])) {
           $ruleSet[$include] = $rules[$include];
       }
-      // # code...
-      // echo '<script>
-      // console.log("1 getValidate key: ", "|'. $include .'|");';
-      // echo "
-      //   console.log('getValidate value: ');
-      //   console.log('". $value ."');";
-      // echo "</script>";
-    }    
-    $rules = $ruleSet;
-
-
-    
-/*
-    foreach ($disable as $disabled) {
-      # code...
     }
-    $overrule = ['password', 'repassword']; // clear these rules
-    protected $refuseOn
-    $disallow = [], $exception = 'noExceptions')
-            // unset ($rules['password']);
-            // unset ($rules['repassword']);
-    if ($this->action == $this->recEdit) {
-        if ($_POST['password']   == '' && 
-            $_POST['repassword'] == '') {
-            unset ($rules['password']);
-            unset ($rules['repassword']);
-        }     
-    }
-    echo '<script>
-     console.log("action: ", "'. $this->action .'");
-     console.log("recEdit: ", "'. $this->recEdit .'");
-     console.log("rules: ", "'. json_encode($rules) .'");
-    </script>';
 
-    private function nullify($group = [], $exclused = [], $exception = 'noExceptions' )
-
-    
-    $overrule = ['password', 'repassword']; // clear these rules
-    $disallow = [], 
-    protected $refuseOn
-    , $disable = [], $exception = 'noExceptions')
-    $this->getValidate($method = "post", $this->overrule, '');
-*/
-    echo '<script>';
-     echo "
-        console.log('20 rules: ');
-        console.log(". json_encode($rules) .");
+    // debug - section -
+    echo "<script>
+        console.log('". count($ruleSet) ." rules: ');
+        console.log(". json_encode($ruleSet) .");
     </script>";
-
-    // $rules = $this->nullify($rules, $disable, $exception);
-    /*
-    echo '<script>
-      console.log("exception 1: ", "|'. $exception .'|");';
-     echo "
-        console.log(' disable: ');
-        console.log(". json_encode($disable) .");
-        console.log(' rules: ');
-        console.log(". json_encode($rules) .");
-    </script>";
-    */
 
     return ($this->request->getMethod() == $method &&
-            $this->validate($rules) );
+            $this->validate($ruleSet) );
   }
   
   private function getDataSet(
        $titulo    = '',  $ruta      = '',   $action = "", 
        $method = "post", $validador = null, $dataSet = [])
   {
-    $dataCajas = $this->dataCajas->where('activo', 1)->findAll();
-    $dataRoles = $this->dataRoles->where('activo', 1)->findAll();
-    return [
+    $data = [
       'title'      => $titulo,
       'path'       => $ruta,
       'action'     => $action,
       'method'     => $method,
       'validation' => $validador,
       'data'       => $dataSet,
-      'dataCajas'  => $dataCajas,
-      'dataRoles'  => $dataRoles,
+      // 'dataCajas'  => $dataCajas,
+      // 'dataRoles'  => $dataRoles,
     ];
+    if ($this->loadAll) {
+        $dataCajas = $this->dataCajas->where('activo', 1)->findAll();
+        $dataRoles = $this->dataRoles->where('activo', 1)->findAll();
+        $data['dataCajas'] = $dataCajas;
+        $data['dataRoles'] = $dataRoles;
+    }
+    return $data;
   }
 
   private function setCarrier($dataWeb, $value = '', $key = 'id')
@@ -289,6 +188,7 @@ class Usuarios extends BaseController
     // Hacer join para completar los datos del usuario.
     $dataModel = $this->dataModel
                       ->select('id, usuario, nombre, rol_id, caja_id')
+                      ->join('cajas', 'cajas.id = cajas_id')
                       ->where('activo', $activo)
                       ->findAll();
     $dataWeb   = [
@@ -301,6 +201,7 @@ class Usuarios extends BaseController
        'recover' => 'recuperar',
        'data'    => $dataModel
     ];
+    $dataWeb['test'] = $this->dataModel->indexTable();
     echo view('/includes/header');
     echo view("$this->module/list", $dataWeb);
     echo view('/includes/footer');
@@ -317,7 +218,6 @@ class Usuarios extends BaseController
          $dataSet['id'] = '';
     }
     // $this->carrier = [];
-    // $this->action = $this->recAdd;
     $dataWeb = $this->getDataSet( 
         // "$this->item - Agregando...", //"Agregar $this->item", //
         "$this->item - $this->recAdd", //"Agregar $this->item", //
@@ -326,7 +226,8 @@ class Usuarios extends BaseController
         'post',
         $validation,
         $dataSet
-    ); 
+    );
+    $dataWeb = $this->passwordSetup($dataWeb);
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
@@ -344,14 +245,11 @@ class Usuarios extends BaseController
     if ($this->getValidate( $this->request->getMethod() )) {
         $dataWeb['password'] = $this->getCodedKey($dataWeb['password']);
         unset($dataWeb['repassword']);
-        // $hash = password_hash($dataWeb['password'], PASSWORD_DEFAULT);
-        // $dataWeb['password'] = $hash;
         // $msg = "Insercci´n";
         $this->dataModel->save($dataWeb); // ok
         return redirect()->to(base_url()."/$this->module");
     }
      // else {
-      // $dataWeb       = $this->setDataSet();
     $this->setCarrier($dataWeb, '');
     $this->agregar();
     // }
@@ -370,9 +268,7 @@ class Usuarios extends BaseController
                             ->first();
     }
     // $this->carrier = [];
-    // $this->action = $this->recEdit;
     $dataWeb = $this->getDataSet( 
-        // "$this->item - Editando...", //"Editar $this->item", //
         "$this->item - $this->recEdit", //"Editar $this->item", //
         $this->module,
         $this->update, //
@@ -380,6 +276,7 @@ class Usuarios extends BaseController
         $validation,
         $dataModel
     );
+    $dataWeb = $this->passwordSetup($dataWeb);
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
@@ -390,7 +287,6 @@ class Usuarios extends BaseController
     $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
     if ($this->getValidate( $this->request->getMethod() )) {
- // if ($this->getValidate( $this->request->getMethod()) ) {
         if (isset($dataWeb['password']) ) {
             // $hash = password_hash($dataWeb['password'], PASSWORD_DEFAULT);
             // $dataWeb['password'] = $hash;
@@ -398,12 +294,8 @@ class Usuarios extends BaseController
             unset($dataWeb['repassword']);
         }
         // $msg = "¡Actualización exitosa!";
-        $this->dataModel->update( $id, $dataWeb );          // Ok
-        return redirect()->to(base_url()."/$this->module"); // Ok
-        // tmp - Ini
-        // $this->setCarrier($dataWeb, $id);
-        // $this->editar($id);
-        // tmp - Fin
+        $this->dataModel->update( $id, $dataWeb );
+        return redirect()->to(base_url()."/$this->module");
     }
     $this->setCarrier($dataWeb, $id);
     $this->editar($id);
@@ -419,16 +311,9 @@ class Usuarios extends BaseController
 
   public function recuperar($id)
   {
-    //   return $this->eliminar($id, 1);
     $this->eliminar($id, 1);
     return redirect()->to(base_url()."/$this->module/index/0");
   }
-
-  // public function reingresar($id)
-  // {
-  //   $this->usuarios->update($id, ['activo' => 1]);
-  //   return redirect()->to(base_url() . 'usuarios');
-  // }
 
   public function login()
   {
@@ -491,11 +376,9 @@ class Usuarios extends BaseController
                      ->where ('usuario', $usr)
                      ->first();
         if ($data) {
-            // $result = password_verify( trim( $pwd ), $data['password'] ) ? "match" : "mismatch";
-            // echo "Validating... $result <br>";
             if (password_verify( $pwd, $data['password'] )) {
                 $dataSession = [
-                  'id_usuario' => $data['id'],
+                  'usuario_id' => $data['id'],
                   'usuario'    => $data['usuario'],
                   'nombre'     => $data['nombre'],
                   'rol_id'     => $data['rol_id'],
@@ -528,47 +411,73 @@ class Usuarios extends BaseController
     $session->destroy(); 
     // session_destroy();  // php
     return redirect()->to(base_url());
+  }
 
+  private function passwordSetup($dataWeb = [])
+  {
+    $dataWeb['minLength'] = $this->minLength; // Hardcoded values
+    $dataWeb['maxLength'] = $this->maxLength; // Hardcoded values
+    return $dataWeb;
   }
 
   public function cambia_password()
   {
-    // $dataSet['posted'] = $_POST;
-    $validation = null;
-    $dataSet    = null;
+    $session = session();
+    if ( count ($this->carrier) > 0 ) {
+        //  $dataModel  = $this->carrier['datos'];
+         $dataModel['nombre']  = $session->nombre;
+         $dataModel['usuario'] = $session->usuario;
+         $validation = $this->carrier['validation'];
+     } else { # Primer intento
+         $validation = null;
+         $dataModel  = $this->dataModel
+                            ->select('id, nombre, usuario')
+                            ->where('id', $session->usuario_id)
+                            ->first();
+    }
+    $this->loadAll = false;
     $dataWeb = $this->getDataSet(
       "$this->item - Cambiar contraseña",
       "$this->module",
-      'guarda_password',
+      'guardar_password',
       'post',
       $validation,
-      $dataSet
+      $dataModel,
     );
-    // var_dump (dataSet);
-    // return;
+    $dataWeb = $this->passwordSetup($dataWeb);
     echo view('/includes/header');
     echo view("$this->module/pwdchange", $dataWeb);
     echo view('/includes/footer');
   }
 
-  public function guarda_password()
+  public function guardar_password()
   {
-    $dataSet['posted'] = $_POST;
-    $validation = null;
-    $dataSet    = null;
-    $dataWeb = $this->getDataSet(
-      "$this->item - Cambiar contraseña?",
-      "$this->module",
-      'guarda_password',
-      'post',
-      $validation,
-      $dataSet
-    );
-    // var_dump (dataSet);
-    // return;
-    echo view('/includes/header');
-    echo view("$this->module/pwdchange", $dataWeb);
-    echo view('/includes/footer');
+    $dataSet = $_POST;
+    $session = session(); // Verificar si id ==
+    if ($this->getValidate( $this->request->getMethod())) {
+        /** Control de contraseñas seguras - Crear función
+         *   > Insertar la llamada al algoritmo de control de contraseñas fuertes
+         *   > Contener un mínimo de { n } caracteres
+         *   > 
+         // elseif ($password == $repassword ) {
+         //   # encriptar $password y buscar que sea único en la tabla
+         //   # Esto tiene que hacerse justo antes de guardar / insertar
+         //   # y después de haber pasado la primera validación
+         //   # siempre y cuando $password != ''
+         // }
+         // Validar que la contraseña sea diferente al usuario (May/Min)
+         // Validar que la contraseña no esté dentro del nombre, ni del usuario
+         // Un mínimo de 12 caracteres, sin espacios, ...
+         // .Algún otro detalle para hacerla segura       
+             // 642 - 483 = 159
+         *   > 
+         */
+        // Agregar el update aquí
+        $this->carrier['validation'] = "¡Cambio de contraseña extoso!";
+        // $this->cambia_password();
+    } else 
+        $this->setCarrier($dataSet, $session->usuario_id);
+    $this->cambia_password();
   }
 
 }

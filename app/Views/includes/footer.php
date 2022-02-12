@@ -23,27 +23,11 @@
         <script src="<?=base_url()?>/js/simple-datatables.js"></script>
         <script src="<?=base_url()?>/js/datatables-simple-demo.js"></script>
         <script src="<?=base_url()?>/js/modal/confirm.js"></script>
+        <script src="<?=base_url()?>/js/vsutils.js"></script>
          
         <!-- <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script> -->
         <script>
            //
-function getErrorsBS() {
-
-  // var alert = document.getElementsByClassName('errors');
-  // if (alert) {
-     
-  //   alert alert-danger
-  // }
-
-  /*
-  var fldNames = document.getElementsByName('nombre')
-  var 
-  errLst
-  errLst[0].children[0].children.length
-  fldNames[0].className = fldNames[0].className + ' is-invalid';
-  */
-}
-
         </script>
         
     </body>

@@ -1,6 +1,11 @@
 <?php
-if (isset($posted)) var_dump($posted);
-
+// if (isset($posted)) var_dump($posted);
+// echo $data['id'];
+// if (isset($data))   
+// var_dump($data);
+// var_dump($dataCajas);
+// var_dump($dataRoles);
+// $data['id'] = "tmp";
 ?>
 <div class="mb-3">
    <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>"
@@ -15,7 +20,7 @@ if (isset($posted)) var_dump($posted);
             <a href="<?=base_url()."/$path"?>" class="btn btn-primary mb-3">Regresar</a>
         </div>
     </div>
-     <input type="hidden" name="id" value="<?=$data['id']?>">
+     <input type="hidden" name="id" value="<?=isset($data['id'])?$data['id']:''?>">
      <div class="form-group">
        <div class="row">
          <div class="col-12 col-sm-6">
@@ -38,30 +43,35 @@ if (isset($posted)) var_dump($posted);
      <div class="form-group mt-4">
        <div class="row">
          <div class="col-12 col-sm-6">
-            <label class="mb-2" for="password">Constraseña</label> 
+            <label class="mb-2" for="password">Contraseña</label> 
             <input class="form-control" type="password" name="password" autofocus
                    id="password" value="<?=isset($data['password'])?$data['password']:''?>" 
-                   <?=$data['id']==''?'required':''?>>
+                   minlength="<?=$minLength?>" 
+                   maxlength="<?=$maxLength?>"
+                   >
+                   <!-- required > -->
          </div>
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="repassword">Repetir contraseña</label> 
             <input class="form-control" type="password" name="repassword" 
                    id="repassword" value="<?=isset($data['repassword'])?$data['repassword']:''?>" 
-                   <?=$data['id']==''?'required':''?>>
+                   >
+                   <!-- required > -->
          </div>
        </div>
     </div>
    </form> 
 </div>
-<?php if ($validation) {?>
-  <div class="alert alert-danger">
-    <?php 
-    // $xx = \Config\Services::validation()->listErrors();
-    // echo "$xx";
-    // echo "count ". count($xx);
-    // echo "json_encode ". json_encode($xx);
-    // echo "<br>xx $xx";
-    echo $validation->listErrors();
-    ?>
-  </div>
-<?php }?>
+<div class="mt-4" style="padding: 10px 0px;">
+  <?php if ($validation)
+        if (is_string($validation)
+          ) {?>
+           <div class="alert alert-success mt-2">
+             <?=$validation?>
+          </div>
+  <?php } else {?>
+           <div class="alert alert-danger mt-2">
+             <?=$validation->listErrors()?>
+          </div>
+  <?php }?>
+</div>

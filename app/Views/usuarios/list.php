@@ -1,4 +1,5 @@
 <?php
+var_dump($test);
 // var_dump($data);
 // $test = null;
 // $test = '';
