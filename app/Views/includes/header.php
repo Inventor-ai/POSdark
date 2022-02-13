@@ -122,6 +122,7 @@ $webpage   = $session_user->webpage;
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="<?=base_url()?>/configurar">Configuración</a>
                       <a class="nav-link" href="<?=base_url()?>/usuarios">Usuarios</a>
+                      <a class="nav-link" href="<?=base_url()?>/users">Users</a>
                       <a class="nav-link" href="<?=base_url()?>/roles">Roles</a>
                       <a class="nav-link" href="<?=base_url()?>/cajas">Cajas</a>
                     </nav>

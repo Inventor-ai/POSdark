@@ -3,16 +3,17 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ConfiguracionesModel;
-use App\Models\UsuariosModel;
+use App\Models\UsersModel;
 use App\Models\CajasModel;
 use App\Models\RolesModel;
+// use App\>Entities\User;
 
-class Usuarios extends BaseController
+class Users extends BaseController
 {
   protected $item      = 'Usuario';   // Examen
   protected $items     = 's';         // Exámenes
-  protected $enabled   = 'Disponibles';
-  protected $disabled  = 'Eliminados';
+  protected $enabled   = 'Disponibles.';
+  protected $disabled  = 'Eliminados.';
   protected $insert    = 'insertar';
   protected $update    = 'actualizar';
   protected $recAdd    = 'Agregando...';
@@ -22,16 +23,16 @@ class Usuarios extends BaseController
   protected $maxLength = 5;  // Fix Settings for tests
   // protected $session   = false;
   protected $carrier   = [];
-  protected $module;
+  protected $module    ='users';
   protected $dataModel;
 
   public function __construct()
   {
-    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
-    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
+    // $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
+    // $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items     = $this->item.$this->items; // Exámenes - No concatenate
-    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
-    $this->dataModel = new UsuariosModel();
+    // $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
+    $this->dataModel = new UsersModel();
     $this->dataCajas = new CajasModel();
     $this->dataRoles = new RolesModel();
   }
@@ -43,8 +44,9 @@ class Usuarios extends BaseController
     if ($_POST['id'] != '' && $password == '' && $repassword == '') {
        unset( $_POST['password'] );
        unset( $_POST['repassword'] );
-    } 
-    return $_POST;
+    }
+    // return $_POST;
+    return new \App\Entities\User($_POST);
   }
 
   private function getValidate($method = "post")
@@ -176,7 +178,8 @@ class Usuarios extends BaseController
 
   private function setCarrier($dataWeb, $value = '', $key = 'id')
   {
-    $dataWeb[$key] = $value;
+    // $dataWeb[$key] = $value;
+    // $dataWeb->$key = $value;  // Ya no es necesaria New/edit???
     $this->carrier = [
       'validation' => $this->validator,
       'datos'      => $dataWeb
@@ -236,7 +239,7 @@ class Usuarios extends BaseController
         $validation,
         $dataSet
     );
-    $dataWeb = $this->passwordSetup($dataWeb);
+    $dataWeb = $this->passwordSettings($dataWeb);
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
@@ -269,6 +272,10 @@ class Usuarios extends BaseController
     if ( count ($this->carrier) > 0 ) {
          $dataModel  = $this->carrier['datos'];
          $validation = $this->carrier['validation'];
+         //  $this->dataModel->fill($dataModel);
+        //  $dataModel = new \App\Entities\User($dataModel);
+        //  var_dump($dataModel);
+      //  return;
      } else { # Registro nuevo y en blanco
          $validation = null;
          $dataModel  = $this->dataModel
@@ -285,7 +292,7 @@ class Usuarios extends BaseController
         $validation,
         $dataModel
     );
-    $dataWeb = $this->passwordSetup($dataWeb);
+    $dataWeb = $this->passwordSettings($dataWeb);
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
@@ -293,21 +300,33 @@ class Usuarios extends BaseController
 
   public function actualizar()
   {
-    $id      = $this->request->getPost('id');
+    // $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
+    // var_dump($dataWeb->id);
+    // return;
     if ($this->getValidate( $this->request->getMethod() )) {
+      // var_dump($this->getValidate( $this->request->getMethod() ));
+      // var_dump($dataWeb);
+      // return;
+        /*
         if (isset($dataWeb['password']) ) {
             // $hash = password_hash($dataWeb['password'], PASSWORD_DEFAULT);
             // $dataWeb['password'] = $hash;
             $dataWeb['password'] = $this->getCodedKey($dataWeb['password']);
             unset($dataWeb['repassword']);
         }
+        */
         // $msg = "¡Actualización exitosa!";
-        $this->dataModel->update( $id, $dataWeb );
+        // $this->dataModel->update( $id, $dataWeb );
+        $this->dataModel->update( $dataWeb->id, $dataWeb );
         return redirect()->to(base_url()."/$this->module");
     }
-    $this->setCarrier($dataWeb, $id);
-    $this->editar($id);
+    // $this->setCarrier($dataWeb, $id);
+    // $this->editar($id);
+    $dataWeb->password   = '';
+    $dataWeb->repassword = '';
+    $this->setCarrier($dataWeb);
+    $this->editar($dataWeb->id);
   }
 
   public function eliminar($id, $activo = 0)
@@ -422,7 +441,7 @@ class Usuarios extends BaseController
     return redirect()->to(base_url());
   }
 
-  private function passwordSetup($dataWeb = [])
+  private function passwordSettings($dataWeb = [])
   {
     $dataWeb['minLength'] = $this->minLength; // Hardcoded values
     $dataWeb['maxLength'] = $this->maxLength; // Hardcoded values
@@ -453,7 +472,7 @@ class Usuarios extends BaseController
       $validation,
       $dataModel,
     );
-    $dataWeb = $this->passwordSetup($dataWeb);
+    $dataWeb = $this->passwordSettings($dataWeb);
     echo view('/includes/header');
     echo view("$this->module/pwdchange", $dataWeb);
     echo view('/includes/footer');

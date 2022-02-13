@@ -4,20 +4,19 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UsuariosModel extends Model 
+class UsersModel extends Model 
 {
   protected $table      =  'usuarios';
   protected $primaryKey = 'id';
 
   protected $useAutoIncrement = true;
 
-  protected $returnType     = 'array';  // Before Entity
-  // protected $returnType     = \App\Entities\Usuario::class;
+  // protected $returnType     = 'array';  // Before Entity
+  protected $returnType     = \App\Entities\User::class;
   protected $useSoftDeletes = false;
-  protected $allowedFields = [
+  protected $allowedFields  = [
     'nombre',  'usuario', 'password',
     'caja_id', 'rol_id',   'activo'
-
   ];
 
   protected $useTimestamps = true;
