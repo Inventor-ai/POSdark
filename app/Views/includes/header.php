@@ -122,9 +122,20 @@ $webpage   = $session_user->webpage;
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="<?=base_url()?>/configurar">Configuración</a>
                       <a class="nav-link" href="<?=base_url()?>/usuarios">Usuarios</a>
-                      <a class="nav-link" href="<?=base_url()?>/users">Users</a>
                       <a class="nav-link" href="<?=base_url()?>/roles">Roles</a>
                       <a class="nav-link" href="<?=base_url()?>/cajas">Cajas</a>
+                    </nav>
+                  </div>
+
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseUsers">
+                    <div class="sb-nav-link-icon"><i class="fas fa-dolly"></i></div>
+                      Users
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="<?=base_url()?>/users">Usuarios.</a>
+                      <a class="nav-link" href="<?=base_url()?>/users/cambia_password">Cambiar contraseña.</a>
                     </nav>
                   </div>
 

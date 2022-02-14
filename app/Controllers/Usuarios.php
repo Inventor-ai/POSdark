@@ -333,8 +333,8 @@ class Usuarios extends BaseController
   {
     $ConfigModel = new ConfiguracionesModel();
     $data = $ConfigModel->select('valor')
-                      ->where('nombre', $keyName)
-                      ->first();
+                        ->where('nombre', $keyName)
+                        ->first();
     $ConfigModel = Null;
     return $data['valor'];
   }
@@ -482,6 +482,12 @@ class Usuarios extends BaseController
          *   > 
          */
         // Agregar el update aquí
+
+        // --
+        $dataSet['id'] = $session->usuario_id;
+        // var_dump($dataSet);
+        $data = new \App\Entities\User($dataSet);
+        $this->dataModel->update( $data->id, $data );
         $this->carrier['validation'] = "¡Cambio de contraseña extoso!";
         // $this->cambia_password();
     } else 

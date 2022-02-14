@@ -1,5 +1,6 @@
 <?php
 var_dump($data);
+// var_dump($validation->listErrors());
 // $user->fill($data);
 // return;
 ?>
@@ -16,18 +17,18 @@ var_dump($data);
             <a href="<?=base_url()."/$path"?>" class="btn btn-primary mb-3">Regresar</a>
         </div>
     </div>
-     <input type="hidden" name="id" value="<?=isset($data->id)?$data->id:''?>">
+     <input type="hidden" name="id" value="<?=$data['id']?>">
      <div class="form-group">
        <div class="row">
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="nombre">Nombre</label> 
             <input class="form-control" type="text" name="nombre" 
-                   id="nombre" value="<?=isset($data->nombre)?$data->nombre:''?>" autofocus required>
+                   id="nombre" value="<?=isset($data['nombre'])?$data['nombre']:''?>" autofocus required>
          </div>
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="usuario">Usuario (email)</label> 
             <input class="form-control" type="text" name="usuario" 
-                   id="usuario" value="<?=isset($data->usuario)?$data->usuario:''?>" 
+                   id="usuario" value="<?=isset($data['usuario'])?$data['usuario']:''?>" 
                    required>
                    <!-- > -->
                    <!-- tmp p/desarrollo y pruebas de validación -->
@@ -39,15 +40,15 @@ var_dump($data);
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="password">Contraseña</label> 
             <input class="form-control" type="password" name="password" 
-                   id="password" value="<?=isset($data->password)?$data->password:''?>" 
+                   id="password" value="<?=isset($data['password'])?$data['password']:''?>" 
                    minlength="<?=$minLength?>" maxlength="<?=$maxLength?>"
-            <?=$data->id==''?'required':''?>>
+            <?=$data['id']==''?'required':''?>>
          </div>
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="repassword">Repetir contraseña</label> 
             <input class="form-control" type="password" name="repassword" 
-                   id="repassword" value="<?=isset($data->repassword)?$data->repassword:''?>" 
-                   <?=$data->id==''?'required':''?>>
+                   id="repassword" value="<?=isset($data['repassword'])?$data['repassword']:''?>" 
+                   <?=$data['id']==''?'required':''?>>
          </div>
        </div>
     </div>
@@ -62,7 +63,7 @@ var_dump($data);
             <option value="">Seleccionar Caja</option>
             <?php foreach ($dataCajas as $key => $value) {?>
               <option value="<?=$value['id']?>" 
-                <?=$value['id'] == (isset($data->caja_id)?$data->caja_id:'')? 'selected': ''?>>
+                <?=$value['id'] == (isset($data['caja_id'])?$data['caja_id']:'')? 'selected': ''?>>
                 <?=$value['caja'].' '.$value['nombre']?>
               </option>
             <?php } ?>
@@ -77,7 +78,7 @@ var_dump($data);
             <option value="">Seleccionar Rol</option>
             <?php foreach ($dataRoles as $key => $value) {?>
               <option value="<?=$value['id']?>" 
-                <?=$value['id'] == (isset($data->rol_id)?$data->rol_id:'')? 'selected': ''?>>
+                <?=$value['id'] == (isset($data['rol_id'])?$data['rol_id']:'')? 'selected': ''?>>
                 <?=$value['nombre']?>
               </option>
             <?php } ?>

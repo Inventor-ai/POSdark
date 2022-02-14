@@ -1,8 +1,9 @@
 <?php
 // if (isset($posted)) var_dump($posted);
-// echo $data['id'];
+// echo $data->id;
 // if (isset($data))   
-// var_dump($data);
+var_dump($data);
+// echo count($data->attibutes);
 // var_dump($dataCajas);
 // var_dump($dataRoles);
 // $data['id'] = "tmp";

@@ -25,6 +25,7 @@ class Users extends BaseController
   protected $carrier   = [];
   protected $module    ='users';
   protected $dataModel;
+  protected $objEntity;
 
   public function __construct()
   {
@@ -35,18 +36,30 @@ class Users extends BaseController
     $this->dataModel = new UsersModel();
     $this->dataCajas = new CajasModel();
     $this->dataRoles = new RolesModel();
+    $this->objEntity = new \App\Entities\User();
   }
 
   private function setDataSet()
   {
-    $password   = trim( $_POST['password'] );
-    $repassword = trim( $_POST['repassword'] );
-    if ($_POST['id'] != '' && $password == '' && $repassword == '') {
-       unset( $_POST['password'] );
-       unset( $_POST['repassword'] );
+    // $data = ['id' => ''];
+    if ($_POST) {
+       $password   = $_POST['password'];
+       $repassword = $_POST['repassword'];
+       if ($_POST['id'] != '' && $password == '' && $repassword == '') {
+          unset( $_POST['password'] );
+          unset( $_POST['repassword'] );
+       }
+       $data = $_POST;
+    } else {
+    //    $data
     }
-    // return $_POST;
-    return new \App\Entities\User($_POST);
+    // $obj = $this->objEntity->fill($data);
+    // $obj = new \App\Entities\User($data);
+    // var_dump( $obj->toArray() );
+    // return;
+    return $_POST;
+    // return new \App\Entities\User($_POST);
+    // return new \App\Entities\User($data);
   }
 
   private function getValidate($method = "post")
@@ -90,7 +103,7 @@ class Users extends BaseController
 
     if ((isset($_POST['id'])?$_POST['id']:true) == '' ) {  // Nuevo
         $rules['nombre'] = [
-                'rules'  => "required|is_unique[$this->module.nombre]",
+                'rules'  => "required|is_unique[usuarios.nombre]",
                 'errors' => [
                     // 'required'  => "Teclear el {field}|{field}",
                     'required'  => "Falta teclear el {field}|{field}",
@@ -98,8 +111,8 @@ class Users extends BaseController
                 ]
         ];
         $rules['usuario'] = [
-                'rules'   => "required|is_unique[$this->module.usuario]",
-                  //  'rules' => "required|email|is_unique[$this->module.usuario]",
+                'rules'   => "required|is_unique[usuarios.usuario]",
+                  //  'rules' => "required|email|is_unique[usuarios.usuario]",
                 'errors'  => [
                     // 'required'  => "Teclear el {field}|{field}",
                     'required'  => "Falta teclear el {field}|{field}",
@@ -109,7 +122,7 @@ class Users extends BaseController
         ];
     } else {  // Editando / Cambiando contraseña
         $rules['nombre'] = [
-            //  'rules' => "required|is_unique[$this->module.nombre]",
+            //  'rules' => "required|is_unique[usuarios.nombre]",
                 'rules'  => "required",
                 'errors' => [
                     // 'required'  => "Teclear el {field}|{field}",
@@ -149,6 +162,10 @@ class Users extends BaseController
         console.log(". json_encode($ruleSet) .");
     </script>";
 
+    // echo "getValidate()";
+    // var_dump($this->request->getMethod());
+    // var_dump($this->validate($ruleSet));
+    // return;
     return ($this->request->getMethod() == $method &&
             $this->validate($ruleSet) );
   }
@@ -178,8 +195,12 @@ class Users extends BaseController
 
   private function setCarrier($dataWeb, $value = '', $key = 'id')
   {
-    // $dataWeb[$key] = $value;
+    $dataWeb[$key] = $value;
     // $dataWeb->$key = $value;  // Ya no es necesaria New/edit???
+    // $dataWeb->password   = '';
+    // $dataWeb->repassword = '';
+    // var_dump($dataWeb);
+    // return;
     $this->carrier = [
       'validation' => $this->validator,
       'datos'      => $dataWeb
@@ -189,20 +210,31 @@ class Users extends BaseController
   public function index($activo = 1)
   {
     // Hacer join para completar los datos del usuario.
-    $fieldList = 'usuarios.id, usuarios.nombre, usuario, caja_id, rol_id,'.
+    // $fieldList = 'usuarios.id, usuarios.nombre, usuario, caja_id, rol_id,'.
+    $fieldList = 'usuarios.id, usuarios.nombre, usuario,'.
                  'cajas.nombre as caja,'.
                  'roles.nombre as rol,'.
                  '';
-    $dataModel = $this->dataModel
+    $dataObj = $this->dataModel
                       ->select($fieldList)
                       ->join('cajas', 'cajas.id = caja_id')
                       ->join('roles', 'roles.id = rol_id')
                       ->where('usuarios.activo', $activo)
                       ->findAll();
     // var_dump($dataModel);
+    $dataModel = [];
+    foreach ($dataObj as $key => $value) {
+      // var_dump( $key);
+      // var_dump( $value->toArray() );
+      $dataModel[] = $value->toArray();
+    }
+    // var_dump($dataModel);
+    // $qq = $this->objEntity->fill($dataModel);
     // var_dump($dataModel[0]->nombre);
-    // $qq = $dataModel->toArray();
-    // var_dump( $dataModel- );
+    // $qq = $dataModel;
+    // var_dump( $qq->toArray() );
+    // var_dump( $qq );
+    // var_dump( $qq );
     // return;
     $dataWeb   = [
        'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
@@ -228,6 +260,13 @@ class Users extends BaseController
          $validation = null;
         //  $dataSet    = $this->setDataSet();
          $dataSet['id'] = '';
+        /*
+         var_dump($_POST);
+         var_dump($dataSet);
+         var_dump(new \App\Entities\User());
+        //  var_dump(new \App\Entities\User($dataSet));
+         return;
+       */  
     }
     // $this->carrier = [];
     $dataWeb = $this->getDataSet( 
@@ -245,24 +284,38 @@ class Users extends BaseController
     echo view('/includes/footer');
   }
 
-  private function getCodedKey($passw = null)
-  {
-    if ($passw) 
-        return password_hash($passw, PASSWORD_DEFAULT);
-  }
+  // private function getCodedKey($passw = null)
+  // {
+  //   if ($passw) 
+  //       return password_hash($passw, PASSWORD_DEFAULT);
+  // }
 
   public function insertar()
   {
     $dataWeb = $this->setDataSet();
+    // var_dump( $this->request->getMethod() );
     if ($this->getValidate( $this->request->getMethod() )) {
-        $dataWeb['password'] = $this->getCodedKey($dataWeb['password']);
+      // var_dump($dataWeb);
+      $data = $this->objEntity->fill($dataWeb);
+      // var_dump($data);
+      // return;
+        // $dataWeb['password'] = $this->getCodedKey($dataWeb['password']);
         // unset($dataWeb['repassword']); // Correcto pero innecesario
         // $msg = "Insercci´n";
-        $this->dataModel->save($dataWeb); // ok
+        // $this->dataModel->save($dataWeb); // ok
+        $this->dataModel->save($data); // ok
         return redirect()->to(base_url()."/$this->module");
     }
      // else {
+    // var_dump($this->getValidate( $this->request->getMethod() ));
+    // var_dump($dataWeb);
+    // var_dump($this->validator);
+    // var_dump($this->validator->listErrors());
+    // return;
     $this->setCarrier($dataWeb, '');
+    // $dataWeb->password   = '';
+    // $dataWeb->repassword = '';
+    // $this->setCarrier($dataWeb);
     $this->agregar();
     // }
   }
@@ -278,10 +331,15 @@ class Users extends BaseController
       //  return;
      } else { # Registro nuevo y en blanco
          $validation = null;
-         $dataModel  = $this->dataModel
+         $dataObject = $this->dataModel
                             ->select('id, nombre, usuario, rol_id, caja_id')
                             ->where('id', $id)
                             ->first();
+        //  var_dump($dataObject);
+        //  var_dump($dataObject->toArray() );
+        //  return;
+         $dataModel = $dataObject->toArray();
+        //  $dataModel = $dataObject;
     }
     // $this->carrier = [];
     $dataWeb = $this->getDataSet( 
@@ -300,7 +358,7 @@ class Users extends BaseController
 
   public function actualizar()
   {
-    // $id      = $this->request->getPost('id');
+    $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
     // var_dump($dataWeb->id);
     // return;
@@ -318,13 +376,14 @@ class Users extends BaseController
         */
         // $msg = "¡Actualización exitosa!";
         // $this->dataModel->update( $id, $dataWeb );
+        $dataWeb = $this->objEntity->fill($dataWeb);
         $this->dataModel->update( $dataWeb->id, $dataWeb );
         return redirect()->to(base_url()."/$this->module");
     }
     // $this->setCarrier($dataWeb, $id);
     // $this->editar($id);
-    $dataWeb->password   = '';
-    $dataWeb->repassword = '';
+    // $dataWeb->password   = '';
+    // $dataWeb->repassword = '';
     $this->setCarrier($dataWeb);
     $this->editar($dataWeb->id);
   }
@@ -458,10 +517,11 @@ class Users extends BaseController
          $validation = $this->carrier['validation'];
      } else { # Primer intento
          $validation = null;
-         $dataModel  = $this->dataModel
+         $dataObject = $this->dataModel
                             ->select('id, nombre, usuario')
                             ->where('id', $session->usuario_id)
                             ->first();
+         $dataModel  = $dataObject->toArray();
     }
     $this->loadAll = false;
     $dataWeb = $this->getDataSet(
@@ -501,7 +561,13 @@ class Users extends BaseController
          *   > 
          */
         // Agregar el update aquí
-        $this->carrier['validation'] = "¡Cambio de contraseña extoso!";
+        // $dataWeb = $this->objEntity->fill($dataWeb);
+        $dataSet['id'] = $session->usuario_id;
+        // var_dump($dataSet);
+        // $this->dataModel->update( $dataWeb->id, $dataWeb );
+        $dataSet = $this->objEntity->fill($dataSet);
+        $this->dataModel->update( $dataSet->id, $dataSet );
+        $this->carrier['validation'] = "¡Cambio de contraseña exitoso!";
         // $this->cambia_password();
     } else 
         $this->setCarrier($dataSet, $session->usuario_id);
