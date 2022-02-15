@@ -113,6 +113,19 @@ $webpage   = $session_user->webpage;
                 </div>
                 <a class="nav-link" href="<?=base_url()?>/clientes"><i class="fas fa-users"></i>  Clientes</a>
                 <div class="nav">
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCompras" aria-expanded="false" aria-controls="collapseCompras">
+                    <div class="sb-nav-link-icon"><i class="fas fa-cash-register"></i></div>
+                      Compras
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseCompras" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="<?=base_url()?>/compras/nueva">Nueva compra</a>
+                      <a class="nav-link" href="<?=base_url()?>/compras">Compras</a>
+                    </nav>
+                  </div>
+                </div>
+                <div class="nav">
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmon" aria-expanded="false" aria-controls="collapseAdmon">
                     <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
                       Administración

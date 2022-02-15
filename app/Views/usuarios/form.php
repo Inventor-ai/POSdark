@@ -1,6 +1,3 @@
-<?php
-// var_dump($data);
-?>
 <div class="mb-3">
    <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>"
          autocomplete="off">
@@ -25,10 +22,7 @@
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="usuario">Usuario (email)</label> 
             <input class="form-control" type="text" name="usuario" 
-                   id="usuario" value="<?=isset($data['usuario'])?$data['usuario']:''?>" 
-                   required>
-                   <!-- > -->
-                   <!-- tmp p/desarrollo y pruebas de validación -->
+                   id="usuario" value="<?=isset($data['usuario'])?$data['usuario']:''?>" required>
          </div>
        </div>
     </div>
@@ -53,10 +47,7 @@
        <div class="row">
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="caja_id">Caja</label> 
-            <select class="form-select" id="caja_id" name="caja_id" 
-            required>
-            <!-- > -->
-            <!-- tmp p/desarrollo y pruebas de validación -->
+            <select class="form-select" id="caja_id" name="caja_id" required>
             <option value="">Seleccionar Caja</option>
             <?php foreach ($dataCajas as $key => $value) {?>
               <option value="<?=$value['id']?>" 
@@ -68,10 +59,7 @@
          </div>
          <div class="col-12 col-sm-6">
             <label class="mb-2" for="rol_id">Rol</label> 
-            <select class="form-select" id="rol_id" name="rol_id" 
-            required>
-            <!-- > -->
-            <!-- tmp p/desarrollo y pruebas de validación -->
+            <select class="form-select" id="rol_id" name="rol_id" required>
             <option value="">Seleccionar Rol</option>
             <?php foreach ($dataRoles as $key => $value) {?>
               <option value="<?=$value['id']?>" 

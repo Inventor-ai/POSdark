@@ -1,13 +1,3 @@
-<?php
-// if (isset($posted)) var_dump($posted);
-// echo $data->id;
-// if (isset($data))   
-var_dump($data);
-// echo count($data->attibutes);
-// var_dump($dataCajas);
-// var_dump($dataRoles);
-// $data['id'] = "tmp";
-?>
 <div class="mb-3">
    <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>"
          autocomplete="off">

@@ -1,55 +1,10 @@
 <?php
 $session_user = session();
-
 if ($session_user->nombre != null) {
     // return redirect()->to(base_url().'/configurar');
 }
-
-
-use App\Models\ConfiguracionesModel;
-// var_dump($usuario);
-// var_dump($password);
-/****
-function getSettingValue($keyName)
-{
-  $dataModel = new ConfiguracionesModel();
-  $data = $dataModel->select('valor')
-                    ->where('nombre', $keyName)
-                    ->first();
-  $dataModel = Null;
-  return $data['valor'];
-}
-
-function getSettingOf($keyName = '')
-{
-  $defaultPage = 'http://mamiyasedonde.com/';
-  $keyName = trim($keyName);
-//   $result  = '';
-//   $switch  = 0;
-  if ($keyName == '') return '';
-  if ($keyName == 'tienda_pagweb') {
-      $switch = getSettingValue('tienda_vincularchk');
-      if ($switch == 0 ) {
-          return '';
-        //   return '#';
-      } else {
-          $result = getSettingValue($keyName);
-          if ($result == '') return $defaultPage;
-          else return $result;
-      }
-  } else if ($keyName == 'tienda_siglas') {
-      $result = getSettingValue($keyName);
-      if ($result  == '') return 'POS - VS';
-      return $result;
-  }
-}
-************************/
 // var_dump($data);
   $tabTitle  = 'Top - SP';
-// //   $brandName = 'POS - VS';
-//   $brandName = getSettingOf('tienda_siglas');
-//   $webpage   = getSettingOf('tienda_pagweb');
-// //   $webpage   = '//';
   $webSite = 'Virtual Army 5tore ' . date('Y');
 ?>
 
