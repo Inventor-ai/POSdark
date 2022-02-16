@@ -20,11 +20,11 @@ class Articulos extends BaseController
 
   public function __construct()
   {
-    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
-    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
-    $this->items     = $this->item.$this->items;
-    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
-    $this->dataModel = new UnidadesModel();
+    $search           = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
+    $replaceBy        = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
+    $this->items      = $this->item.$this->items;
+    $this->module     = strtolower(str_replace($search, $replaceBy, $this->items));
+    $this->dataModel  = new UnidadesModel();
     $this->dataModel  = new ArticulosModel();
     $this->unidades   = new UnidadesModel();
     $this->categorias = new CategoriasModel();
@@ -251,6 +251,26 @@ class Articulos extends BaseController
     //   return $this->eliminar($id, 1);
     $this->eliminar($id, 1);
     return redirect()->to(base_url()."/$this->module/index/0");
+  }
+
+  public function buscarPorCodigo($codigo)
+  {
+    //
+    $campos = 'id, codigo, existencias, nombre, precio_compra';
+    $datos  = $this->dataModel->select($campos)
+                              ->where('codigo', $codigo)
+                              ->where('activo', 1)
+                              ->get()->getRow();
+    $res = [];
+    if ($datos) {
+       $res['datos']  = $datos;
+       $res['existe'] = true;
+       $res['error']  = '';
+      } else {
+       $res['error']  = '¡No existe el código!';
+       $res['existe'] = false;
+    }
+    echo json_encode($res);
   }
 
 }

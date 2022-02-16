@@ -25,10 +25,12 @@
         <script src="<?=base_url()?>/js/modal/confirm.js"></script>
         <script src="<?=base_url()?>/js/vsutils.js"></script>
          
-        <!-- <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script> -->
+        <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script>
         <script>
            //
         </script>
-        
+
+
+
     </body>
 </html>
