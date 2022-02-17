@@ -1,3 +1,7 @@
+<?php
+// $compra_id = uniqid();
+$compra_id = '620d0be806f94';
+?>
 <div class="mb-3">
   <!-- <form method="<?=$method?>" name="nuevaCompra" action="<?=base_url()."/$path/$action"?>" -->
   <form method="<?=$method?>" name="nuevaCompra"
@@ -23,11 +27,11 @@
     <div class="form-group">
       <div class="row">
         <div class="col-12 col-sm-4">
-          <input type="hidden" id="id_producto" name="id_producto" value="">
+          <input type="hidden" id="articulo_id" name="articulo_id" value="">
           <label class="mb-2">Código</label> 
           <input class="form-control" type="text" name="codigo" id="codigo" autofocus 
                  placeholder="Escribir código y presionar enter" 
-                 onkeyup="buscarProducto(event, this, this.value)">
+                 onkeyup="buscarArticulo(event, this, this.value)">
           <label class="mt-1" for="codigo" id="resultado_error" style="color: red;"></label>
         </div>
         <div class="col-12 col-sm-8">
@@ -54,21 +58,22 @@
            </div>
          </div>
          <div class="col-12 col-sm-3 mt-2">
-            <button class="btn btn-primary mt-4" type="button">Agregar producto</button>
+            <button class="btn btn-primary mt-4" type="button" onclick="agregarArticulo(articulo_id.value, 
+                    cantidad.value, '<?=$compra_id?>', precio_compra.value)">Agregar artículo</button>
          </div>
        </div>
     </div>
 
     <div class="row mt-3">
-      <table class="table table-striped table-hover table-resposive table-sm tablaProductos">
-        <thead class="thead-dark">
-           <th>#</th>
-           <th>Código</th>
-           <th>Nombre</th>
-           <th>Precio</th>
-           <th>Cantidad</th>
-           <th>Total</th>
-           <th width="1%"></th>
+      <table id="tablaProductos" class="table table-border table-striped table-hover table-resposive table-sm tablaProductos">
+        <thead>
+          <th>#</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+          <th width="1%"></th>
         </thead>
         <tbody></tbody>
       </table>
@@ -103,7 +108,7 @@
 
 <script>
 
-function buscarProducto01(e, tagCodigo, codigo) {
+function buscarArticulo01(e, tagCodigo, codigo) {
   if (codigo != '') {
       if (e.code == 'Enter') {
           $.ajax({
@@ -115,14 +120,14 @@ function buscarProducto01(e, tagCodigo, codigo) {
               console.log(resultado);
                   $("#resultado_error").html(resultado.error);
                   if (resultado.existe) {
-                      $("#id_producto").val(resultado.datos.id);
+                      $("#articulo_id").val(resultado.datos.id);
                       $("#nombre").val(resultado.datos.nombre);
                       $("#cantidad").val(1);
                       $("#precio_compra").val(resultado.datos.precio_compra);
                       $("#subtotal").val(resultado.datos.precio_compra);
                       $("#cantidad").focus();
                   } else {
-                      $("#id_producto").val('');
+                      $("#articulo_id").val('');
                       $("#nombre").val('');
                       $("#cantidad").val('');
                       $("#precio_compra").val('');
@@ -137,76 +142,179 @@ function buscarProducto01(e, tagCodigo, codigo) {
   }  
 }
 
-function buscarProducto(e, tagCodigo, codigo) {
-  if (codigo != '') {
-      if (e.code == 'Enter') {
-          $.ajax({
-            url: '<?=base_url()?>/articulos/buscarPorCodigo/' + codigo,
-            dataType: 'json',
-            method: "post",
-            success: function (resultado) {
-              console.log('resultado');
-              console.log(resultado);
-                  $("#resultado_error").html(resultado.error);
-                  if (resultado.existe) {
-                      $("#id_producto").val(resultado.datos.id);
-                      $("#nombre").val(resultado.datos.nombre);
-                      $("#cantidad").val(1);
-                      $("#precio_compra").val(resultado.datos.precio_compra);
-                      $("#subtotal").val(resultado.datos.precio_compra);
-                      $("#cantidad").focus();
-                  } else {
-                      $("#id_producto").val('');
-                      $("#nombre").val('');
-                      $("#cantidad").val('');
-                      $("#precio_compra").val('');
-                      $("#subtotal").val('');
-                  }
-            },
-            error: function (errors) {
-              console.log('errors: ', errors);
-            }
-          });
-      }
-  }  
-}
-
-function agregarProducto(articulo_id, cantidad, compra_id, precio) {
+function agregarProducto01(articulo_id, cantidad, compra_id, precio) {
 // function agregarProducto(articulo_id, cantidad, compra_id) {
+  console.log('articulo_id, cantidad, compra_id, precio');
+  console.log(articulo_id, cantidad, compra_id, precio);
   if (articulo_id != null && compra_id != 0 && cantidad > 0) {
+      url = '<?=base_url()?>/comprastemporal/insertar/' + articulo_id 
+          + '/' + cantidad
+          + '/' + $precio  // my own
+          + '/' + compra_id;
+          //  insertar($articulo_id, $cantidad, $precio, $compra_id)
+       console.log('url: ', url);          
+       /**/
         $.ajax({
-          url = '<?=base_url()?>/comprastemporal/insertar/' + articulo_id 
-              + '/' + cantidad
-              + '/' + $precio  // my own
-              + '/' + compra_id;
-              //  insertar($articulo_id, $cantidad, $precio, $compra_id)
           url: url,
           // dataType: 'json',
           method: "post",
           success: function (resultado) {
             console.log('resultado');
             console.log(resultado);
+            /*  
                 $("#resultado_error").html(resultado.error);
                 if (resultado.existe) {
-                    $("#id_producto").val(resultado.datos.id);
+                    $("#articulo_id").val(resultado.datos.id);
                     $("#nombre").val(resultado.datos.nombre);
                     $("#cantidad").val(1);
                     $("#precio_compra").val(resultado.datos.precio_compra);
                     $("#subtotal").val(resultado.datos.precio_compra);
                     $("#cantidad").focus();
                 } else {
-                    $("#id_producto").val('');
+                    $("#articulo_id").val('');
                     $("#nombre").val('');
                     $("#cantidad").val('');
                     $("#precio_compra").val('');
                     $("#subtotal").val('');
                 }
+            */     
           },
           error: function (errors) {
             console.log('errors: ', errors);
           }
-        });      
+        });
+
   }
+}
+
+function agregarProductoXX(articulo_id, cantidad, compra_id, precio) {
+// (articulo_id, cantidad, precio, compra_id) {
+  console.log('articulo_id: ', articulo_id);
+  console.log('cantidad:    ', cantidad);
+  console.log('precio:      ', precio);
+  console.log('compra_id:   ', compra_id);
+
+}
+
+
+function buscarArticulo(e, tagCodigo, codigo) {
+  const enterKey = 13;
+  // console.log(e.code);
+  // console.log(e.which);
+  // if (codigo != '') {
+      if (e.which == enterKey) {
+          $.ajax({
+            url: '<?=base_url()?>/articulos/buscarPorCodigo/' + codigo,
+            dataType: 'json',
+            method: "post",
+            success: function (resultado) {
+              console.log('resultado');
+              console.log(resultado);
+                  $("#resultado_error").html(resultado.error);
+                  if (resultado.existe) {
+                      $("#articulo_id").val(resultado.datos.id);
+                      $("#nombre").val(resultado.datos.nombre);
+                      $("#cantidad").val(1);
+                      $("#precio_compra").val(resultado.datos.precio_compra);
+                      $("#subtotal").val(resultado.datos.precio_compra);
+                      $("#cantidad").focus();
+                  } else {
+                      $("#articulo_id").val('');
+                      $("#nombre").val('');
+                      $("#cantidad").val('');
+                      $("#precio_compra").val('');
+                      $("#subtotal").val('');
+                  }
+            },
+            error: function (errors) {
+              console.log('errors: ', errors);
+            }
+          });
+      }
+  // }
+}
+
+function agregarArticulo(articulo_id, cantidad, compra_id, precio) {
+// function agregarArticulo(articulo_id, cantidad, compra_id) {
+  console.log('articulo_id: ', articulo_id);
+  console.log('cantidad:    ', cantidad);
+  console.log('precio:      ', precio);
+  console.log('compra_id:   ', compra_id);
+  // if (articulo_id != null && compra_id != 0 && cantidad > 0) { // Sus validaciones
+  if (cantidad > 0) {
+      url = '<?=base_url()?>/comprastemporal/insertar'
+          + '/' + articulo_id 
+          + '/' + cantidad
+          + '/' + precio  // my own
+          + '/' + compra_id;
+          //  insertar($articulo_id, $cantidad, $precio, $compra_id)
+       console.log('url: ', url);          
+       /**/
+        $.ajax({
+          url: url,
+          // dataType: 'json',
+          method: "post",
+          success: function (resultado) {
+            console.log('resultado: ', resultado);
+            if (resultado == 0 ) {
+              
+            } else {
+                var resp = JSON.parse(resultado);
+                console.log('resp: ', resp);
+                console.log('resp.datos: ', resp.datos);
+                console.log('resp.total: ', resp.total);
+                console.log('resp.error: ', resp.error);
+                $('#tablaProductos tbody').empty();
+                $('#tablaProductos tbody').append(resp.datos);
+                $('#total').val(resp.total);
+                // $("#codigo").val('');
+                $("#articulo_id").val('');
+                $("#nombre").val('');
+                $("#cantidad").val('');
+                $("#precio_compra").val('');
+                $("#subtotal").val('');
+            }
+          },
+          error: function (errors) {
+            console.log('errors: ', errors);
+          }
+        });
+
+  }
+}
+
+function eliminarArticulo(articulo_id, compra_id, precio) {
+// function agregarArticulo(articulo_id, cantidad, compra_id) {
+  console.log('articulo_id: ', articulo_id);
+  console.log('compra_id:   ', compra_id);
+      url = '<?=base_url()?>/comprastemporal/eliminar'
+          + '/' + articulo_id 
+          + '/' + precio 
+          + '/' + compra_id;
+      console.log('url: ', url);
+        $.ajax({
+          url: url,
+          // dataType: 'json',
+          // method: "post",
+          success: function (resultado) {
+            console.log('resultado: ', resultado);
+            if (resultado == 0 ) {
+              // $(tagCodigo).val();
+            } else {
+                var resp = JSON.parse(resultado);
+                console.log('resp: ', resp);
+                console.log('resp.datos: ', resp.datos);
+                console.log('resp.total: ', resp.total);
+                console.log('resp.error: ', resp.error);
+                $('#tablaProductos tbody').empty();
+                $('#tablaProductos tbody').append(resp.datos);
+                $('#total').val(resp.total);
+            }
+          },
+          error: function (errors) {
+            console.error('errors: ', errors);
+          }
+        });
 }
 
 </script>
