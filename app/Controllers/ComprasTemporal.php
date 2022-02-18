@@ -109,7 +109,7 @@ class ComprasTemporal extends BaseController
     // $datosExiste = $this->dataModel->porIdArticuloCompra($compra_id, $articulo_id);
     $datosExiste = $this->dataModel->porIdArticuloCompra($compra_id, $articulo_id, $precio);
     if ($datosExiste) {
-        if ($datosExiste->cantidad) {
+        if ($datosExiste->cantidad > 1) {
             $cantidad = $datosExiste->cantidad - 1;
             $subtotal = $cantidad * $datosExiste->precio;
             $this->dataModel->actualizarArticuloCompra($compra_id, $articulo_id, $datosExiste->precio, 
@@ -129,11 +129,18 @@ class ComprasTemporal extends BaseController
   {
     var_dump($articulo_id);
     // var_dump($cantidad);
-    // var_dump($precio);
     var_dump($compra_id);
+    var_dump($precio);
     $datosExiste = $this->dataModel->porIdArticuloCompra($compra_id, $articulo_id, $precio);
     var_dump($datosExiste);
-
+    if ($datosExiste) {
+      if ($datosExiste->cantidad) {
+          $cantidad = $datosExiste->cantidad - 1;
+          $subtotal = $cantidad * $datosExiste->precio;
+      }
+    }
+    $res          = $this->cargaArticulos($compra_id);
+    var_dump($res);
   }
 
 }

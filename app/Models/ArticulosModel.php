@@ -29,4 +29,12 @@ class ArticulosModel extends Model
   protected $validationRules    = [];
   protected $validationMessages = [];
   protected $skipValidation     = false;
+
+  public function actualizaStock($articulo_id, $cantidad)
+  {
+    $this->set('existencias', "existencias + $cantidad", FALSE);
+    $this->where('id', $articulo_id);
+    $this->update();
+  }
+
 }

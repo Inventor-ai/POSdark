@@ -27,7 +27,19 @@
          
         <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script>
         <script>
-           //
+           
+$(document).ready(function(){
+  $('#completa_compra').click( function () {
+     console.log('clicked');
+     let nFila = $('#tablaArticulos tr').length;
+     if (nFila < 2) {
+          // 
+     } else {
+       $('#form_compra').submit();
+     }
+  })
+});
+
         </script>
 
 

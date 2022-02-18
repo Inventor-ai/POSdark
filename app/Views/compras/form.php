@@ -3,8 +3,7 @@
 $compra_id = '620d0be806f94';
 ?>
 <div class="mb-3">
-  <!-- <form method="<?=$method?>" name="nuevaCompra" action="<?=base_url()."/$path/$action"?>" -->
-  <form method="<?=$method?>" name="nuevaCompra"
+  <form method="<?=$method?>" name="form_compra" id="form_compra" action="<?=base_url()."/$path/$action"?>"
          autocomplete="off">
          <?php csrf_field();?>
     <div class="row mt-4">
@@ -28,6 +27,7 @@ $compra_id = '620d0be806f94';
       <div class="row">
         <div class="col-12 col-sm-4">
           <input type="hidden" id="articulo_id" name="articulo_id" value="">
+          <input type="hidden" id="compra_id" name="compra_id" value="<?=$compra_id?>">
           <label class="mb-2">Código</label> 
           <input class="form-control" type="text" name="codigo" id="codigo" autofocus 
                  placeholder="Escribir código y presionar enter" 
@@ -65,7 +65,7 @@ $compra_id = '620d0be806f94';
     </div>
 
     <div class="row mt-3">
-      <table id="tablaProductos" class="table table-border table-striped table-hover table-resposive table-sm tablaProductos">
+      <table id="tablaArticulos" class="table table-border table-striped table-hover table-resposive table-sm tablaArticulos">
         <thead>
           <th>#</th>
           <th>Código</th>
@@ -82,7 +82,7 @@ $compra_id = '620d0be806f94';
     <div class="row">
       <div class="col-12 col-sm-4 offset-md-4">
         <label style="font-weight: bold; font-size: 25px; text-align:center;">Total $</label>
-        <input type="text" name="total" id="total" size="6" readonly value="0.00"
+        <input type="text" name="totalBis" id="totalBis" size="6" readonly value="0.00"
                style="font-weight: bold; font-size: 25px; text-align:center;">
       </div>
       <div class="col-12 col-sm-4" style="text-align: center;">
@@ -197,6 +197,7 @@ function agregarProductoXX(articulo_id, cantidad, compra_id, precio) {
 }
 
 
+
 function buscarArticulo(e, tagCodigo, codigo) {
   const enterKey = 13;
   // console.log(e.code);
@@ -264,8 +265,8 @@ function agregarArticulo(articulo_id, cantidad, compra_id, precio) {
                 console.log('resp.datos: ', resp.datos);
                 console.log('resp.total: ', resp.total);
                 console.log('resp.error: ', resp.error);
-                $('#tablaProductos tbody').empty();
-                $('#tablaProductos tbody').append(resp.datos);
+                $('#tablaArticulos tbody').empty();
+                $('#tablaArticulos tbody').append(resp.datos);
                 $('#total').val(resp.total);
                 // $("#codigo").val('');
                 $("#articulo_id").val('');
@@ -289,8 +290,8 @@ function eliminarArticulo(articulo_id, compra_id, precio) {
   console.log('compra_id:   ', compra_id);
       url = '<?=base_url()?>/comprastemporal/eliminar'
           + '/' + articulo_id 
-          + '/' + precio 
-          + '/' + compra_id;
+          + '/' + compra_id
+          + '/' + precio;
       console.log('url: ', url);
         $.ajax({
           url: url,
@@ -306,8 +307,8 @@ function eliminarArticulo(articulo_id, compra_id, precio) {
                 console.log('resp.datos: ', resp.datos);
                 console.log('resp.total: ', resp.total);
                 console.log('resp.error: ', resp.error);
-                $('#tablaProductos tbody').empty();
-                $('#tablaProductos tbody').append(resp.datos);
+                $('#tablaArticulos tbody').empty();
+                $('#tablaArticulos tbody').append(resp.datos);
                 $('#total').val(resp.total);
             }
           },

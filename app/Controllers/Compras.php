@@ -3,6 +3,9 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\ComprasModel;
+use App\Models\ComprasDetalleModel;
+use App\Models\ComprasTemporalModel;
+use App\Models\ArticulosModel;
 
 class Compras extends BaseController
 {
@@ -15,6 +18,7 @@ class Compras extends BaseController
   protected $carrier  = [];
   protected $module;
   protected $dataModel;
+  // protected $tempModel;
 
   public function __construct()
   {
@@ -22,7 +26,7 @@ class Compras extends BaseController
     $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items     = $this->item.$this->items; // Exámenes - No concatenate
     $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
-    $this->dataModel = new ComprasModel();
+    $this->dataModel = new ComprasModel();    
     // helper(['form']);
   }
 
@@ -132,75 +136,36 @@ class Compras extends BaseController
 
   public function guarda()
   {
-    //
-  }
-
-  public function insertar()
-  {
-    $dataWeb = $this->setDataSet();
-    if ($this->getValidate( $this->request->getMethod() )) {
-        // $msg = "Insercci´n";
-        $this->dataModel->save($dataWeb);
-        return redirect()->to(base_url()."/$this->module");
+    $datos = $_POST;
+    var_dump($datos);
+    $compra_id = $this->request->getPost('compra_id');
+    $total     = $this->request->getPost('total');
+    echo '<script> console.log("datos: ", '. json_encode($datos) .');
+                   console.log("total: ", '. json_encode($total) .');
+                   console.log("compra_id: ", '. json_encode($compra_id) .');
+          </script>';
+    $session = session();
+    // $session->usuario_id;
+    $resultadoId = $this->dataModel->insertaCompra($compra_id, $total, $session->usuario_id);
+    // $this->tempModel = new ComprasTemporalModel(); // Si es local, ¿Para qué una variable de clase?
+    $tempModel = new ComprasTemporalModel();
+    // $detalleModel = new ComprasDetalleModel();
+    if ($resultadoId) {
+        $resultadoCompra = $tempModel->porCompra($compra_id);
+        $detalleModel  = new ComprasDetalleModel();
+        $articuloModel = new ArticulosModel();
+        foreach ($resultadoCompra as $row) {
+          $detalleModel->save([
+            'compra_id'   => $resultadoId, 
+            'articulo_id' => $row['articulo_id'], 
+            'nombre'      => $row['nombre'], 
+            'cantidad'    => $row['cantidad'], 
+            'precio'      => $row['precio']
+          ]);
+          $articuloModel->actualizaStock($row['articulo_id'], $row['cantidad']);
+        }
+        $tempModel->eliminarCompra($compra_id);
     }
-     // else {
-      // $dataWeb       = $this->setDataSet();
-    $this->setCarrier($dataWeb, '');
-    $this->agregar();
-    // }
+    // return redirect()->to(base_url().'/articulos');
   }
-
-  public function editar($id)
-  {
-    if ( count ($this->carrier) > 0 ) {
-         $dataModel  = $this->carrier['datos'];
-         $validation = $this->carrier['validation'];
-     } else { # Registro nuevo y en blanco
-         $validation = null;
-         $dataModel  = $this->dataModel
-                            ->where('id', $id)
-                            ->first();
-    }
-    // $this->carrier = [];
-    $dataWeb = $this->getDataSet( 
-        "$this->item - Editando...", //"Editar $this->item", //
-        $this->module,
-        $this->update, //
-        'post',        //'put', //
-        $validation,
-        $dataModel
-    );
-    echo view('/includes/header');
-    echo view("$this->module/form", $dataWeb);
-    echo view('/includes/footer');
-  }
-
-  public function actualizar()
-  {
-    $id      = $this->request->getPost('id');
-    $dataWeb = $this->setDataSet();
-    if ($this->getValidate( $this->request->getMethod() )) {
-        // $msg = "¡Actualización exitosa!";
-        $this->dataModel->update( $id, $dataWeb );
-        return redirect()->to(base_url()."/$this->module");
-    }
-    $this->setCarrier($dataWeb, $id);
-    $this->editar($id);
-  }
-
-  public function eliminar($id, $activo = 0)
-  {
-    $dataWeb = ['activo' => $activo];
-    // $msg = "¡Eliminación exitosa!";
-    $this->dataModel->update($id, $dataWeb);
-    return redirect()->to(base_url()."/$this->module");
-  }
-
-  public function recuperar($id)
-  {
-    //   return $this->eliminar($id, 1);
-    $this->eliminar($id, 1);
-    return redirect()->to(base_url()."/$this->module/index/0");
-  }
-
 }
