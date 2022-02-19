@@ -335,6 +335,7 @@ class Usuarios extends BaseController
     $data = $ConfigModel->select('valor')
                         ->where('nombre', $keyName)
                         ->first();
+                        // ->get()->getRow()->valor; // Del Video 7-> 36:24
     $ConfigModel = Null;
     return $data['valor'];
   }
@@ -358,17 +359,22 @@ class Usuarios extends BaseController
         $result = $this->getSettingValue($keyName);
         if ($result == '') return 'POS - VS';
         return $result;
+    } else {
+        return $this->getSettingValue($keyName);
     }
   }
 
   public function loadSettings()
   {
     $dataSession = [
-      'tabTitle'  => 'Top - SP',
-      'brandName' => $this->getSettingOf('tienda_siglas'),
-      'webpage'   => $this->getSettingOf('tienda_pagweb'),
-      'mainWebPg' => 'http://mamiyasedonde.com/',
-      'mainBrand' => 'POS - VS'
+      'tabTitle'        => 'Top - SP',
+      'brandName'       => $this->getSettingOf('tienda_siglas'),
+      'webpage'         => $this->getSettingOf('tienda_pagweb'),
+      'mainWebPg'       => 'http://mamiyasedonde.com/',
+      'mainBrand'       => 'POS - VS',
+      'tiendaNombre'    => $this->getSettingOf('tienda_nombre'),
+      'tiendaDireccion' => $this->getSettingOf('tienda_direccion'),
+      'ticketLeyenda'   => $this->getSettingOf('ticket_leyenda'),
       // Agregar valores de configuración
     ];
     $session = session();

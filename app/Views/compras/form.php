@@ -1,6 +1,6 @@
 <?php
-// $compra_id = uniqid();
-$compra_id = '620d0be806f94';
+$compra_id = uniqid();
+// $compra_id = '620d0be806f94';
 ?>
 <div class="mb-3">
   <form method="<?=$method?>" name="form_compra" id="form_compra" action="<?=base_url()."/$path/$action"?>"

@@ -168,4 +168,55 @@ class Compras extends BaseController
     }
     // return redirect()->to(base_url().'/articulos');
   }
+
+  public function muestraCompraPDF($compra_id)
+  {
+    $data['compra_id'] = $compra_id;
+    echo view('/includes/header');
+    echo view('compras/ver_compra_pdf', $data);
+    // echo view('compras/ver_compra_pdf');
+    echo view('/includes/footer');
+  }
+
+  public function generaCompraPdf($compra_id)
+  {
+    $datosCompra  = $this->dataModel->where('id', $compra_id)->first();
+    $detalleModel = new ComprasDetalleModel();
+    // $detalleModel->select('*');
+    $detalleModel->select('compra_id, articulo_id, nombre, cantidad, precio');
+    $detalleCompra = $detalleModel->where('compra_id', $compra_id)->findAll();
+    echo "sss: $compra_id";
+    
+    var_dump($datosCompra);
+    var_dump($detalleCompra);
+    $session = session();
+    // var_dump($session->)
+    var_dump($session->tiendaNombre);
+    var_dump($session->tiendaDireccion);
+    var_dump($session->ticketLeyenda);
+    var_dump($session);
+
+    $pdf = new \FPDF();
+    $pdf->AddPage();
+    $pdf->SetFont('Arial','B',16);
+    $pdf->Cell(40,10,'¡Hola, Mundo!');
+    $this->response->setHeader('Content-Type', 'application/pdf');
+    $pdf->Output();
+
+    // $pdf = new \FPDF('P', 'mm', 'letter');
+    // $pdf->AddPage();
+    // $pdf->SetMargins(10,10,10);
+    // $pdf->SetFont('Arial', 'B', 10);
+    // $pdf->SetTitle("Compra");
+    // $pdf->Output('compra_pdf.pdf', "I");
+
+
+
+    
+    // $pdf->SetFont('Arial','B',16);
+    // $pdf->Cell(40,10,'¡Hola, Mundo!');
+    // $pdf->Output();
+  }
+
+
 }

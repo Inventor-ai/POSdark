@@ -17,10 +17,10 @@ class ComprasModel extends Model
     'folio', 'total', 'usuario_id', 'activo'
   ];
 
-  protected $useTimestamps = false;
-  // protected $useTimestamps = true;  // Fail. updated_at field needed
+  protected $useTimestamps = true;
   protected $createdField  = 'fecha_alta';
-  // protected $updatedField  = 'fecha_edit';
+  protected $updatedField  = '';
+  // protected $updatedField  = 'fecha_edit'; // Fail. updated_at field needed
 //   protected $deletedField  = 'deleted_at';
 
   protected $validationRules    = [];
@@ -34,7 +34,8 @@ class ComprasModel extends Model
     $this->insert([
       'folio'      => $compra_id,
       // 'total'      => $total, // Fails when > 1,000 by format
-      'total'      => (float) str_replace(",", "", $total ),
+      // 'total'      => (float) str_replace(",", "", $total ), // Own Ok.
+      'total'      => preg_replace('/[\$,]/', "", $total ),
       'usuario_id' => $usuario_id
     ]);
     return $this->insertID();

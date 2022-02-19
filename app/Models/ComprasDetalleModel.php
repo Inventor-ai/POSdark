@@ -17,10 +17,10 @@ class ComprasDetalleModel extends Model
      'compra_id', 'articulo_id', 'nombre', 'cantidad', 'precio'
   ];
 
-  protected $useTimestamps = false;
-  // protected $useTimestamps = true; // Fail. updated_at field needed
+  protected $useTimestamps = true;
   protected $createdField  = 'fecha_alta';
-  // protected $updatedField  = 'fecha_edit'; 
+  protected $updatedField  = '';
+  // protected $updatedField  = 'fecha_edit'; // Fail. updated_at field needed
 //   protected $deletedField  = 'deleted_at';
 
   protected $validationRules    = [];
