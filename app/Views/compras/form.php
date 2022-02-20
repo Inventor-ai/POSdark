@@ -63,9 +63,8 @@ $compra_id = uniqid();
          </div>
        </div>
     </div>
-
     <div class="row mt-3">
-      <table id="tablaArticulos" class="table table-border table-striped table-hover table-resposive table-sm tablaArticulos">
+      <table id="tablaArticulos" class="table table-bordered border-dark table-striped table-hover table-resposive table-sm tablaArticulos">
         <thead>
           <th>#</th>
           <th>Código</th>

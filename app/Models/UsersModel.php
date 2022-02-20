@@ -28,6 +28,13 @@ class UsersModel extends Model
   protected $validationMessages = [];
   protected $skipValidation     = false;
 
+  public function usuario($usuario_id)
+  {
+    return $this->select('usuario, nombre')
+                ->where('id', $usuario_id)
+                ->first();
+  }
+
   /*
   public function indexTable($activo = 1)
   {

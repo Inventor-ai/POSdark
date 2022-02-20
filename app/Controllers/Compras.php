@@ -6,31 +6,29 @@ use App\Models\ComprasModel;
 use App\Models\ComprasDetalleModel;
 use App\Models\ComprasTemporalModel;
 use App\Models\ArticulosModel;
+use App\Models\UsersModel;
 
 class Compras extends BaseController
 {
   protected $item     = 'Compra'; // Examen
   protected $items    = 's';         // Exámenes
-  // protected $enabled  = 'Disponibles';
-  // protected $disabled = 'Eliminadas';
-  // protected $insert   = 'insertar';
-  // protected $update   = 'actualizar';
+  protected $enabled  = 'Disponibles';
+  protected $disabled = 'Eliminadas';
   protected $carrier  = [];
   protected $module;
   protected $dataModel;
-  // protected $tempModel;
 
   public function __construct()
   {
-    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
-    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
+    // $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
+    // $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items     = $this->item.$this->items; // Exámenes - No concatenate
-    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
-    $this->dataModel = new ComprasModel();    
-    // helper(['form']);
+    // $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
+    $this->module    = strtolower($this->items);
+    $this->dataModel = new ComprasModel();
   }
-
-  private function setDataSet()
+/*
+  private function XsetDataSet()
   {
     return;
     $dataSet = [
@@ -42,7 +40,7 @@ class Compras extends BaseController
     return $dataSet;
   }
 
-  private function getValidate($method = "post")
+  private function XgetValidate($method = "post")
   {
     return;
     // $rules = [
@@ -61,7 +59,7 @@ class Compras extends BaseController
             $this->validate($rules) );
   }
   
-  private function getDataSet( 
+  private function XgetDataSet( 
         $titulo    = '',  $ruta      = '',   $action = "", 
         $method = "post", $validador = null, $dataSet = [])
   {
@@ -76,7 +74,7 @@ class Compras extends BaseController
     ];
   }
 
-  private function setCarrier($dataWeb, $value = '', $key = 'id')
+  private function XsetCarrier($dataWeb, $value = '', $key = 'id')
   {
     return;
     $dataWeb[$key] = $value;
@@ -85,7 +83,7 @@ class Compras extends BaseController
       'datos'      => $dataWeb
     ];
   }
-
+*/
   public function index($activo = 1)
   {
     $dataModel = $this->dataModel
@@ -104,6 +102,20 @@ class Compras extends BaseController
     echo view('/includes/header');
     echo view("$this->module/list", $dataWeb);
     echo view('/includes/footer');
+  }
+
+  public function eliminar($id, $activo = 0)
+  {
+    $dataWeb = ['activo' => $activo];
+    // $msg = "¡Eliminación exitosa!";
+    $this->dataModel->update($id, $dataWeb);
+    return redirect()->to(base_url()."/$this->module");
+  }
+
+  public function recuperar($id)
+  {
+    $this->eliminar($id, 1);
+    return redirect()->to(base_url()."/$this->module/index/0");
   }
 
   public function nueva()
@@ -129,7 +141,6 @@ class Compras extends BaseController
         $dataSet
     );
     echo view('/includes/header');
-    // echo view("$this->module/form");
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
   }
@@ -137,13 +148,13 @@ class Compras extends BaseController
   public function guarda()
   {
     $datos = $_POST;
-    var_dump($datos);
+    // var_dump($datos);
     $compra_id = $this->request->getPost('compra_id');
     $total     = $this->request->getPost('total');
-    echo '<script> console.log("datos: ", '. json_encode($datos) .');
-                   console.log("total: ", '. json_encode($total) .');
-                   console.log("compra_id: ", '. json_encode($compra_id) .');
-          </script>';
+    // echo '<script> console.log("datos: ", '. json_encode($datos) .');
+    //                console.log("total: ", '. json_encode($total) .');
+    //                console.log("compra_id: ", '. json_encode($compra_id) .');
+    //       </script>';
     $session = session();
     // $session->usuario_id;
     $resultadoId = $this->dataModel->insertaCompra($compra_id, $total, $session->usuario_id);
@@ -167,6 +178,7 @@ class Compras extends BaseController
         $tempModel->eliminarCompra($compra_id);
     }
     // return redirect()->to(base_url().'/articulos');
+    return redirect()->to(base_url()."/compras/muestraCompraPDF/$resultadoId");
   }
 
   public function muestraCompraPDF($compra_id)
@@ -174,49 +186,85 @@ class Compras extends BaseController
     $data['compra_id'] = $compra_id;
     echo view('/includes/header');
     echo view('compras/ver_compra_pdf', $data);
-    // echo view('compras/ver_compra_pdf');
     echo view('/includes/footer');
   }
 
   public function generaCompraPdf($compra_id)
   {
+    $signo  = "$ ";
     $datosCompra  = $this->dataModel->where('id', $compra_id)->first();
     $detalleModel = new ComprasDetalleModel();
     // $detalleModel->select('*');
-    $detalleModel->select('compra_id, articulo_id, nombre, cantidad, precio');
-    $detalleCompra = $detalleModel->where('compra_id', $compra_id)->findAll();
-    echo "sss: $compra_id";
-    
-    var_dump($datosCompra);
-    var_dump($detalleCompra);
+    // $detalleModel->select('compra_id, articulo_id, nombre, cantidad, precio');
+    // $detalleCompra = $detalleModel->where('compra_id', $compra_id)->findAll();
+    $detalleCompra = $detalleModel->articulos($compra_id);
+    $userModel = new UsersModel();
+    // var_dump($datosCompra['usuario_id']);
+    $dataUser  = $userModel->usuario( $datosCompra['usuario_id'] );
+    // var_dump($dataUser);
+    // var_dump($compra_id);
+    // var_dump($detalleCompra);
+    // return;
     $session = session();
-    // var_dump($session->)
-    var_dump($session->tiendaNombre);
-    var_dump($session->tiendaDireccion);
-    var_dump($session->ticketLeyenda);
-    var_dump($session);
-
-    $pdf = new \FPDF();
+    $pdf = new \FPDF('P', 'mm', 'letter');
+    // ob_start();    
     $pdf->AddPage();
-    $pdf->SetFont('Arial','B',16);
-    $pdf->Cell(40,10,'¡Hola, Mundo!');
+    $pdf->setMargins(10, 10, 10); //
+    $pdf->setTitle('Compra');     //
+    $pdf->SetFont('Arial','B', 10);
+    $pdf->Cell(195, 5,'Entrada de productos', 0, 1, 'C');
+    $pdf->SetFont('Arial','', 9);
+    // $pdf->image( base_url() . "/assets/img/armyStoreMx.jpg", 170, 6, 23, 23, 'JPG');
+    // $img = 'https://static.wixstatic.com/media/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png/v1/fit/w_2500,h_1330,al_c/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png';
+    $img = $session->tiendaLogo;
+    $pdf->image( $img , 170, 6, 23, 23, 'PNG');
+    // $pdf->Cell(5, 5, str_repeat(' ', 0). "$session->tiendaNombre", 1, 1, 'L');
+    $pdf->Cell(65, 5, "$session->tiendaNombre", 0, 0, 'L');
+    $pdf->Cell(67, 5, utf8_decode ("Elaborada por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
+    $pdf->Cell(5, 5, utf8_decode ("Dirección: $session->tiendaDireccion"), 0, 1, 'L');
+    $pdf->Cell(5, 5, "Fecha y hora: ". $datosCompra['fecha_alta'], 0, 0, 'L');
+    $pdf->Ln(7);
+    $pdf->SetFont('Arial','B', 8);
+    // $pdf->SetFillColor(0, 0, 0);        // Color del fondo (Negro)
+    $pdf->SetFillColor(83, 105, 84);        // Color del fondo (Negro)
+    // $pdf->SetTextColor(255, 255, 255);  // Color del texto (Blanco)
+    $pdf->SetTextColor(255, 255, 255);  // Color del texto (Blanco)
+    //         Width, Height, Text, Border, LF, Alignment, Background
+    $pdf->Cell(190, 5, "Detalle de productos", 1, 1, 'C', 1);
+    $pdf->SetTextColor(0, 0, 0);  // Color del texto (Negro)
+    // $pdf->Cell(196, 5, "Detalle de productos", 1, 1, 'C');
+    $pdf->Cell(8, 5, "No", 1, 0, 'L');
+    $pdf->Cell(25, 5, utf8_decode ("Código"), 1, 0, 'L');
+    $pdf->Cell(77, 5, "Nombre", 1, 0, 'L');
+    $pdf->Cell(25, 5, "Precio", 1, 0, 'L');
+    $pdf->Cell(25, 5, "Cantidad", 1, 0, 'L');
+    $pdf->Cell(30, 5, "Importe", 1, 1, 'L');
+    $pdf->SetFont('Arial','', 8);
+    $num    = 0;
+    // $total  = 0;
+    $piezas = 0;
+    foreach ($detalleCompra as $row) {
+      $num++;
+      $precio  = number_format($row['precio'], 2, '.', ',');
+      $importe = number_format($row['precio'] * $row['cantidad'], 2, '.', ',');
+      $piezas += $row['cantidad'];
+      // $total  += $row['precio'] * $row['cantidad'];
+      $pdf->Cell(8, 5, $num, 1, 0, 'R');
+      $pdf->Cell(25, 5, utf8_decode ($row['codigo']), 1, 0, 'L');
+      $pdf->Cell(77, 5, utf8_decode ($row['nombre']), 1, 0, 'L');
+      $pdf->Cell(25, 5, "$signo$precio" , 1, 0, 'R');
+      $pdf->Cell(25, 5,  $row['cantidad'] , 1, 0, 'C');
+      $pdf->Cell(30, 5, "$signo$importe", 1, 1, 'R');  
+    }
+    $pdf->Cell(112, 5, '', 0, 0, 'R');
+    $pdf->Cell( 23, 5, 'Totales:', 0, 0, 'C');
+    $pdf->Cell( 25, 5, number_format($piezas, 0, '.', ','), 1, 0, 'C');
+    $pdf->Cell( 30, 5, $signo . number_format($datosCompra['total'], 2, '.', ','), 1, 1, 'R');
+    // $pdf->Cell(196, 5, $signo . number_format($datosCompra['total'], 2, '.', ','), 1, 1, 'R');
     $this->response->setHeader('Content-Type', 'application/pdf');
-    $pdf->Output();
-
-    // $pdf = new \FPDF('P', 'mm', 'letter');
-    // $pdf->AddPage();
-    // $pdf->SetMargins(10,10,10);
-    // $pdf->SetFont('Arial', 'B', 10);
-    // $pdf->SetTitle("Compra");
-    // $pdf->Output('compra_pdf.pdf', "I");
-
-
-
-    
-    // $pdf->SetFont('Arial','B',16);
-    // $pdf->Cell(40,10,'¡Hola, Mundo!');
     // $pdf->Output();
+    $pdf->Output('compra_pdf.pdf', "I");
+    // ob_end_flush();    
   }
-
 
 }

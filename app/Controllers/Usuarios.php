@@ -372,6 +372,7 @@ class Usuarios extends BaseController
       'webpage'         => $this->getSettingOf('tienda_pagweb'),
       'mainWebPg'       => 'http://mamiyasedonde.com/',
       'mainBrand'       => 'POS - VS',
+      'tiendaLogo'      => $this->getSettingOf('tienda_logo'),
       'tiendaNombre'    => $this->getSettingOf('tienda_nombre'),
       'tiendaDireccion' => $this->getSettingOf('tienda_direccion'),
       'ticketLeyenda'   => $this->getSettingOf('ticket_leyenda'),

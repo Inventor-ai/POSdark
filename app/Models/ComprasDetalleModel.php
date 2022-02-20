@@ -27,14 +27,14 @@ class ComprasDetalleModel extends Model
   protected $validationMessages = [];
   protected $skipValidation     = false;
 
-  // public function insertaCompra($compra_id, $total, $usuario_id)
-  // {
-  //   $this->compras->insert([
-  //     'folio'      => $compra_id,
-  //     'total'      => $total,
-  //     'usuario_id' => $usuario_id
-  //   ]);
-  //   return $this->insertID();
-  // }
+  public function articulos($compra_id)
+  {
+    $campos = 'articulos.codigo, compras_detalle.nombre,'
+            . 'cantidad, precio';
+    $this->select($campos)
+         ->join('articulos', 'articulos.id = compras_detalle.articulo_id')
+         ->where('compra_id', $compra_id);
+    return $this->FindAll();
+  }
 
 }

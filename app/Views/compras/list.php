@@ -13,40 +13,58 @@
   <table id="datatablesSimple">
     <thead>
       <tr>
-        <th>Id</th>
-        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Folio</th>
+        <th>Usuario</th>
+        <th>Total</th>
         <th class="text-center">Acciones</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th>Id</th>
-        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Folio</th>
+        <th>Usuario</th>
+        <th>Total</th>
         <th class="text-center">Acciones</th>
       </tr>
     </tfoot>
     <tbody>
-      <?php foreach($data as $dato) {?>
+      <?php foreach($data as $dato) {
+          // $info = $dato['folio'] 
+          //       . " del ". $dato['fecha_alta'] 
+          //       . " de $"
+          //       . number_format($dato['total'], 2, ".", ",");
+          $info = $dato['folio'] . " de $"
+                . number_format($dato['total'], 2, ".", ",");
+      ?>
         <tr>
-          <td><?=$dato['id']?></td>
-          <td><?=$dato['nombre']?></td>
+          <td><?=$dato['fecha_alta']?></td>
+          <td><?=$dato['folio']?></td>
+          <td><?=$dato['usuario_id']?></td>
+          <td class="text-end">
+              <?="$ ".number_format($dato['total'], 2, ".", ",")?>
+          </td>
           <?php if ($onOff) {?>
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
-                 data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
+                 data-info="<?=$info?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
                  data-actionText="<?=$delete?>" class="btn btn-danger">
                 <i class="fas fa-trash"></i>
               </a>
-              <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
-                class="btn btn-success"><i class="fas fa-pencil-alt"></i>
+              <a href="<?=base_url()."/$path/muestraCompraPDF/".$dato['id']?>"
+                class="btn btn-primary"><i class="fas fa-file-alt"></i>
               </a>
+              <!-- <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
+                class="btn btn-success"><i class="fas fa-pencil-alt"></i>
+              </a> -->
             </td>
           <?php } else {?>
             </td>
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
-                 data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
+                 data-info="<?=$info?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/recuperar/".$dato['id']?>"
                  data-actionText="<?=$recover?>"
                  class="btn btn-warning">
