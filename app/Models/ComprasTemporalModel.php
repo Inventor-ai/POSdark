@@ -36,14 +36,14 @@ class ComprasTemporalModel extends Model
     return $this->get()->getRow();
   }
 
-  // public function porIdArticuloCompra($folio, $articulo_id)
-  public function porIdArticuloCompra($folio, $articulo_id, $precio)
+  public function porIdArticuloVenta($folio, $articulo_id)
+  // public function porIdArticuloCompra($folio, $articulo_id, $precio)
   {
     $campos = '*';
     // $this->select($campos);
     $this->where('folio', $folio);
     $this->where('articulo_id', $articulo_id);
-    $this->where('precio', $precio);
+    // $this->where('precio', $precio);
     return $this->get()->getRow();
   }
 
@@ -64,6 +64,16 @@ class ComprasTemporalModel extends Model
     $this->where('folio', $folio);
     $this->where('articulo_id', $articulo_id);
     $this->where('precio', $precio);
+    $this->update();
+  }
+
+  // public function actualizarArticuloCompra($folio, $articulo_id, $precio, $cantidad, $subtotal)
+  public function actualizarArticuloVenta($folio, $articulo_id, $cantidad, $subtotal)
+  {
+    $this->set('cantidad', $cantidad);
+    $this->set('subtotal', $subtotal);
+    $this->where('folio', $folio);
+    $this->where('articulo_id', $articulo_id);
     $this->update();
   }
 

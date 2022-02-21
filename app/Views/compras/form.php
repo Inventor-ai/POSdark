@@ -40,56 +40,56 @@ $compra_id = uniqid();
         </div>
       </div>
     </div>
-     <div class="form-group">
-       <div class="row mt-3">
+    <div class="form-group">
+      <div class="row mt-3">
         <div class="col-12 col-sm-3">
           <label class="mb-2" for="cantidad">Cantidad</label> 
           <input class="form-control text-end" type="text" name="cantidad" id="cantidad">
         </div>
-       <div class="col-12 col-sm-3">
-            <label class="mb-2" for="precio_compra">Precio de compra</label> 
-            <input class="form-control text-end" type="text" name="precio_compra" id="precio_compra">
-         </div>
-         <div class="col-12 col-sm-3">
-           <label class="mb-2" for="subtotal">Subtotal</label> 
-           <div class="input-group">
-             <span class="input-group-text">$</span>          
-             <input type="text" class="form-control text-end" name="subtotal" id="subtotal" disabled>
-           </div>
-         </div>
-         <div class="col-12 col-sm-3 mt-2">
+        <div class="col-12 col-sm-3">
+          <label class="mb-2" for="precio_compra">Precio de compra</label> 
+          <input class="form-control text-end" type="text" name="precio_compra" id="precio_compra">
+        </div>
+        <div class="col-12 col-sm-3">
+          <label class="mb-2" for="subtotal">Subtotal</label> 
+          <div class="input-group">
+            <span class="input-group-text">$</span>          
+            <input type="text" class="form-control text-end" name="subtotal" id="subtotal" disabled>
+          </div>
+        </div>
+        <div class="col-12 col-sm-3 mt-2">
             <button class="btn btn-primary mt-4" type="button" onclick="agregarArticulo(articulo_id.value, 
                     cantidad.value, '<?=$compra_id?>', precio_compra.value)">Agregar artículo</button>
-         </div>
-       </div>
-    </div>
-    <div class="row mt-3">
-      <table id="tablaArticulos" class="table table-bordered border-dark table-striped table-hover table-resposive table-sm tablaArticulos">
-        <thead>
-          <th>#</th>
-          <th>Código</th>
-          <th>Nombre</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
-          <th>Total</th>
-          <th width="1%"></th>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <hr>
-    <div class="row">
-      <div class="col-12 col-sm-4 offset-md-4">
-        <label style="font-weight: bold; font-size: 25px; text-align:center;">Total $</label>
-        <input type="text" name="totalBis" id="totalBis" size="6" readonly value="0.00"
-               style="font-weight: bold; font-size: 25px; text-align:center;">
-      </div>
-      <div class="col-12 col-sm-4" style="text-align: center;">
-        <div class="d-block d-ms-none d-md-none d-lg-none mt-4"></div>
-        <button type="button" class="btn btn-success mb-3" id="completa_compra">Completar compra</button>
+        </div>
       </div>
     </div>
-   </form> 
+  </form> 
+  <div class="row mt-3">
+    <table id="tablaArticulos" class="table table-bordered border-dark table-striped table-hover table-resposive table-sm tablaArticulos">
+      <thead>
+        <th>#</th>
+        <th>Código</th>
+        <th class="col-4">Nombre</th>
+        <th>Precio</th>
+        <th class="col-1">Cantidad</th>
+        <th>Total</th>
+        <th width="1%"></th>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-12 col-sm-4 offset-md-4">
+      <label style="font-weight: bold; font-size: 25px; text-align:center;">Total $</label>
+      <input type="text" name="totalBis" id="totalBis" size="6" readonly value="0.00"
+             style="font-weight: bold; font-size: 25px; text-align:center;">
+    </div>
+    <div class="col-12 col-sm-4" style="text-align: center;">
+      <div class="d-block d-ms-none d-md-none d-lg-none mt-4"></div>
+      <button type="button" class="btn btn-success mb-3" id="completa_compra">Completar compra</button>
+    </div>
+  </div>
 </div>
 <?php if ($validation) {?>
   <div class="alert alert-danger">
@@ -316,5 +316,30 @@ function eliminarArticulo(articulo_id, compra_id, precio) {
           }
         });
 }
+
+
+//   Autocompletar código artículo
+$(function() {
+  $('#codigo').autocomplete({
+    source: "<?=base_url()."/articulos/autocompleteData"?>",
+    minLength: 3,
+    select: function (event, ui) {
+       event.preventDefault();
+      //  $('#articulo_id').val(ui.item.id);
+       $('#codigo').val(ui.item.value);
+    //    setTimeout(() => {
+       setTimeout(
+         function () {
+           e = jQuery.Event("keypress");
+           e.which = 13; // Simulando tecla enter
+          //  agregarArticulo(e, ui.item.id, 1, <?="'$venta_id'"?>);
+           agregarArticulo(e, ui.item.id, 1, '621326e697bae');
+         }
+       );
+      //  }, 1000);
+      //  $('#codigo').val(ui.item.label);
+    }
+  });
+});
 
 </script>

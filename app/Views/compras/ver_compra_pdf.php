@@ -9,7 +9,7 @@
 <div id="noPadding"></div>
 <script>
   var item = document.getElementById('noPadding');
-//   item.parentElement.className = 'container-fluid px-0';
+  item.parentElement.className = 'container-fluid px-0';
 //   item.parentElement.className = 'container-fluid px-1';
 //   item.parentElement.removeAttribute('class');
 //   console.log( );

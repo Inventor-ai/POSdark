@@ -26,8 +26,10 @@
         <script src="<?=base_url()?>/js/vsutils.js"></script>
          
         <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script>
+        <script src="<?=base_url()?>/vendor/jquery-ui/jquery-ui.min.js"></script>
+
         <script>
-           
+// Script para compras
 $(document).ready(function(){
   $('#completa_compra').click( function () {
      console.log('clicked');
@@ -39,9 +41,24 @@ $(document).ready(function(){
      }
   })
 });
-
         </script>
 
+<script>
+// Scripts para ventas 
+//   Autocompletar cliente
+$(function() {
+  $('#cliente').autocomplete({
+    source: "<?=base_url()."/clientes/autocompleteData"?>",
+    minLength: 3,
+    select: function (event, ui) {
+       event.preventDefault();
+       $('#cliente_id').val(ui.item.id);
+       $('#cliente').val(ui.item.value);
+    }
+  });
+});
+
+</script>
 
 
     </body>

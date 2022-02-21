@@ -41,7 +41,7 @@
         <tr>
           <td><?=$dato['fecha_alta']?></td>
           <td><?=$dato['folio']?></td>
-          <td><?=$dato['usuario_id']?></td>
+          <td><?=$dato['nombre']?></td>
           <td class="text-end">
               <?="$ ".number_format($dato['total'], 2, ".", ",")?>
           </td>
@@ -53,12 +53,12 @@
                  data-actionText="<?=$delete?>" class="btn btn-danger">
                 <i class="fas fa-trash"></i>
               </a>
+              <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
+                class="btn btn-success"><i class="fas fa-pencil-alt"></i>
+              </a>
               <a href="<?=base_url()."/$path/muestraCompraPDF/".$dato['id']?>"
                 class="btn btn-primary"><i class="fas fa-file-alt"></i>
               </a>
-              <!-- <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
-                class="btn btn-success"><i class="fas fa-pencil-alt"></i>
-              </a> -->
             </td>
           <?php } else {?>
             </td>

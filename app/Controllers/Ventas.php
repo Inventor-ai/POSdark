@@ -2,16 +2,16 @@
 
 namespace App\Controllers;
 use App\Controllers\BaseController;
-use App\Models\ComprasModel;
-use App\Models\ComprasDetalleModel;
-use App\Models\ComprasTemporalModel;
+use App\Models\VentasModel;
+use App\Models\VentasDetalleModel;
+use App\Models\ComprasTemporalModel; // Parche dejado en el video
 use App\Models\ArticulosModel;
 use App\Models\UsersModel;
 
-class Compras extends BaseController
+class Ventas extends BaseController
 {
-  protected $item     = 'Compra'; // Examen
-  protected $items    = 's';         // Exámenes
+  protected $item     = 'Venta';
+  protected $items    = 's';
   protected $enabled  = 'Disponibles';
   protected $disabled = 'Eliminadas';
   protected $carrier  = [];
@@ -20,46 +20,12 @@ class Compras extends BaseController
 
   public function __construct()
   {
-    // $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
-    // $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
-    $this->items     = $this->item.$this->items; // Exámenes - No concatenate
-    // $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
+    $this->items     = $this->item.$this->items;
     $this->module    = strtolower($this->items);
-    $this->dataModel = new ComprasModel();
-  }
-/*
-  private function XsetDataSet()
-  {
-    return;
-    $dataSet = [
-      'nombre' => trim( $this->request->getPost('nombre') ),
-      
-    ];
-    // Custom initialize section. Set default value by field
-    if ($dataSet['nombre'] == '') $dataSet['nombre'] = '';    
-    return $dataSet;
+    $this->dataModel = new VentasModel();
   }
 
-  private function XgetValidate($method = "post")
-  {
-    return;
-    // $rules = [
-    //    'nombre' => 'required'
-    // ];
-    $rules = [
-      'nombre' => [
-         'rules' => 'required|is_unique[categorias.nombre]',
-         'errors' => [
-            'required'  => "Debe proporcionarse el {field}|{field}",
-            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!"
-         ]
-      ]
-    ];
-    return ($this->request->getMethod() == $method &&
-            $this->validate($rules) );
-  }
-  */
-  private function getDataSet( 
+  private function getDataSet( // Ok No borrar
         $titulo    = '',  $ruta      = '',   $action = "", 
         $method = "post", $validador = null, $dataSet = [])
   {
@@ -72,17 +38,7 @@ class Compras extends BaseController
       'data'       => $dataSet
     ];
   }
-/*
-  private function XsetCarrier($dataWeb, $value = '', $key = 'id')
-  {
-    return;
-    $dataWeb[$key] = $value;
-    $this->carrier = [
-      'validation' => $this->validator,
-      'datos'      => $dataWeb
-    ];
-  }
-*/
+
   public function index($activo = 1)
   {
     $dataModel = $this->dataModel
@@ -119,7 +75,7 @@ class Compras extends BaseController
     return redirect()->to(base_url()."/$this->module/index/0");
   }
 
-  public function nueva()
+  public function venta()
   { 
     /*    */
     // if ( count ($this->carrier) > 0 ) {
@@ -142,7 +98,7 @@ class Compras extends BaseController
         $dataSet
     );
     echo view('/includes/header');
-    echo view("$this->module/form", $dataWeb);
+    echo view("$this->module/caja", $dataWeb);
     echo view('/includes/footer');
   }
 
@@ -269,3 +225,48 @@ class Compras extends BaseController
   }
 
 }
+
+
+/*
+  private function XsetDataSet()
+  {
+    return;
+    $dataSet = [
+      'nombre' => trim( $this->request->getPost('nombre') ),
+      
+    ];
+    // Custom initialize section. Set default value by field
+    if ($dataSet['nombre'] == '') $dataSet['nombre'] = '';    
+    return $dataSet;
+  }
+
+  private function XgetValidate($method = "post")
+  {
+    return;
+    // $rules = [
+    //    'nombre' => 'required'
+    // ];
+    $rules = [
+      'nombre' => [
+         'rules' => 'required|is_unique[categorias.nombre]',
+         'errors' => [
+            'required'  => "Debe proporcionarse el {field}|{field}",
+            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!"
+         ]
+      ]
+    ];
+    return ($this->request->getMethod() == $method &&
+            $this->validate($rules) );
+  }
+  
+
+  private function XsetCarrier($dataWeb, $value = '', $key = 'id')
+  {
+    return;
+    $dataWeb[$key] = $value;
+    $this->carrier = [
+      'validation' => $this->validator,
+      'datos'      => $dataWeb
+    ];
+  }
+*/

@@ -4,9 +4,9 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ComprasModel extends Model 
+class VentasModel extends Model 
 {
-  protected $table      = 'compras';
+  protected $table      = 'ventas';
   protected $primaryKey = 'id';
 
   protected $useAutoIncrement = true;
@@ -14,7 +14,9 @@ class ComprasModel extends Model
   protected $returnType     = 'array';
   protected $useSoftDeletes = false;
   protected $allowedFields = [
-    'folio', 'total', 'usuario_id', 'activo'
+    'folio',   'total',      'usuario_id', 
+    'caja_id', 'cliente_id', 'forma_pago',
+    'activo'
   ];
 
   protected $useTimestamps = true;
@@ -27,16 +29,16 @@ class ComprasModel extends Model
   protected $validationMessages = [];
   protected $skipValidation     = false;
 
-  public function insertaCompra($compra_id, $total, $usuario_id)
+  public function insertaVenta($venta_id, $total,      $usuario_id,
+                               $caja_id,  $cliente_id, $forma_pago)
   {
-    // var_dump ($total);
-    // var_dump (str_replace(",", "", $total ));
     $this->insert([
-      'folio'      => $compra_id,
-      // 'total'      => $total, // Fails when > 1,000 by format
-      // 'total'      => (float) str_replace(",", "", $total ), // Own Ok.
-      'total'      => preg_replace('/[\$,]/', "", $total ),
-      'usuario_id' => $usuario_id
+      'folio'      => $venta_id,
+      'total'      => preg_replace('/[\$,]/', "", $total ), // to prevent formatted number
+      'usuario_id' => $usuario_id,
+      'caja_id'    =>  $caja_id,
+      'cliente_id' =>  $cliente_id,
+      'forma_pago' => $forma_pago
     ]);
     return $this->insertID();
   }

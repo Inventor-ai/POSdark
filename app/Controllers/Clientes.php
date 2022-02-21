@@ -205,4 +205,23 @@ class Clientes extends BaseController
     return redirect()->to(base_url()."/$this->module/index/0");
   }
 
+  public function autocompleteData()
+  {
+    // $returnData = [];   // Own Ok
+    $returnData = array(); // Video
+    $valor = $this->request->getGet('term');
+    $datos = $this->dataModel->like('nombre', $valor)
+                             ->where('activo', 1)
+                             ->findAll();
+    // if (!empty($datos)) {
+    foreach ($datos as $row) {
+      $data['id']    = $row['id'];
+      $data['value'] = $row['nombre'];
+      array_push($returnData, $data );  // Video
+      // $returnData[]  = $data;        // Own Ok
+    }
+    // }
+    return json_encode($returnData);
+  }
+
 }

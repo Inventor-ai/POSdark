@@ -58,7 +58,7 @@ class ComprasTemporal extends BaseController
             ]);
         }
     } else {
-        $error = 'No existe el producto';
+        $error = 'No existe el artículo';
     }
     // $res['datos'] = $this->cargaArticulos($compra_id); // Video
     $res          = $this->cargaArticulos($compra_id);
@@ -81,7 +81,8 @@ class ComprasTemporal extends BaseController
       $filaTxt.= "<td>".$row['codigo']  ."</td>";
       $filaTxt.= "<td>".$row['nombre']  ."</td>";
       $filaTxt.= "<td class='text-end'>". number_format ($row['precio'], 2, ".", "," )  ."</td>";
-      $filaTxt.= "<td class='text-end'>". number_format ($row['cantidad'], 2, ".", "," )."</td>";
+      // $filaTxt.= "<td class='text-end'>". number_format ($row['cantidad'], 2, ".", "," )."</td>";
+      $filaTxt.= "<td class='text-end'>". number_format ($row['cantidad'], 0, ".", "," )."</td>";
       $filaTxt.= "<td class='text-end'>". number_format ($row['subtotal'], 2, ".", "," )."</td>";
       // $filaTxt.= "<td><a onclick='eliminarArticulo($params)'>";  // No funciona
       // $filaTxt.= '<td><a onclick="eliminarArticulo('.$params.')">'; // Funciona Ok  1/2
@@ -141,6 +142,49 @@ class ComprasTemporal extends BaseController
     }
     $res          = $this->cargaArticulos($compra_id);
     var_dump($res);
+  }
+
+  // comprastemporal/insertarVenta'
+  // + '/' + articulo_id + '/' + cantidad + '/' + compra_id;
+// **  public function insertarVenta($articulo_id, $cantidad, $precio, $compra_id)
+  public function insertarVenta($articulo_id, $cantidad, $compra_id)
+  {
+    $error = '';
+    $datos = [];
+    $articulo = $this->articulos->where('id', $articulo_id)->first();
+    if ($articulo) {
+// **        $datosExiste = $this->dataModel->porIdArticuloCompraPrecio($compra_id, $articulo_id, $precio);
+        $datosExiste = $this->dataModel->porIdArticuloVenta($compra_id, $articulo_id);
+        if ($datosExiste) {
+            $cantidad = $datosExiste->cantidad + $cantidad;
+            $subtotal = $datosExiste->precio   * $cantidad;
+            // Actualizar la tabla temporal? Si. Lo dice, pero no lo hace hasta 1:43:05
+// **            $this->dataModel->actualizarArticuloCompra($compra_id, $articulo_id, $precio, 
+                                                        //  $cantidad, $subtotal);
+            $this->dataModel->actualizarArticuloVenta($folio, $articulo_id, $cantidad, $subtotal);
+        } else {
+            // $subtotal = $cantidad * $articulo['precio_compra']; // Descartar
+// **            $subtotal = $cantidad * $precio;
+            $subtotal = $cantidad * $datosExiste->precio;
+            $this->dataModel->save([
+             'folio'        => $compra_id,
+             'articulo_id'  => $articulo_id,
+             'codigo'       => $articulo['codigo'], // ??
+             'nombre'       => $articulo['nombre'], // ??
+             //  'precio'       => $articulo['precio_compra'],  // Error?
+// **             'precio'       => $precio,
+             'precio'       => $datosExiste->precio,
+             'cantidad'     => $cantidad,
+             'subtotal'     => $subtotal // ?? Tiene sentido?
+            ]);
+        }
+    } else {
+        $error = 'No existe el producto';
+    }
+    // $res['datos'] = $this->cargaArticulos($compra_id); // Video
+    $res          = $this->cargaArticulos($compra_id);
+    $res['error'] = $error;
+    echo json_encode($res);
   }
 
 }

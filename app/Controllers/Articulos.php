@@ -273,4 +273,20 @@ class Articulos extends BaseController
     echo json_encode($res);
   }
 
+  public function autocompleteData()
+  {
+    $returnData = [];
+    $valor = $this->request->getGet('term');
+    $datos = $this->dataModel->like('codigo', $valor)
+                             ->where('activo', 1)
+                             ->findAll();
+    foreach ($datos as $row) {
+      $data['id']    = $row['id'];
+      $data['value'] = $row['codigo'];
+      $data['label'] = $row['codigo'].' - '. $row['nombre'];
+      $returnData[]  = $data;
+    }
+    return json_encode($returnData);
+  }
+
 }

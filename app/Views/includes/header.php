@@ -21,6 +21,7 @@ $webpage   = $session_user->webpage;
         <title><?= $tabTitle ?></title>
         <link href="<?=base_url()?>/css/datatables/style.css" rel="stylesheet" />
         <link href="<?=base_url()?>/css/styles.css" rel="stylesheet" />
+        <link href="<?=base_url()?>/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
         <script src="<?=base_url()?>/js/all.min.js"></script>
     </head>
     <body class="sb-nav-fixed">
@@ -99,8 +100,8 @@ $webpage   = $session_user->webpage;
               <div class="sb-sidenav-menu">
                 <div class="nav">
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseArticulos" aria-expanded="false" aria-controls="collapseArticulos">
-                    <div class="sb-nav-link-icon"><i class="fas fa-dolly"></i></div>
-                      Artículos
+                    <div class="sb-nav-link-icon"></div>
+                     <i class="fas fa-dolly"></i>&nbsp; Artículos
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="collapseArticulos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -114,7 +115,7 @@ $webpage   = $session_user->webpage;
                 <a class="nav-link" href="<?=base_url()?>/clientes"><i class="fas fa-users"></i>  Clientes</a>
                 <div class="nav">
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCompras" aria-expanded="false" aria-controls="collapseCompras">
-                    <div class="sb-nav-link-icon"><i class="fas fa-cash-register"></i></div>
+                    <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
                       Compras
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
@@ -125,6 +126,7 @@ $webpage   = $session_user->webpage;
                     </nav>
                   </div>
                 </div>
+                <a class="nav-link" href="<?=base_url()?>/ventas/venta"><i class="fas fa-cash-register"></i>  Caja</a>
                 <div class="nav">
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmon" aria-expanded="false" aria-controls="collapseAdmon">
                     <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
