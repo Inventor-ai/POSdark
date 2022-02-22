@@ -12,8 +12,8 @@ $compra_id = uniqid();
       </div>
       <div class="col-12 col-sm-5 text-center">
         <label style="font-weight: bold; font-size: 25px; text-align:center;">Total $</label>
-        <input type="text" name="total" id="total" size="7" readonly value="0.00"
-               style="font-weight: bold; font-size: 25px; text-align:center;">
+        <input type="text" name="total" id="total" size="10" readonly value="0.00"
+               class="text-center" style="font-weight: bold; font-size: 25px; ">
         <!-- <button type="buttn" class="btn btn-success" id="completa_compra">Completar compra</button> -->
       </div>
       <div class="d-block d-ms-none d-md-none d-lg-none mt-4"></div>
@@ -43,7 +43,8 @@ $compra_id = uniqid();
     <div class="form-group">
       <div class="row mt-3">
         <div class="col-12 col-sm-3">
-          <label class="mb-2" for="cantidad">Cantidad</label> 
+          <!-- <label class="mb-2" for="cantidad">Cantidad</label>  -->
+          <label class="mb-2" for="cantidad">Cantidad / Pzas</label> 
           <input class="form-control text-end" type="text" name="cantidad" id="cantidad">
         </div>
         <div class="col-12 col-sm-3">
@@ -53,7 +54,7 @@ $compra_id = uniqid();
         <div class="col-12 col-sm-3">
           <label class="mb-2" for="subtotal">Subtotal</label> 
           <div class="input-group">
-            <span class="input-group-text">$</span>          
+            <span class="input-group-text">$</span>
             <input type="text" class="form-control text-end" name="subtotal" id="subtotal" disabled>
           </div>
         </div>
@@ -64,26 +65,28 @@ $compra_id = uniqid();
       </div>
     </div>
   </form> 
-  <div class="row mt-3">
-    <table id="tablaArticulos" class="table table-bordered border-dark table-striped table-hover table-resposive table-sm tablaArticulos">
-      <thead>
-        <th>#</th>
-        <th>Código</th>
-        <th class="col-4">Nombre</th>
-        <th>Precio</th>
-        <th class="col-1">Cantidad</th>
-        <th>Total</th>
-        <th width="1%"></th>
-      </thead>
-      <tbody></tbody>
-    </table>
+  <div class="row">
+    <div class="col mt-3">
+      <table id="tablaArticulos" class="table table-bordered border-dark table-striped table-hover table-resposive table-sm tablaArticulos">
+        <thead>
+          <th>#</th>
+          <th>Código</th>
+          <th class="col-4">Nombre</th>
+          <th>Precio</th>
+          <th class="col-1">Pzas</th>
+          <th>Total</th>
+          <th width="1%"></th>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
   </div>
   <hr>
   <div class="row">
-    <div class="col-12 col-sm-4 offset-md-4">
+    <div class="col-12 col-sm-6 offset-md-2">
       <label style="font-weight: bold; font-size: 25px; text-align:center;">Total $</label>
-      <input type="text" name="totalBis" id="totalBis" size="6" readonly value="0.00"
-             style="font-weight: bold; font-size: 25px; text-align:center;">
+      <input type="text" name="totalBis" id="totalBis" size="10" readonly value="0.00"
+             class="text-center" style="font-weight: bold; font-size: 25px; border:solid;">
     </div>
     <div class="col-12 col-sm-4" style="text-align: center;">
       <div class="d-block d-ms-none d-md-none d-lg-none mt-4"></div>
@@ -194,8 +197,6 @@ function agregarProductoXX(articulo_id, cantidad, compra_id, precio) {
   console.log('compra_id:   ', compra_id);
 
 }
-
-
 
 function buscarArticulo(e, tagCodigo, codigo) {
   const enterKey = 13;
@@ -316,30 +317,4 @@ function eliminarArticulo(articulo_id, compra_id, precio) {
           }
         });
 }
-
-
-//   Autocompletar código artículo
-$(function() {
-  $('#codigo').autocomplete({
-    source: "<?=base_url()."/articulos/autocompleteData"?>",
-    minLength: 3,
-    select: function (event, ui) {
-       event.preventDefault();
-      //  $('#articulo_id').val(ui.item.id);
-       $('#codigo').val(ui.item.value);
-    //    setTimeout(() => {
-       setTimeout(
-         function () {
-           e = jQuery.Event("keypress");
-           e.which = 13; // Simulando tecla enter
-          //  agregarArticulo(e, ui.item.id, 1, <?="'$venta_id'"?>);
-           agregarArticulo(e, ui.item.id, 1, '621326e697bae');
-         }
-       );
-      //  }, 1000);
-      //  $('#codigo').val(ui.item.label);
-    }
-  });
-});
-
 </script>

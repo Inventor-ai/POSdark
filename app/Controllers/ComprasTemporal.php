@@ -149,31 +149,34 @@ class ComprasTemporal extends BaseController
 // **  public function insertarVenta($articulo_id, $cantidad, $precio, $compra_id)
   public function insertarVenta($articulo_id, $cantidad, $compra_id)
   {
-    $error = '';
-    $datos = [];
+    $error    = '';
+    $datos    = [];
     $articulo = $this->articulos->where('id', $articulo_id)->first();
     if ($articulo) {
 // **        $datosExiste = $this->dataModel->porIdArticuloCompraPrecio($compra_id, $articulo_id, $precio);
         $datosExiste = $this->dataModel->porIdArticuloVenta($compra_id, $articulo_id);
+    // var_dump($compra_id);
+    // var_dump($articulo_id);
+    // var_dump($datosExiste);
+    // return;
         if ($datosExiste) {
             $cantidad = $datosExiste->cantidad + $cantidad;
             $subtotal = $datosExiste->precio   * $cantidad;
             // Actualizar la tabla temporal? Si. Lo dice, pero no lo hace hasta 1:43:05
 // **            $this->dataModel->actualizarArticuloCompra($compra_id, $articulo_id, $precio, 
                                                         //  $cantidad, $subtotal);
-            $this->dataModel->actualizarArticuloVenta($folio, $articulo_id, $cantidad, $subtotal);
+            $this->dataModel->actualizarArticuloVenta($compra_id, $articulo_id, $cantidad, $subtotal);
         } else {
-            // $subtotal = $cantidad * $articulo['precio_compra']; // Descartar
+            $precio   = $articulo['precio_venta'];
+            $subtotal = $cantidad * $precio;
 // **            $subtotal = $cantidad * $precio;
-            $subtotal = $cantidad * $datosExiste->precio;
             $this->dataModel->save([
              'folio'        => $compra_id,
              'articulo_id'  => $articulo_id,
              'codigo'       => $articulo['codigo'], // ??
              'nombre'       => $articulo['nombre'], // ??
-             //  'precio'       => $articulo['precio_compra'],  // Error?
-// **             'precio'       => $precio,
-             'precio'       => $datosExiste->precio,
+              // 'precio'       => $articulo['precio_venta'],
+             'precio'       => $precio,
              'cantidad'     => $cantidad,
              'subtotal'     => $subtotal // ?? Tiene sentido?
             ]);
@@ -183,7 +186,10 @@ class ComprasTemporal extends BaseController
     }
     // $res['datos'] = $this->cargaArticulos($compra_id); // Video
     $res          = $this->cargaArticulos($compra_id);
-    $res['error'] = $error;
+    // $res['error'] = $error;
+    // $res['error'] = $error . " >". json_encode($articulo);
+    // $res['error'] = $error . " >". json_encode($articulo_id);
+    $res['error'] = "insertarVenta: $error > |$articulo_id|";
     echo json_encode($res);
   }
 

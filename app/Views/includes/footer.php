@@ -41,11 +41,14 @@ $(document).ready(function(){
      }
   })
 });
+// Scripts para ventas
+  runSales();
         </script>
 
 <script>
-// Scripts para ventas 
+// Scripts para ventas
 //   Autocompletar cliente
+/*
 $(function() {
   $('#cliente').autocomplete({
     source: "<?=base_url()."/clientes/autocompleteData"?>",
@@ -57,7 +60,37 @@ $(function() {
     }
   });
 });
+*/
 
+
+//   Autocompletar código artículo
+/*
+$(function() {
+  $('#codigo').autocomplete({
+    source: "<?=base_url()."/articulos/autocompleteData"?>",
+    minLength: 3,
+    select: function (event, ui) {
+       event.preventDefault();
+      //  $('#articulo_id').val(ui.item.id);
+       $('#codigo').val(ui.item.value);
+       console.log('ui.item.value: ', ui.item.value);
+       console.log('ui.item.id: ', ui.item.id);
+       console.log('ui.item.label: ', ui.item.label);
+    //    setTimeout(() => {
+      //  setTimeout(
+      //    function () {
+           e = jQuery.Event("keypress");
+           e.which = 13; // Simulando tecla enter
+          //  agregarArticulo(e, ui.item.id, 1, <?php //"'$venta_id'"?>);
+           agregarArticulo(e, ui.item.id, 1, '621326e697bae');
+      //    }
+      //  );
+      //  }, 1000);
+      //  $('#codigo').val(ui.item.label);
+    }
+  });
+});
+*/
 </script>
 
 

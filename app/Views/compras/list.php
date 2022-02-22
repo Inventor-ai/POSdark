@@ -5,7 +5,8 @@
   <div class="col-12 col-sm-4 text-right" style="text-align:right">
     <a href="<?=base_url()."/$path/index/".($onOff == 0?"1":"0")?>" class="btn btn-warning"><?=$switch?></a>
     <?php if ($onOff) {?>
-      <a href="<?=base_url()."/$path/agregar"?>" class="btn btn-primary">Agregar</a>
+      <a href="<?=base_url()."/$path/nueva"?>" class="btn btn-primary">Nueva</a>
+      <!-- <a href="<?=base_url()."/$path/agregar"?>" class="btn btn-primary">Agregar</a> -->
     <?php } ?>
   </div>
 </div>

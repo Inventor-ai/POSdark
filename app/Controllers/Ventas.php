@@ -90,7 +90,8 @@ class Ventas extends BaseController
 
     // $this->carrier = [];
     $dataWeb = $this->getDataSet( 
-        "$this->item - Nueva", //"Agregar $this->item", //
+        // "$this->item - Nueva", //"Agregar $this->item", //
+        "Caja # 69 - Nombre del usuario", //"Agregar $this->item", //
         "$this->module",
         'guarda',
         'post',
@@ -106,41 +107,59 @@ class Ventas extends BaseController
   {
     $datos = $_POST;
     // var_dump($datos);
-    $compra_id = $this->request->getPost('compra_id');
-    $total     = $this->request->getPost('total');
+// *    $compra_id = $this->request->getPost('compra_id');
+    $venta_id   = $this->request->getPost('venta_id');
+    $total      = $this->request->getPost('total');
+    $cliente_id = $this->request->getPost('cliente_id');
+    $forma_pago = $this->request->getPost('forma_pago');
     // echo '<script> console.log("datos: ", '. json_encode($datos) .');
     //                console.log("total: ", '. json_encode($total) .');
-    //                console.log("compra_id: ", '. json_encode($compra_id) .');
+    //                console.log("venta_id: ", '. json_encode($venta_id) .');
     //       </script>';
+    // var_dump($datos);
+    // return; 
     $session = session();
     // $session->usuario_id;
-    $resultadoId = $this->dataModel->insertaCompra($compra_id, $total, $session->usuario_id);
+// *    $resultadoId = $this->dataModel->insertaCompra($venta_id, $total, $session->usuario_id);
+    $resultadoId = $this->dataModel->insertaVenta($venta_id, $total, $session->usuario_id, 
+                                                   $session->caja_id, 
+                                                   $cliente_id,
+                                                   $forma_pago);
     // $this->tempModel = new ComprasTemporalModel(); // Si es local, ¿Para qué una variable de clase?
     $tempModel = new ComprasTemporalModel();
     // $detalleModel = new ComprasDetalleModel();
     if ($resultadoId) {
-        $resultadoCompra = $tempModel->porCompra($compra_id);
-        $detalleModel  = new ComprasDetalleModel();
+// *        $resultadoCompra = $tempModel->porCompra($compra_id);
+        $resultadoVenta = $tempModel->porCompra($venta_id);
+// *        $detalleModel  = new ComprasDetalleModel();
+        $detalleModel  = new VentasDetalleModel();
         $articuloModel = new ArticulosModel();
-        foreach ($resultadoCompra as $row) {
+        foreach ($resultadoVenta as $row) {
           $detalleModel->save([
-            'compra_id'   => $resultadoId, 
+// *            'compra_id'   => $resultadoId, 
+            'venta_id'   => $resultadoId, 
             'articulo_id' => $row['articulo_id'], 
             'nombre'      => $row['nombre'], 
             'cantidad'    => $row['cantidad'], 
             'precio'      => $row['precio']
           ]);
-          $articuloModel->actualizaStock($row['articulo_id'], $row['cantidad']);
+          // $articuloModel->actualizaStock($row['articulo_id'], $row['cantidad'] * -1 ); // Try my own
+          $articuloModel->actualizaStock($row['articulo_id'], $row['cantidad'], '-'); // Video
         }
-        $tempModel->eliminarCompra($compra_id);
+// *       $tempModel->eliminarCompra($compra_id);
+       $tempModel->eliminarCompra($venta_id);
     }
     // return redirect()->to(base_url().'/articulos');
-    return redirect()->to(base_url()."/compras/muestraCompraPDF/$resultadoId");
+// *    return redirect()->to(base_url()."/compras/muestraCompraPDF/$resultadoId");
+    // return redirect()->to(base_url()."/ventas/muestraVentaPDF/$resultadoId"); // Para probar
+    echo "¡Impresión del ticket de venta en desarrollo!";
   }
 
-  public function muestraCompraPDF($compra_id)
+// *  public function muestraVentaPDF($compra_id)
+  public function muestraVentaPDF($venta_id)
   {
-    $data['compra_id'] = $compra_id;
+    $data['venta_id'] = $venta_id;
+// *    $data['compra_id'] = $compra_id;
     echo view('/includes/header');
     echo view('compras/ver_compra_pdf', $data);
     echo view('/includes/footer');
