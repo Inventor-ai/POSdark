@@ -179,9 +179,6 @@ class Ventas extends BaseController
     $userModel = new UsersModel();
     // var_dump($datosventa['usuario_id']);
     $dataUser  = $userModel->usuario( $datosventa['usuario_id'] );
-    // var_dump($dataUser);
-    // var_dump($detalleVenta);
-    // return;
     $session = session();
     $pdf = new \FPDF('P', 'mm', array(80, 200));
     // ob_start();    
