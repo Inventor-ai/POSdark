@@ -42,7 +42,7 @@ $(document).ready(function(){
   })
 });
 // Scripts para ventas
-  runSales();
+  if (window.runSales) runSales();
         </script>
 
 <script>

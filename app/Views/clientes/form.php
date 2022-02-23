@@ -14,24 +14,24 @@
      <input type="hidden" name="id" value="<?=$data['id']?>">
      <div class="form-group">
        <div class="row">
-         <div class="col-12 col-sm-6">
+         <div class="col-12 col-sm-6 mb-3">
             <label class="mb-2" for="nombre">Nombre</label> 
             <input class="form-control" type="text" name="nombre" 
                    id="nombre" value="<?=$data['nombre']?>" autofocus required>
          </div>
-         <div class="col-12 col-sm-6">
+         <div class="col-12 col-sm-6 mb-3">
             <label class="mb-2" for="telefono">Teléfono</label> 
             <input class="form-control" type="text" name="telefono" 
                    id="telefono" value="<?=$data['telefono']?>">
          </div>
        </div>
        <div class="row">
-         <div class="col-12 col-sm-6">
+         <div class="col-12 col-sm-6 mb-3">
             <label class="mb-2" for="correo">Correo</label> 
             <input class="form-control" type="text" name="correo" 
                    id="correo" value="<?=$data['correo']?>">
          </div>
-         <div class="col-12 col-sm-6">
+         <div class="col-12 col-sm-6 mb-3">
             <label class="mb-2" for="direccion">Dirección</label> 
             <input class="form-control" type="text" name="direccion" 
                    id="direccion" value="<?=$data['direccion']?>">

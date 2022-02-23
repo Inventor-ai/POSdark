@@ -1,6 +1,6 @@
 <?php
-// $venta_id = uniqid();
-$venta_id = '621326e697bae';
+$venta_id = uniqid();
+// $venta_id = '621326e697bae';
 ?>
 <div class="row mt-4 mb-3">
   <div class="col-12 col-sm-8">
@@ -160,8 +160,8 @@ function runSales() {
       console.log('ui.item.label: ', ui.item.label);
       e = jQuery.Event("keypress");
       e.which = 13; // Simulando tecla enter
-    //   agregarArticulo(e, ui.item.id, 1, <?="'$venta_id'"?>);
-      agregarArticulo(e, ui.item.id, 1, '621326e697bae');
+      agregarArticulo(e, ui.item.id, 1, <?="'$venta_id'"?>);
+    //   agregarArticulo(e, ui.item.id, 1, '621326e697bae');
     }
   });
 }

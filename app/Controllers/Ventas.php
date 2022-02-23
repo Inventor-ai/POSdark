@@ -89,9 +89,11 @@ class Ventas extends BaseController
     // }
 
     // $this->carrier = [];
+    $session = session();
     $dataWeb = $this->getDataSet( 
         // "$this->item - Nueva", //"Agregar $this->item", //
-        "Caja # 69 - Nombre del usuario", //"Agregar $this->item", //
+        // "Caja # 69 - Nombre del usuario", //"Agregar $this->item", //
+        "Caja $session->caja_id", //"Agregar $this->item", //
         "$this->module",
         'guarda',
         'post',
@@ -151,95 +153,99 @@ class Ventas extends BaseController
     }
     // return redirect()->to(base_url().'/articulos');
 // *    return redirect()->to(base_url()."/compras/muestraCompraPDF/$resultadoId");
-    // return redirect()->to(base_url()."/ventas/muestraVentaPDF/$resultadoId"); // Para probar
-    echo "¡Impresión del ticket de venta en desarrollo!";
+    return redirect()->to(base_url()."/ventas/muestraTicket/$resultadoId"); // Para probar
+    // echo "¡Impresión del ticket de venta en desarrollo!";
   }
 
 // *  public function muestraVentaPDF($compra_id)
-  public function muestraVentaPDF($venta_id)
+  public function muestraTicket($venta_id)
   {
     $data['venta_id'] = $venta_id;
 // *    $data['compra_id'] = $compra_id;
     echo view('/includes/header');
-    echo view('compras/ver_compra_pdf', $data);
+    echo view('ventas/ver_ticket', $data);
     echo view('/includes/footer');
   }
 
-  public function generaCompraPdf($compra_id)
+// *  public function generaTicket($compra_id)
+  public function generaTicket($venta_id)
   {
     $signo  = "$ ";
-    $datosCompra  = $this->dataModel->where('id', $compra_id)->first();
-    $detalleModel = new ComprasDetalleModel();
+// *    $datosCompra  = $this->dataModel->where('id', $compra_id)->first();
+    $datosventa  = $this->dataModel->where('id', $venta_id)->first();
+    $detalleModel = new VentasDetalleModel();
     // $detalleModel->select('*');
-    // $detalleModel->select('compra_id, articulo_id, nombre, cantidad, precio');
-    // $detalleCompra = $detalleModel->where('compra_id', $compra_id)->findAll();
-    $detalleCompra = $detalleModel->articulos($compra_id);
+    $detalleVenta = $detalleModel->articulos($venta_id);
     $userModel = new UsersModel();
-    // var_dump($datosCompra['usuario_id']);
-    $dataUser  = $userModel->usuario( $datosCompra['usuario_id'] );
+    // var_dump($datosventa['usuario_id']);
+    $dataUser  = $userModel->usuario( $datosventa['usuario_id'] );
     // var_dump($dataUser);
-    // var_dump($compra_id);
-    // var_dump($detalleCompra);
+    // var_dump($detalleVenta);
     // return;
     $session = session();
-    $pdf = new \FPDF('P', 'mm', 'letter');
+    $pdf = new \FPDF('P', 'mm', array(80, 200));
     // ob_start();    
     $pdf->AddPage();
-    $pdf->setMargins(10, 10, 10); //
-    $pdf->setTitle('Compra');     //
+    $pdf->setMargins(5, 5, 5); //
+    // $pdf->setTitle('Venta');     //
+    $pdf->setTitle('Ticket');     //
     $pdf->SetFont('Arial','B', 10);
-    $pdf->Cell(195, 5,'Entrada de productos', 0, 1, 'C');
+    // $pdf->Cell(70, 5,'Venta de productos', 0, 1, 'C');
+    $pdf->Cell(70, 5,$session->tiendaNombre, 0, 1, 'C');
     $pdf->SetFont('Arial','', 9);
     // $pdf->image( base_url() . "/assets/img/armyStoreMx.jpg", 170, 6, 23, 23, 'JPG');
     // $img = 'https://static.wixstatic.com/media/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png/v1/fit/w_2500,h_1330,al_c/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png';
     $img = $session->tiendaLogo;
-    $pdf->image( $img , 170, 6, 23, 23, 'PNG');
+    $pdf->image( $img , 10, 6, 12, 12, 'PNG');
     // $pdf->Cell(5, 5, str_repeat(' ', 0). "$session->tiendaNombre", 1, 1, 'L');
-    $pdf->Cell(65, 5, "$session->tiendaNombre", 0, 0, 'L');
-    $pdf->Cell(67, 5, utf8_decode ("Elaborada por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
-    $pdf->Cell(5, 5, utf8_decode ("Dirección: $session->tiendaDireccion"), 0, 1, 'L');
-    $pdf->Cell(5, 5, "Fecha y hora: ". $datosCompra['fecha_alta'], 0, 0, 'L');
+    // $pdf->Cell(65, 5, "$session->tiendaNombre", 0, 0, 'L'); // De compras
+    $pdf->Cell(80, 5, utf8_decode ("Venta por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
+    $pdf->Cell(56, 5, utf8_decode ("Dirección: $session->tiendaDireccion"), 0, 1, 'C');
+    $pdf->Cell(80, 5, "Fecha y hora: ". $datosventa['fecha_alta'], 0, 1, 'C');
+
+    $pdf->Cell(15, 5, "Ticket: ". $datosventa['folio'], 0, 0, 'L');
+
     $pdf->Ln(7);
     $pdf->SetFont('Arial','B', 8);
     // $pdf->SetFillColor(0, 0, 0);        // Color del fondo (Negro)
-    $pdf->SetFillColor(83, 105, 84);        // Color del fondo (Negro)
+    //*$pdf->SetFillColor(83, 105, 84);        // Color del fondo (Negro)
     // $pdf->SetTextColor(255, 255, 255);  // Color del texto (Blanco)
-    $pdf->SetTextColor(255, 255, 255);  // Color del texto (Blanco)
+    //*$pdf->SetTextColor(255, 255, 255);  // Color del texto (Blanco)
     //         Width, Height, Text, Border, LF, Alignment, Background
-    $pdf->Cell(190, 5, "Detalle de productos", 1, 1, 'C', 1);
-    $pdf->SetTextColor(0, 0, 0);  // Color del texto (Negro)
+    //*$pdf->Cell(190, 5, "Detalle de productos", 1, 1, 'C', 1);
+    // $pdf->SetTextColor(0, 0, 0);  // Color del texto (Negro)
     // $pdf->Cell(196, 5, "Detalle de productos", 1, 1, 'C');
-    $pdf->Cell(8, 5, "No", 1, 0, 'L');
-    $pdf->Cell(25, 5, utf8_decode ("Código"), 1, 0, 'L');
-    $pdf->Cell(77, 5, "Nombre", 1, 0, 'L');
-    $pdf->Cell(25, 5, "Precio", 1, 0, 'L');
-    $pdf->Cell(25, 5, "Cantidad", 1, 0, 'L');
-    $pdf->Cell(30, 5, "Importe", 1, 1, 'L');
-    $pdf->SetFont('Arial','', 8);
+    // $pdf->Cell(8, 5, "No", 1, 0, 'L');
+    // $pdf->Cell(7, 5, utf8_decode ("Código"), 1, 0, 'L');
+    $pdf->Cell(7, 5, "Cant.", 0, 0, 'L');
+    $pdf->Cell(35, 5, "Nombre", 0, 0, 'L');
+    $pdf->Cell(15, 5, "Precio", 0, 0, 'L');
+    $pdf->Cell(15, 5, "Importe", 0, 1, 'L');
+    $pdf->SetFont('Arial','', 7);
     $num    = 0;
     // $total  = 0;
     $piezas = 0;
-    foreach ($detalleCompra as $row) {
+    foreach ($detalleVenta as $row) {
       $num++;
       $precio  = number_format($row['precio'], 2, '.', ',');
       $importe = number_format($row['precio'] * $row['cantidad'], 2, '.', ',');
       $piezas += $row['cantidad'];
       // $total  += $row['precio'] * $row['cantidad'];
-      $pdf->Cell(8, 5, $num, 1, 0, 'R');
-      $pdf->Cell(25, 5, utf8_decode ($row['codigo']), 1, 0, 'L');
-      $pdf->Cell(77, 5, utf8_decode ($row['nombre']), 1, 0, 'L');
-      $pdf->Cell(25, 5, "$signo$precio" , 1, 0, 'R');
-      $pdf->Cell(25, 5,  $row['cantidad'] , 1, 0, 'C');
-      $pdf->Cell(30, 5, "$signo$importe", 1, 1, 'R');  
+      // $pdf->Cell(8, 5, $num, 1, 0, 'R');
+      // $pdf->Cell(25, 5, utf8_decode ($row['codigo']), 1, 0, 'L');
+      $pdf->Cell(7, 5,  $row['cantidad'] , 0, 0, 'C');
+      $pdf->Cell(35, 5, utf8_decode ($row['nombre']), 0, 0, 'L');
+      $pdf->Cell(15, 5, "$signo$precio" , 0, 0, 'R');
+      $pdf->Cell(15, 5, "$signo$importe", 0, 1, 'R');  
     }
-    $pdf->Cell(112, 5, '', 0, 0, 'R');
+    // $pdf->Cell(112, 5, '', 0, 0, 'R');
+    $pdf->Cell( 7, 5, number_format($piezas, 0, '.', ','), 0, 0, 'C');
     $pdf->Cell( 23, 5, 'Totales:', 0, 0, 'C');
-    $pdf->Cell( 25, 5, number_format($piezas, 0, '.', ','), 1, 0, 'C');
-    $pdf->Cell( 30, 5, $signo . number_format($datosCompra['total'], 2, '.', ','), 1, 1, 'R');
-    // $pdf->Cell(196, 5, $signo . number_format($datosCompra['total'], 2, '.', ','), 1, 1, 'R');
+    $pdf->Cell( 42, 5, $signo . number_format($datosventa['total'], 2, '.', ','), 0, 1, 'R');
+    // $pdf->Cell(196, 5, $signo . number_format($datosventa['total'], 2, '.', ','), 1, 1, 'R');
     $this->response->setHeader('Content-Type', 'application/pdf');
     // $pdf->Output();
-    $pdf->Output('compra_pdf.pdf', "I");
+    $pdf->Output('ticket.pdf', "I");
     // ob_end_flush();    
   }
 
