@@ -127,6 +127,7 @@ $webpage   = $session_user->webpage;
                   </div>
                 </div>
                 <a class="nav-link" href="<?=base_url()?>/ventas/venta"><i class="fas fa-cash-register"></i>  Caja</a>
+                <a class="nav-link" href="<?=base_url()?>/ventas/index"><i class="fas fa-shopping-cart"></i>  Ventas</a>
                 <div class="nav">
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAdmon" aria-expanded="false" aria-controls="collapseAdmon">
                     <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>

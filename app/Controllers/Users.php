@@ -407,7 +407,7 @@ class Users extends BaseController
     echo view('login');
   }
 
-  private function getSettingValue($keyName)
+  public static function getSettingValue($keyName)
   {
     $ConfigModel = new ConfiguracionesModel();
     $data = $ConfigModel->select('valor')

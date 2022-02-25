@@ -42,4 +42,18 @@ class VentasModel extends Model
     ]);
     return $this->insertID();
   }
+
+  public function obtener($activo = 1)
+  {
+    $this->select('ventas.*, usr.usuario AS cajero, cte.nombre AS cliente');
+    $this->join('usuarios AS usr', 'usr.id = ventas.usuario_id'); // INNER JOIN
+    $this->join('clientes AS cte', 'cte.id = ventas.cliente_id'); // INNER JOIN
+    $this->where('ventas.activo', $activo);
+    $this->orderBy('ventas.fecha_alta', 'DESC');
+    return $this->findAll();
+    // Bloque para depuración del query
+    // $datos = $this->findAll();
+    // print_r ($this->getLastQuery());
+    // return $datos;
+  }
 }

@@ -329,7 +329,8 @@ class Usuarios extends BaseController
     echo view('login');
   }
 
-  private function getSettingValue($keyName)
+  // private function getSettingValue($keyName)
+  public static function getSettingValue($keyName)
   {
     $ConfigModel = new ConfiguracionesModel();
     $data = $ConfigModel->select('valor')
@@ -372,10 +373,10 @@ class Usuarios extends BaseController
       'webpage'         => $this->getSettingOf('tienda_pagweb'),
       'mainWebPg'       => 'http://mamiyasedonde.com/',
       'mainBrand'       => 'POS - VS',
-      'tiendaLogo'      => $this->getSettingOf('tienda_logo'),
-      'tiendaNombre'    => $this->getSettingOf('tienda_nombre'),
-      'tiendaDireccion' => $this->getSettingOf('tienda_direccion'),
-      'ticketLeyenda'   => $this->getSettingOf('ticket_leyenda'),
+      // 'tiendaLogo'      => $this->getSettingOf('tienda_logo'),
+      // 'tiendaNombre'    => $this->getSettingOf('tienda_nombre'),
+      // 'tiendaDireccion' => $this->getSettingOf('tienda_direccion'),
+      // 'ticketLeyenda'   => $this->getSettingOf('ticket_leyenda'),
       // Agregar valores de configuración
     ];
     $session = session();

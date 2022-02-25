@@ -12,8 +12,8 @@ class Ventas extends BaseController
 {
   protected $item     = 'Venta';
   protected $items    = 's';
-  protected $enabled  = 'Disponibles';
-  protected $disabled = 'Eliminadas';
+  // protected $enabled  = 'Disponibles';
+  // protected $disabled = 'Eliminadas';
   protected $carrier  = [];
   protected $module;
   protected $dataModel;
@@ -39,19 +39,26 @@ class Ventas extends BaseController
     ];
   }
 
-  public function index($activo = 1)
+  public function index()
   {
+    $dataModel = $this->dataModel->obtener(1);
+    /*
     $dataModel = $this->dataModel
-                      ->select('folio, total, nombre, compras.id, compras.activo, compras.fecha_alta')
-                      ->join('usuarios', 'usuarios.id = compras.usuario_id')
-                      ->where('compras.activo', $activo)
+                       ->select($campos)
+    //  nombre, 
+                      // ->select('folio, total, nombre, ventas.id, ventas.activo')
+                      ->join('usuarios', 'usuarios.id = ventas.usuario_id')
+                      ->where('ventas.activo', $activo)
                       ->findAll();
+                      */
+    // $activo
     $dataWeb   = [
-       'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
+      //  'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
+       'title'   => "$this->items ",
        'item'    => $this->item,
        'path'    => $this->module,
-       'onOff'   => $activo,
-       'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
+      //  'onOff'   => $activo,
+      //  'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
        'delete'  => 'eliminar',
        'recover' => 'recuperar',
        'data'    => $dataModel
@@ -183,27 +190,32 @@ class Ventas extends BaseController
     $pdf = new \FPDF('P', 'mm', array(80, 200));
     // ob_start();    
     $pdf->AddPage();
-    $pdf->setMargins(5, 5, 5); //
+    $pdf->setMargins(5, 5, 1); //
     // $pdf->setTitle('Venta');     //
     $pdf->setTitle('Ticket');     //
-    $pdf->SetFont('Arial','B', 10);
+    $pdf->SetFont('Arial','B', 9);
     // $pdf->Cell(70, 5,'Venta de productos', 0, 1, 'C');
-    $pdf->Cell(70, 5,$session->tiendaNombre, 0, 1, 'C');
-    $pdf->SetFont('Arial','', 9);
+    $tiendaNombre = utf8_decode (Usuarios::getSettingValue('tienda_nombre'));
+    $pdf->Cell(70, 4, $tiendaNombre, 0, 1, 'C');
+// *    $pdf->Cell(70, 5,$session->tiendaNombre, 0, 1, 'C');
+
+    $pdf->SetFont('Arial','', 7);
     // $pdf->image( base_url() . "/assets/img/armyStoreMx.jpg", 170, 6, 23, 23, 'JPG');
     // $img = 'https://static.wixstatic.com/media/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png/v1/fit/w_2500,h_1330,al_c/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png';
-    $img = $session->tiendaLogo;
-    $pdf->image( $img , 10, 6, 12, 12, 'PNG');
+    $img = Usuarios::getSettingValue('tienda_logo');
+    $pdf->image( $img , 6, 6, 12, 12, 'PNG');
     // $pdf->Cell(5, 5, str_repeat(' ', 0). "$session->tiendaNombre", 1, 1, 'L');
     // $pdf->Cell(65, 5, "$session->tiendaNombre", 0, 0, 'L'); // De compras
-    $pdf->Cell(80, 5, utf8_decode ("Venta por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
-    $pdf->Cell(56, 5, utf8_decode ("Dirección: $session->tiendaDireccion"), 0, 1, 'C');
-    $pdf->Cell(80, 5, "Fecha y hora: ". $datosventa['fecha_alta'], 0, 1, 'C');
+    $pdf->Cell(80, 4, utf8_decode ("Venta por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
+    $domicilio = utf8_decode ("Dirección: ". Usuarios::getSettingValue('tienda_direccion'));
+    $pdf->Cell(73, 3, "$domicilio", 0, 1, 'C');
 
-    $pdf->Cell(15, 5, "Ticket: ". $datosventa['folio'], 0, 0, 'L');
+    $pdf->Cell(72, 3, "Fecha y hora: ". $datosventa['fecha_alta'], 0, 1, 'C');
 
-    $pdf->Ln(7);
-    $pdf->SetFont('Arial','B', 8);
+    $pdf->Cell(70, 3, "Ticket: ". $datosventa['folio'], 0, 0, 'C');
+
+    $pdf->Ln(3);
+    $pdf->SetFont('Arial','B', 7);
     // $pdf->SetFillColor(0, 0, 0);        // Color del fondo (Negro)
     //*$pdf->SetFillColor(83, 105, 84);        // Color del fondo (Negro)
     // $pdf->SetTextColor(255, 255, 255);  // Color del texto (Blanco)
@@ -214,8 +226,8 @@ class Ventas extends BaseController
     // $pdf->Cell(196, 5, "Detalle de productos", 1, 1, 'C');
     // $pdf->Cell(8, 5, "No", 1, 0, 'L');
     // $pdf->Cell(7, 5, utf8_decode ("Código"), 1, 0, 'L');
-    $pdf->Cell(7, 5, "Cant.", 0, 0, 'L');
-    $pdf->Cell(35, 5, "Nombre", 0, 0, 'L');
+    $pdf->Cell(9, 5, "Cant.", 0, 0, 'L');
+    $pdf->Cell(33, 5, "Nombre", 0, 0, 'L');
     $pdf->Cell(15, 5, "Precio", 0, 0, 'L');
     $pdf->Cell(15, 5, "Importe", 0, 1, 'L');
     $pdf->SetFont('Arial','', 7);
@@ -230,15 +242,18 @@ class Ventas extends BaseController
       // $total  += $row['precio'] * $row['cantidad'];
       // $pdf->Cell(8, 5, $num, 1, 0, 'R');
       // $pdf->Cell(25, 5, utf8_decode ($row['codigo']), 1, 0, 'L');
-      $pdf->Cell(7, 5,  $row['cantidad'] , 0, 0, 'C');
-      $pdf->Cell(35, 5, utf8_decode ($row['nombre']), 0, 0, 'L');
-      $pdf->Cell(15, 5, "$signo$precio" , 0, 0, 'R');
-      $pdf->Cell(15, 5, "$signo$importe", 0, 1, 'R');  
+      $pdf->Cell(9, 3,  $row['cantidad'] , 0, 0, 'C');
+      $pdf->Cell(33, 3, utf8_decode ($row['nombre']), 0, 0, 'L');
+      $pdf->Cell(15, 3, "$signo$precio" , 0, 0, 'R');
+      $pdf->Cell(15, 3, "$signo$importe", 0, 1, 'R');  
     }
-    // $pdf->Cell(112, 5, '', 0, 0, 'R');
-    $pdf->Cell( 7, 5, number_format($piezas, 0, '.', ','), 0, 0, 'C');
-    $pdf->Cell( 23, 5, 'Totales:', 0, 0, 'C');
-    $pdf->Cell( 42, 5, $signo . number_format($datosventa['total'], 2, '.', ','), 0, 1, 'R');
+    // $pdf->Cell(112, 3, '', 0, 0, 'R');
+    $pdf->Cell( 9, 3, number_format($piezas, 0, '.', ','), 0, 0, 'C');
+    $pdf->Cell( 21, 3, 'Totales:', 0, 0, 'C');
+    $pdf->Cell( 42, 3, $signo . number_format($datosventa['total'], 2, '.', ','), 0, 1, 'R');
+    $pdf->Ln(3);
+    $ticketLeyenda = utf8_decode(Usuarios::getSettingValue('ticket_leyenda'));
+    $pdf->Multicell( 72, 3, $ticketLeyenda, 0, 'C', 0);
     // $pdf->Cell(196, 5, $signo . number_format($datosventa['total'], 2, '.', ','), 1, 1, 'R');
     $this->response->setHeader('Content-Type', 'application/pdf');
     // $pdf->Output();
