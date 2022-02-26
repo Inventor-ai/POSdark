@@ -12,9 +12,10 @@ class Ventas extends BaseController
 {
   protected $item     = 'Venta';
   protected $items    = 's';
-  // protected $enabled  = 'Disponibles';
-  // protected $disabled = 'Eliminadas';
+  protected $enabled  = 'Disponibles'; // Cambiar por???
+  protected $disabled = 'Eliminadas';
   protected $carrier  = [];
+  protected $activo   = 1;
   protected $module;
   protected $dataModel;
 
@@ -41,7 +42,7 @@ class Ventas extends BaseController
 
   public function index()
   {
-    $dataModel = $this->dataModel->obtener(1);
+    $dataModel = $this->dataModel->obtener($this->activo);
     /*
     $dataModel = $this->dataModel
                        ->select($campos)
@@ -53,27 +54,38 @@ class Ventas extends BaseController
                       */
     // $activo
     $dataWeb   = [
-      //  'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
-       'title'   => "$this->items ",
+       'title'   => "$this->items ".strtolower($this->activo == 1 ? $this->enabled : $this->disabled),
+      //  'title'   => "$this->items ",
        'item'    => $this->item,
        'path'    => $this->module,
-      //  'onOff'   => $activo,
-      //  'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
+       'onOff'   => $this->activo,
+       'switch'  => $this->activo == 0 ? $this->enabled : $this->disabled,
        'delete'  => 'eliminar',
-       'recover' => 'recuperar',
+      //  'recover' => 'recuperar',
        'data'    => $dataModel
     ];
+    $vista = $this->activo == 1 ? 'list' : 'eliminados';
     echo view('/includes/header');
-    echo view("$this->module/list", $dataWeb);
+    echo view("$this->module/$vista", $dataWeb);
     echo view('/includes/footer');
   }
 
   public function eliminar($id, $activo = 0)
   {
-    $dataWeb = ['activo' => $activo];
-    // $msg = "¡Eliminación exitosa!";
-    $this->dataModel->update($id, $dataWeb);
+    $articuloModel = new ArticulosModel();
+    $detalleModel  = new VentasDetalleModel();
+    $articulos     = $detalleModel->where('venta_id', $id)->findAll();
+    foreach ($articulos as $articulo) {
+      $articuloModel->actualizaStock($articulo['articulo_id'], $articulo['cantidad']);
+    }
+    $this->dataModel->update($id, ['activo' => 0]);
     return redirect()->to(base_url()."/$this->module");
+  }
+
+  public function eliminadas()
+  {
+    $this->activo = 0;
+    $this->index();
   }
 
   public function recuperar($id)

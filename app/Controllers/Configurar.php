@@ -98,7 +98,18 @@ class Configurar extends BaseController
   }
 
   public function revisar()
-  { // Reset all checkboxes values to 0
+  {
+
+    $imagen = $this->request->getFile('logotipo');
+    $imagen->move(WRITEPATH .'/uploads');
+    // move_uploaded_file
+    var_dump(WRITEPATH);
+    var_dump($_POST);
+    var_dump($_FILES);
+    var_dump($imagen);
+    echo $imagen->getName();
+    return;
+    // Reset all checkboxes values to 0
     $chkBoxs = $this->dataModel
                     ->where("nombre like $this->chkFind", null,  false)
                     ->findAll();
@@ -113,7 +124,8 @@ class Configurar extends BaseController
                         ->select('id')
                         ->where('nombre', $nombre)
                         ->first();
-      $valor     = trim( $valor );
+      // $valor     = trim( $valor );
+      $valor = $valor;
 
       if (strpos($nombre, 'chk') && $valor === 'on') {
           $valor = 1; // set checked checkbox value to 1
@@ -132,6 +144,7 @@ class Configurar extends BaseController
           ]);
       }
     }
+
     return redirect()->to(base_url()."/$this->module");
     // $this->index();
   }

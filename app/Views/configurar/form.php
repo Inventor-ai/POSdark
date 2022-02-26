@@ -11,7 +11,7 @@
   // var_dump ($test);
 ?>
 <div class="row">
-  <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>" autocomplete="off">
+  <form method="<?=$method?>" enctype="multipart/form-data" action="<?=base_url()."/$path/$action"?>" autocomplete="off">
     <?php csrf_field();?>
     <div class="row mt-4">
       <div class="col-12 col-sm-9">
@@ -127,6 +127,17 @@
              <textarea class="form-control" name="ticket_leyenda" id="ticket_leyenda" 
               rows="3"><?=isset($ticket_leyenda)?$ticket_leyenda:''?></textarea>
           </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12 col-sm-6 mb-3">
+          <label for="logotipo">Logotipo</label>
+          <img src="" class="img-thumbnail" alt="Logotipo"
+          width="200"
+          >
+          <input type="file" name="logotipo" id="logotipo" accept="image/png,.jpg">
+          <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
+          
         </div>
       </div>
     </div>

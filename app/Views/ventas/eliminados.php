@@ -3,7 +3,7 @@
       <h4 class=""><?=$title?></h4>
   </div>
   <div class="col-12 col-sm-4 text-right" style="text-align:right">
-    <a href="<?=base_url()."/$path/".strtolower($switch)."/"?>" 
+    <a href="<?=base_url()."/$path/index/"?>" 
        class="btn btn-<?=($onOff == 0?"primary":"warning")?>"><?=$switch?>
     </a>
   </div>
@@ -48,17 +48,11 @@
               <?="$ ".number_format($dato['total'], 2, ".", ",")?>
           </td>
           <td class="text-center">
-            <a href="#confirm" data-bs-toggle="modal"
-               data-info="<?=$info?>" data-item="<?=$item?>"
-               data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
-               data-actionText="<?=$delete?>" class="btn btn-danger">
-              <i class="fas fa-trash"></i>
-            </a>
             <a href="<?=base_url()."/$path/muestraTicket/".$dato['id']?>"
-               class="btn btn-primary"><i class="fas fa-file-alt"></i>
+              class="btn btn-primary"><i class="fas fa-file-alt"></i>
             </a>
           </td>
-        </tr>
+        </tr>  
       <?php }?>
     </tbody>
   </table>
