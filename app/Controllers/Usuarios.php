@@ -341,27 +341,32 @@ class Usuarios extends BaseController
     return $data['valor'];
   }
 
-  private function getSettingOf($keyName = '')
+  public static function getSettingOf($keyName = '')
   {
     $defaultPage = 'http://mamiyasedonde.com/';
     $keyName = trim($keyName);
     if ($keyName == '') return '';
     if ($keyName == 'tienda_pagweb') {
-        $switch = $this->getSettingValue('tienda_vincularchk');
+        $switch = Usuarios::getSettingValue('tienda_vincularchk');
         if ($switch == 0 ) {
             return '';
             // return '#';
         } else {
-            $result = $this->getSettingValue($keyName);
+            $result = Usuarios::getSettingValue($keyName);
             if ($result == '') return $defaultPage;
             else return $result;
         }
     } else if ($keyName == 'tienda_siglas') {
-        $result = $this->getSettingValue($keyName);
+        $result = Usuarios::getSettingValue($keyName);
         if ($result == '') return 'POS - VS';
         return $result;
+    } else if ($keyName == 'tienda_logo') {
+        $result = Usuarios::getSettingValue($keyName);
+        if ($result == '' || !is_file( WRITEPATH.'../public/'.$result)  ) 
+            $result = 'assets/img/nologo';
+        return base_url()."/$result";
     } else {
-        return $this->getSettingValue($keyName);
+        return Usuarios::getSettingValue($keyName);
     }
   }
 
@@ -373,12 +378,13 @@ class Usuarios extends BaseController
       'webpage'         => $this->getSettingOf('tienda_pagweb'),
       'mainWebPg'       => 'http://mamiyasedonde.com/',
       'mainBrand'       => 'POS - VS',
-      // 'tiendaLogo'      => $this->getSettingOf('tienda_logo'),
+      'tiendaLogo'      => $this->getSettingOf('tienda_logo'),
       // 'tiendaNombre'    => $this->getSettingOf('tienda_nombre'),
       // 'tiendaDireccion' => $this->getSettingOf('tienda_direccion'),
       // 'ticketLeyenda'   => $this->getSettingOf('ticket_leyenda'),
       // Agregar valores de configuración
     ];
+    // var_dump($dataSession);
     $session = session();
     $session->set($dataSession);
   }

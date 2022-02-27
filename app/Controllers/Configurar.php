@@ -99,17 +99,17 @@ class Configurar extends BaseController
 
   public function revisar()
   {
-
-    $imagen = $this->request->getFile('logotipo');
-    $imagen->move(WRITEPATH .'/uploads');
-    // move_uploaded_file
-    var_dump(WRITEPATH);
-    var_dump($_POST);
-    var_dump($_FILES);
-    var_dump($imagen);
-    echo $imagen->getName();
-    return;
-    // Reset all checkboxes values to 0
+    $settings = $_POST;
+    $logoFKey = 'tienda_logo';
+    $logoPath = 'images';
+    $logoFile = 'logotipo';
+    $imagen = $this->request->getFile($logoFKey);
+    if ($imagen->getSize()) {
+        // echo "con imagen <br>";
+        $path = WRITEPATH . "../public/$logoPath/";
+        $imagen->move($path, $logoFile, TRUE);
+        $settings[ $logoFKey ] = "$logoPath/$logoFile";
+    }
     $chkBoxs = $this->dataModel
                     ->where("nombre like $this->chkFind", null,  false)
                     ->findAll();
@@ -119,20 +119,16 @@ class Configurar extends BaseController
     }
     
     // Get all the names of the controls and their values sent by the POST method
-    foreach ($_POST as $nombre => $valor) {
+    foreach ($settings as $nombre => $valor) {
       $dataModel = $this->dataModel
                         ->select('id')
                         ->where('nombre', $nombre)
                         ->first();
-      // $valor     = trim( $valor );
-      $valor = $valor;
-
       if (strpos($nombre, 'chk') && $valor === 'on') {
           $valor = 1; // set checked checkbox value to 1
       }
       // $valor => trim( $this->request->getPost('valor') ),
       // Validar
-      // echo "dataModel: "; var_dump($dataModel);
       if ($dataModel) { # existe update
           $this->dataModel->update( $dataModel['id'], 
                                   ['valor' => $valor ]
@@ -144,8 +140,7 @@ class Configurar extends BaseController
           ]);
       }
     }
-
-    return redirect()->to(base_url()."/$this->module");
+    return redirect()->to(base_url()."/$this->module"); // ok
     // $this->index();
   }
 

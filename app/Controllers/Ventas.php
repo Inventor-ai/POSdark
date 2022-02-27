@@ -214,8 +214,10 @@ class Ventas extends BaseController
     $pdf->SetFont('Arial','', 7);
     // $pdf->image( base_url() . "/assets/img/armyStoreMx.jpg", 170, 6, 23, 23, 'JPG');
     // $img = 'https://static.wixstatic.com/media/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png/v1/fit/w_2500,h_1330,al_c/cb0763_b933a7cf090a4889821743cd56b86c33~mv2.png';
-    $img = Usuarios::getSettingValue('tienda_logo');
+    // $img = Usuarios::getSettingValue('tienda_logo');
+    $img = Usuarios::getSettingOf('tienda_logo');
     $pdf->image( $img , 6, 6, 12, 12, 'PNG');
+    // $pdf->image( $img , 6, 6, 12, 12, 'PNG');
     // $pdf->Cell(5, 5, str_repeat(' ', 0). "$session->tiendaNombre", 1, 1, 'L');
     // $pdf->Cell(65, 5, "$session->tiendaNombre", 0, 0, 'L'); // De compras
     $pdf->Cell(80, 4, utf8_decode ("Venta por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
