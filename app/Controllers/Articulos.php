@@ -104,7 +104,24 @@ class Articulos extends BaseController
     if ($dataSet['existencias']   == '') $dataSet['existencias']   = 0;
     if ($dataSet['stock_minimo']  == '') $dataSet['stock_minimo']  = 0;
     if ($dataSet['inventariable'] == '') $dataSet['inventariable'] = 1;
+    $this->loadPhotos();
     return $dataSet;
+  }
+
+  private function loadPhotos()
+  {
+    // foreach (glob("*.*") as $nombre_fichero) {
+    //   echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "\n";
+    // }
+
+    // if ($imagefile = $this->request->getFiles()) {
+    //    foreach($imagefile['fotos'] as $img) {
+    //      if ($img->isValid() && ! $img->hasMoved()) {
+    //        $newName = $img->getRandomName();
+    //        $img->move(WRITEPATH . 'uploads', $newName);
+    //      }
+    //    }
+    // }
   }
 
   private function getValidate($method = "post")
@@ -175,10 +192,15 @@ class Articulos extends BaseController
         'post',
         $validation,
         $dataSet
-    ); 
+    );
+    // foreach (glob("*.*") as $nombre_fichero) {
+    //   echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "\n";
+    // }
+    $lista = glob("images/articulos/*.*");
     echo '<script>
       console.log("Agregar - dataSet:", '. json_encode($dataSet) .' );
       console.log("Agregar - dataWeb:", '. json_encode($dataWeb) .' );
+      console.log("Agregar - lista:", '. json_encode($lista) .' );
     </script>';
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);

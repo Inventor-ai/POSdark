@@ -59,7 +59,6 @@
       </div>
     </div>
     <!-- 
-    <hr>  
     <div class="row mt-4">      
       <div class="form-group">
         <div class="row">
@@ -86,7 +85,6 @@
         </div>
       </div>
     </div>
-    <hr>
     -->
     <div class="row mt-4">      
       <div class="form-group">
@@ -122,11 +120,10 @@
       <div class="row mt-4">
         <div class="col-12 col-sm-6 mb-3">
           <label for="logotipo">Logotipo</label>
-          <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" class="img-thumbnail" 
+          <img src="<?=base_url((isset($tienda_logo)?$tienda_logo:''))?>" class="img-thumbnail" 
                alt="Logotipo" width="150">
           <input type="file" name="tienda_logo" id="logotipo" accept="image/png,.jpg">
           <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
-          
         </div>
       </div>
     </div>

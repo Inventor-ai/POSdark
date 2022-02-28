@@ -1,5 +1,5 @@
 <div class="mb-3">
-  <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>"
+  <form method="<?=$method?>" enctype="multipart/form-data" action="<?=base_url()."/$path/$action"?>"
          autocomplete="off">
          <?php csrf_field();?>
     <div class="row mt-4">
@@ -97,6 +97,20 @@
         </div>
       </div>
     </div>
+    <div class="row mt-4">
+      <div class="col-12 col-sm-6 mb-3">
+        <label class="row mb-2" for="fotos">Imagen</label>
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <!--  class="img-thumbnail"  -->
+        <input class="mt-3" type="file" name="fotos[]" id="fotos" accept="image/png,.jpg" multiple>
+
+        <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
+      </div>
+    </div>
+
      <!-- 
     <div class="form-group mt-2">
       <div class="row">
@@ -122,3 +136,69 @@
     ?>
   </div>
 <?php }?>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalCarousel">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalCarousel" tabindex="-1" aria-labelledby="ModalCarouselLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalCarouselLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="<?=base_url('images/articulos/foto01.jpg')?>" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="<?=base_url('images/articulos/foto02.jpg')?>" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="<?=base_url('images/articulos/foto03.jpg')?>" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="<?=base_url('images/articulos/foto04.jfif')?>" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+              <img src="<?=base_url('images/articulos/foto05.jfif')?>" class="d-block w-100" alt="...">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPhotos(e) {
+    console.log('clicked img',  e);
+    var myModalPhotos = new bootstrap.Modal(document.getElementById('ModalCarousel'), { keyboard: false })
+    myModalPhotos.toggle();
+
+  }
+</script>

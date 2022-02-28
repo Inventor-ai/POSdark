@@ -15,6 +15,7 @@
     <thead>
       <tr>
         <th>Nombre</th>
+        <th>Foto</th>
         <th>Precio</th>
         <th>Unidad</th>
         <th>Existen</th>
@@ -27,6 +28,7 @@
     <tfoot>
       <tr>
         <th>Nombre</th>
+        <th>Foto</th>
         <th>Precio</th>
         <th>Unidad</th>
         <th>Existen</th>
@@ -40,6 +42,10 @@
       <?php foreach($data as $dato) {?>
         <tr>
           <td><?=$dato['nombre']?></td>
+          <td class="text-end">
+            <img src="<?=base_url('images/articulos/foto01.jpg')?>" style="width: 100px;" alt="...">
+            <!-- class="d-block w-100" -->
+          </td>
           <td class="text-end"><?=$dato['precio_venta']?></td>
           <td><?=$dato['id_unidad']?></td>
           <td ><?=$dato['existencias']?></td>
