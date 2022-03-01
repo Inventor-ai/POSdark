@@ -98,15 +98,55 @@
       </div>
     </div>
     <div class="row mt-4">
-      <div class="col-12 col-sm-6 mb-3">
+      <!-- <div class="col-12 col-sm-6 mb-3"> -->
+      <div class="col mb-3">
         <label class="row mb-2" for="fotos">Imagen</label>
         <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
              alt="foto" width="150" onclick="showPhotos(event)"
              class="img-fluid"
         >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
+        <img src="<?=base_url().'/'.(isset($tienda_logo)?$tienda_logo:'')?>" 
+             alt="foto" width="150" onclick="showPhotos(event)"
+             class="img-fluid"
+        >
         <!--  class="img-thumbnail"  -->
-        <input class="mt-3" type="file" name="fotos[]" id="fotos" accept="image/png,.jpg" multiple>
-
+        
+        <input class="mt-3" type="file" name="fotosOld[]" id="fotos" accept="image/png,.jpg" multiple>
+  			<div class="form-group mb-3">
+          <input class="mt-3" type="file" name="fotos[]" id="fotos" accept="image/png,.jpg" multiple>
+        </div>
         <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
       </div>
     </div>

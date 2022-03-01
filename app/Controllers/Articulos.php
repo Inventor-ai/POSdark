@@ -104,11 +104,11 @@ class Articulos extends BaseController
     if ($dataSet['existencias']   == '') $dataSet['existencias']   = 0;
     if ($dataSet['stock_minimo']  == '') $dataSet['stock_minimo']  = 0;
     if ($dataSet['inventariable'] == '') $dataSet['inventariable'] = 1;
-    $this->loadPhotos();
+    $this->photosLoaded();
     return $dataSet;
   }
 
-  private function loadPhotos()
+  private function photosLoaded()
   {
     // foreach (glob("*.*") as $nombre_fichero) {
     //   echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "\n";
@@ -123,6 +123,41 @@ class Articulos extends BaseController
     //    }
     // }
   }
+
+  public function testFile()
+  {
+    return view("$this->module/viewer");
+  }
+  
+    function uploadImage() {         
+      helper(['form', 'url']);
+      // $database = \Config\Database::connect();
+      // $db = $database->table('profile');    
+      $file = $this->validate([
+          'file' => [
+              'uploaded[file]',
+              'mime_in[file,image/png,image/jpg,image/jpeg]',
+              'max_size[file,4096]',
+          ]
+      ]);
+      print_r($file);
+      var_dump($file);
+      if (!$file) {
+          print_r('Wrong file type selected');
+      } else {
+          $imageFile = $this->request->getFile('file');
+          $imageFile->move(WRITEPATH . 'uploads');    
+          $data = [
+             'ile_name' =>  $imageFile->getName(),
+             'file_type'  => $imageFile->getClientMimeType()
+          ];
+          // $save = $db->insert($data);
+          print_r('Image uploaded correctly!');
+          var_dump($data);
+          print_r($data);
+        }
+    }
+ 
 
   private function getValidate($method = "post")
   {
