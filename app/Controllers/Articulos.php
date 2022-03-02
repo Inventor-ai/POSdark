@@ -108,20 +108,29 @@ class Articulos extends BaseController
     return $dataSet;
   }
 
-  private function photosLoaded()
+  public function photosLoaded($id)
   {
-    // foreach (glob("*.*") as $nombre_fichero) {
-    //   echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "\n";
-    // }
+    var_dump($id);
+    // var_dump($_GET);
+    // var_dump($_POST);
+    $fotos = glob("images/articulos/$id/*.*");
+    // foreach (glob("images/articulos/$id/*.*") as $nombre_fichero) {
+    var_dump($fotos);
+    foreach ($fotos as $nombre_fichero) {
+      echo '<a href="'. base_url($nombre_fichero) . '" target="_blank">' 
+           . base_url($nombre_fichero) . '</a>' . filesize($nombre_fichero) . "<br>";
+      // echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "<br>";
+    }
+    return;
 
-    // if ($imagefile = $this->request->getFiles()) {
-    //    foreach($imagefile['fotos'] as $img) {
-    //      if ($img->isValid() && ! $img->hasMoved()) {
-    //        $newName = $img->getRandomName();
-    //        $img->move(WRITEPATH . 'uploads', $newName);
-    //      }
-    //    }
-    // }
+    if ($imagefile = $this->request->getFiles()) {
+       foreach($imagefile['fotos'] as $img) {
+         if ($img->isValid() && ! $img->hasMoved()) {
+           $newName = $img->getRandomName();
+           $img->move(WRITEPATH . 'uploads', $newName);
+         }
+       }
+    }
   }
 
   public function testFile()

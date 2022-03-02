@@ -127,3 +127,6 @@ nb-configuration.xml
 
 # Template files
 /app/views/tables.html
+
+# images for testing
+public/images/
