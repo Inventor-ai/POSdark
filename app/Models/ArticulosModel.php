@@ -18,7 +18,7 @@ class ArticulosModel extends Model
     'precio_venta', 'precio_compra',
     'existencias', 'stock_minimo',
     'id_unidad'  , 'id_categoria',
-    'activo'  
+    'fotos', 'activo'  
   ];
 
   protected $useTimestamps = true;
@@ -37,6 +37,20 @@ class ArticulosModel extends Model
     $this->set('existencias', "existencias $operador $cantidad", FALSE);
     $this->where('id', $articulo_id);
     $this->update();
+  }
+
+  public function indexList($activo = 1)
+  {
+    $campos = 'articulos.id as id, articulos.nombre as nombre, fotos, '
+            . 'precio_venta, existencias, codigo, precio_compra, '
+            // . 'id_unidad, id_categoria, '
+            . 'unidades.nombre as unidad, '
+            . 'categorias.nombre as categoria';
+    $this->select($campos);
+    $this->where('articulos.activo', $activo);
+    $this->join('categorias', 'categorias.id = articulos.id_categoria');
+    $this->join('unidades'  , 'unidades.id = articulos.id_unidad');
+    return $this->findAll();
   }
 
 }

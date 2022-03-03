@@ -41,9 +41,10 @@ class Articulos extends BaseController
 
   public function index($activo = 1)
   {
-    $dataModel = $this->dataModel
-                      ->where('activo', $activo)
-                      ->findAll();
+    // $dataModel = $this->dataModel
+    //                   ->where('activo', $activo)
+    //                   ->findAll();
+    $dataModel = $this->dataModel->indexList($activo);
     $dataWeb   = [
        'title'   => "$this->items ".strtolower($activo == 1 ? $this->enabled : $this->disabled),
        'item'    => $this->item,
@@ -56,6 +57,7 @@ class Articulos extends BaseController
     ];
     echo view('/includes/header');
     echo view("$this->module/list", $dataWeb);
+    echo view('/includes/modal/carousel');
     echo view('/includes/footer');
   }
 
@@ -108,17 +110,21 @@ class Articulos extends BaseController
     return $dataSet;
   }
 
-  public function photosLoaded($id)
+  public function photosLoaded() {}
+
+  public function galleryPhotos($id)
   {
-    var_dump($id);
     // var_dump($_GET);
     // var_dump($_POST);
     $fotos = glob("images/articulos/$id/*.*");
-    // foreach (glob("images/articulos/$id/*.*") as $nombre_fichero) {
+    echo count($fotos);
+    return;
     var_dump($fotos);
+    var_dump($id);
+    // foreach (glob("images/articulos/$id/*.*") as $nombre_fichero) {
     foreach ($fotos as $nombre_fichero) {
       echo '<a href="'. base_url($nombre_fichero) . '" target="_blank">' 
-           . base_url($nombre_fichero) . '</a>' . filesize($nombre_fichero) . "<br>";
+           . base_url($nombre_fichero) . '</a>' . filesize($nombre_fichero)."<br>";
       // echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "<br>";
     }
     return;
@@ -133,12 +139,12 @@ class Articulos extends BaseController
     }
   }
 
-  public function testFile()
+  public function XtestFile()
   {
     return view("$this->module/viewer");
   }
   
-    function uploadImage() {         
+    function XuploadImage() {         
       helper(['form', 'url']);
       // $database = \Config\Database::connect();
       // $db = $database->table('profile');    

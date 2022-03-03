@@ -41,8 +41,19 @@ $(document).ready(function(){
      }
   })
 });
+
 // Scripts para ventas
   if (window.runSales) runSales();
+
+  // // Scripts para articulos
+  // if (window.setupZoom) setupZoom();
+
+  // if (window.setupZoom) {
+  //     console.log('setupZoom found');
+  //   } else {
+  //     console.log('setupZoom not found');
+  //   }
+
         </script>
 
 <script>

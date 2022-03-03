@@ -23,7 +23,10 @@ $webpage   = $session_user->webpage;
         <link href="<?=base_url()?>/css/styles.css" rel="stylesheet" />
         <link href="<?=base_url()?>/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
         <script src="<?=base_url()?>/js/all.min.js"></script>
+        <script src="<?=base_url('js/fancy-zoom/FancyZoom.js')?>"></script>
+        <script src="<?=base_url('js/fancy-zoom/FancyZoomHTML.js')?>"></script>
     </head>
+    <!-- <body class="sb-nav-fixed" onload="setupZoom()"> -->
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- <div class="sidebar-brand-icon rotate-n-15">
