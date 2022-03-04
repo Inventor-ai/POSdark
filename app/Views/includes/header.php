@@ -25,6 +25,7 @@ $webpage   = $session_user->webpage;
         <script src="<?=base_url()?>/js/all.min.js"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoom.js')?>"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoomHTML.js')?>"></script>
+        <link href="<?=base_url('vendor/dropify/css/dropify.min.css')?>" rel="stylesheet" />
     </head>
     <!-- <body class="sb-nav-fixed" onload="setupZoom()"> -->
     <body class="sb-nav-fixed">

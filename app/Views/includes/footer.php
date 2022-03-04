@@ -27,7 +27,7 @@
          
         <script src="<?=base_url()?>/vendor/jquery/jquery.min.js"></script>
         <script src="<?=base_url()?>/vendor/jquery-ui/jquery-ui.min.js"></script>
-
+        <script src="<?=base_url('js/dropify.min.js')?>"></script>
         <script>
 // Script para compras
 $(document).ready(function(){

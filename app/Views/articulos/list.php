@@ -54,9 +54,10 @@ $currency = "$ ";
                 //  . " - Existencias: ". $dato['existencias'];
         $prVenta  = $currency.number_format($dato['precio_venta'], 2, ".", ",");
         $prCompra = $currency.number_format($dato['precio_compra'], 2, ".", ",");
-        ?>
+      ?>
         <tr>
           <td><?=$dato['nombre']?></td>
+          <!-- photoZoom -->
           <!-- 
           <td class="text-end">
             <a href="<?=$imagen?>" title=" <?=$caption?>">
@@ -64,7 +65,8 @@ $currency = "$ ";
             </a>
           </td>
           -->
-          <td class="text-end">
+
+          <td class="text-end">  <!-- Carousel -->
             <!-- <a href="<?=$imagen?>" title=" <?=$caption?>"></a> -->
               <img src="<?=$imagen?>"
                    style="width: 65px;" 

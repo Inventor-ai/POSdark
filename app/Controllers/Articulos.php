@@ -94,6 +94,7 @@ class Articulos extends BaseController
       'inventariable' => $this->request->getPost('inventariable'),
       'id_unidad'     => $this->request->getPost('id_unidad'),
       'id_categoria'  => $this->request->getPost('id_categoria'),
+      'fotos'         => $this->request->getPost('fotos'),
         // 'activo'        => $this->request->getPost('activo')
     ];
     // Custom initialize section. Set default value by field
@@ -106,10 +107,12 @@ class Articulos extends BaseController
     if ($dataSet['existencias']   == '') $dataSet['existencias']   = 0;
     if ($dataSet['stock_minimo']  == '') $dataSet['stock_minimo']  = 0;
     if ($dataSet['inventariable'] == '') $dataSet['inventariable'] = 1;
+    if ($dataSet['fotos']         == '') $dataSet['fotos']  = 0;
     $this->photosLoaded();
     return $dataSet;
   }
 
+  // *** Fotos - Inicio
   public function photosLoaded() {}
 
   public function galleryPhotos($id)
@@ -172,7 +175,7 @@ class Articulos extends BaseController
           print_r($data);
         }
     }
- 
+  // *** Fotos - Fin
 
   private function getValidate($method = "post")
   {

@@ -74,7 +74,7 @@
       // const item = array[index];
       
       const button = document.createElement('button');
-      button.type             = 'button';
+      button.type  = 'button';
       // button.data-bs-target   = "#itemsGallery";  // Not valid
       // const bsTgt = document.createAttribute("data-bs-target");
       // bsTgt. value = "#itemsGallery";
