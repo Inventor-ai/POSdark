@@ -110,11 +110,12 @@
     <div class="form-group mt-2">
       <div class="row row-cols-auto" >
         <?php for ($i=0; $i < $data['fotos']; $i++) {
-          $j = $i + 1;
+          // $j = $i + 1;
           // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
           // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
           // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
-           $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
+          //  $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
+           $imagen = "/foto$i.png";
            $imagen = 'images/'."$path/".$data['id'].$imagen;
            $imagen = base_url ($imagen);
         ?>
@@ -130,13 +131,37 @@
         <?php } 
         $noImg = base_url('assets/img/img-no-disponible.jpg');
         ?>
+        <hr>
         <div class="row row cols-auto">
+          <p>line 2</p>
           <?php for ($i=0; $i < $data['fotos']; $i++) {
-             $j = $i + 1;
+            //  $j = $i + 1;
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
              // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
-              $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
+              // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
+              $imagen = "/foto$i.png";
+              $imagen = 'images/'."$path/".$data['id'].$imagen;
+              $imagen = base_url ($imagen);
+          ?>
+            <div class="col-4 col-sm-2">
+            <!-- <a href="<?=$imagen?>"> -->
+              <input type="file" class="dropify" id="<?="file$i"?>"
+                     data-default-file="<?=$imagen?>" style="width: 80px;" />
+            <!-- </a> -->
+            </div>
+          <?php } ?>
+        </div>
+        <hr>
+        <div class="row row cols-auto">
+          <p>line 3</p>
+          <?php for ($i=0; $i < $data['fotos']; $i++) {
+            //  $j = $i + 1;
+             // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
+             // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
+             // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
+              // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
+              $imagen = "/foto$i.png";
               $imagen = 'images/'."$path/".$data['id'].$imagen;
               $imagen = base_url ($imagen);
           ?>
@@ -146,15 +171,6 @@
             </a>
             </div>
           <?php } ?>
-          <!-- <div class="col mb-3">
-            <input type="file" class="dropify" data-default-file="<?=$noImg?>" />
-          </div>
-          <div class="col mb-3">
-            <input type="file" class="dropify" data-default-file="<?=$noImg?>" />
-          </div>
-          <div class="col mb-3">
-            <input type="file" class="dropify" data-default-file="<?=$noImg?>" />
-          </div> -->
         </div>
       </div>
     </div>

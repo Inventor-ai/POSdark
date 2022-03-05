@@ -9,14 +9,14 @@
       <div class="modal-body">
         <div id="itemsGallery" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
-            <!-- <button type="button" data-bs-target="#itemsGallery" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
+            <!-- 
+            <button type="button" data-bs-target="#itemsGallery" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true"></button>
             <button type="button" data-bs-target="#itemsGallery" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#itemsGallery" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            <button type="button" data-bs-target="#itemsGallery" data-bs-slide-to="3" aria-label="Slide 4"></button>
-            <button type="button" data-bs-target="#itemsGallery" data-bs-slide-to="4" aria-label="Slide 5"></button> -->
+            -->
           </div>
           <div class="carousel-inner">
-            <!-- <div class="carousel-item active">
+            <!-- 
+            <div class="carousel-item active">
               <img src="<?=base_url('images/articulos/foto01.jpg')?>" class="d-block w-100" alt="...">
             </div>
             <div class="carousel-item">
@@ -30,7 +30,8 @@
             </div>
             <div class="carousel-item">
               <img src="<?=base_url('images/articulos/foto05.jfif')?>" class="d-block w-100" alt="...">
-            </div> -->
+            </div> 
+        -->
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#itemsGallery" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -52,7 +53,8 @@
 
 <script>
   //  setupZoom();
-  function showPhotos(e, itemId, itemText, itemImgs) {
+//   function showPhotos(e, itemId, itemText, itemImgs) {
+  function showPhotos(itemId, itemText, itemImgs) {
     if (itemImgs == 0) return;
     const title = document.getElementById("ModalCarouselLabel");
     title.innerHTML = itemText;
@@ -106,7 +108,8 @@
         </div>
       */
       const photo = document.createElement('img');
-      photo.src = path + (index < 10 ? '0':'') + (index + 1) + ".png";
+    //   photo.src = path + (index < 10 ? '0':'') + (index + 1) + ".png";
+      photo.src = path + index + ".png";
       // photo.classList.add("d-block w-100");
       photo.classList.add("d-block");
       photo.classList.add("w-100");

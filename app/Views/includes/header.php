@@ -21,11 +21,11 @@ $webpage   = $session_user->webpage;
         <title><?= $tabTitle ?></title>
         <link href="<?=base_url()?>/css/datatables/style.css" rel="stylesheet" />
         <link href="<?=base_url()?>/css/styles.css" rel="stylesheet" />
-        <link href="<?=base_url()?>/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+        <link href="<?=base_url()?>/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
         <script src="<?=base_url()?>/js/all.min.js"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoom.js')?>"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoomHTML.js')?>"></script>
-        <link href="<?=base_url('vendor/dropify/css/dropify.min.css')?>" rel="stylesheet" />
+        <link href="<?=base_url('assets/dropify/css/dropify.min.css')?>" rel="stylesheet" />
     </head>
     <!-- <body class="sb-nav-fixed" onload="setupZoom()"> -->
     <body class="sb-nav-fixed">
