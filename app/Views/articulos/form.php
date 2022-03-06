@@ -187,4 +187,108 @@
   setupZoom();
 
   // $('.dropify').dropify();
+<!-- </script>
+<script> 
+-->
+
+  const imgSelected = document.querySelector('.imageSelect'),
+    previewImagen = document.querySelector('.imageBox');
+
+  // Escuchar cuando cambie
+  imgSelected.addEventListener("change", () => {
+    // Los archivos seleccionados, pueden ser muchos o uno
+    const archivos = imgSelected.files;
+    console.log(archivos);
+    // Si no hay archivos salimos de la función y quitamos la imagen
+    if (!archivos || !archivos.length) {
+      //$imagenPrevisualizacion.src = "";
+      console.log('Revisar efectos al guardar cambios');
+      return;
+    }
+    //previewImagen
+    for (i = 0; i < archivos.length; i++) {
+     //const img = document.createElement('img');
+     const img = document.createElement('IMG');
+     const objectURL = URL.createObjectURL(archivos[i]);
+     img.id = 'foto' + i ;
+     img.src = objectURL;
+     img.classList.add('item');
+     img.setAttribute ('dragable', true);
+
+     //const attr document.createAttribute('draggable');
+     //attr.value = 'true';
+     previewImagen.appendChild(img);
+    }
+    setDraggables();
+  });
+
+  function setDraggables() {
+    const items = document.querySelectorAll('.item'),
+   //boxes = document.querySelectorAll('.box'),
+    //imgHolder = document.querySelector('#previewImagen');
+    imgHolder = document.querySelector('.imageBox');
+    console.log(imgHolder);
+    items.forEach ( item => {
+      item.addEventListener('dragstart', dragStart);
+      item.addEventListener('dragend', dragEnd);
+    });
+
+   /*
+   boxes.forEach ( box => {
+     box.addEventListener('dragenter', dragEnter);
+     //box.addEventListener('dragover', dragEnter); // t2
+     box.addEventListener('dragover', dragOver);
+     box.addEventListener('dragleave', dragLeave);
+     box.addEventListener('drop', drop);
+   });
+   */
+   imgHolder.addEventListener('dragenter', dragEnter);
+     //box.addEventListener('dragover', dragEnter); // t2
+   imgHolder.addEventListener('dragover', dragOver);
+   imgHolder.addEventListener('dragleave', dragLeave);
+   imgHolder.addEventListener('drop', drop);
+  }
+
+ function dragStart(e) {
+   e.dataTransfer.setData('text/plain', e.target.id);
+   setTimeout( () => {
+     e.target.classList.add('hide');
+     console.log('dragStart: ', e);
+     origen = e.target.parentElement; //
+   }, 0);
+ }
+
+ function dragEnd(e) {
+   e.preventDefault();
+   const itemDragged = document.getElementById(e.target.id);
+   itemDragged.classList.remove('hide');
+ }
+
+ function dragEnter(e) {
+   e.preventDefault();
+   e.target.classList.add('drag-over');
+ }
+
+ function dragOver(e) { // t1
+   dragEnter(e);
+ }
+
+ function dragLeave(e) {
+   e.target.classList.remove('drag-over');
+ }
+
+ var origen, destino;
+ function drop(e) {
+   //e.target.classList.remove('drag-over');
+   dragLeave(e);
+   const id = e.dataTransfer.getData('text/plain');
+   // const itemDragged = document.getElementById(e.target.id);
+   const itemDragged = document.getElementById(id);
+  //  destino = e;
+  //  console.log('drop - e:', e);
+  //  console.log('drop - target:', e.target);
+   //  if (destino.target.localName == 'div' )
+   if (destino.target.nodeName == 'DIV' )
+       e.target.appendChild(itemDragged);
+ }
 </script>
