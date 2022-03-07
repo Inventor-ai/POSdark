@@ -24,7 +24,6 @@ class Articulos extends BaseController
     $replaceBy        = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items      = $this->item.$this->items;
     $this->module     = strtolower(str_replace($search, $replaceBy, $this->items));
-    $this->dataModel  = new UnidadesModel();
     $this->dataModel  = new ArticulosModel();
     $this->unidades   = new UnidadesModel();
     $this->categorias = new CategoriasModel();
@@ -362,6 +361,60 @@ class Articulos extends BaseController
       $returnData[]  = $data;
     }
     return json_encode($returnData);
+  }
+  
+  public function generaBarras()
+  {
+    $pdf = new \FPDF('P', 'mm', 'letter');
+    $pdf->AddPage();
+    $pdf->SetMargins(10, 1, 10);
+    $pdf->SetTitle( utf8_decode ("Códigos de barras"));
+    $items = $this->dataModel->codeList();
+    // // For demonstration purposes, get pararameters that are passed in through $_GET or set to the default value
+    // $filepath = (isset($_GET["filepath"])?$_GET["filepath"]:"");
+    // $text = (isset($_GET["text"])?$_GET["text"]:"0");
+    // $size = (isset($_GET["size"])?$_GET["size"]:"20");
+    // $orientation = (isset($_GET["orientation"])?$_GET["orientation"]:"horizontal");
+    // $code_type = (isset($_GET["codetype"])?$_GET["codetype"]:"code128");
+    // $print = (isset($_GET["print"])&&$_GET["print"]=='true'?true:false);
+    // $sizefactor = (isset($_GET["sizefactor"])?$_GET["sizefactor"]:"1");
+
+    // // This function call can be copied into your project and can be made from anywhere in your code
+    // barcode( $filepath, $text, $size, $orientation, $code_type, $print, $sizefactor );
+    $barCode     = new \Barcode();
+    $size        = "20";
+    $orientation = "horizontal";
+    // $code_type   = "code39";
+    $code_type   = "code128";
+    $print       = true;
+    $sizefactor  = "1";
+    $i = 0;
+    forEach ($items as $item ) {
+      //
+      $i++;
+      $text      = $item['codigo'];
+      $filepath  = WRITEPATH . "../public/images/barcodes/$text.png";
+      // $barCode   = new \Barcode();
+      // $barCode->create( $filepath, $text, $size, $orientation, $code_type, $print, $sizefactor );
+      $barCode->create( $filepath, $text, $size, $orientation, $code_type, $print );
+      // $img = $filepath;
+      // $pdf->image($filepath);  // Ok
+      $pdf->image( $filepath, 10 , 15 * $i , 40.7, 15, 'PNG');
+      $pdf->SetFont('Arial','', 7);  
+      $pdf->Cell( 40, 2, '', 0, 1, 'L');
+      $pdf->SetFont('Arial','', 15);      
+      $pdf->Cell( 45, 13, '', 0, 0, 'L');
+      $pdf->Cell( 50, 13, $item['nombre'], 0, 1, 'L');
+    }
+    $this->response->setHeader('Content-Type', 'application/pdf');
+    $pdf->Output('listaCodigos.pdf', "I");    
+  }
+
+  public function muestraLista()
+  {
+    echo view('/includes/header');
+    echo view('articulos/ver_codigos');
+    echo view('/includes/footer');
   }
 
 }

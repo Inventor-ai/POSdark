@@ -31,7 +31,7 @@ $venta_id = uniqid();
   </div>
 
   <div class="row">
-    <div class="col-12 col-sm-4  mb-3">
+    <div class="col-12 col-sm-4 mb-3">
       <label for="codigo" class="form-label">Código de barras</label>
       <label id="resultado_error" syle="color: red;" ></label>
       <input type="hidden" id="articulo_id" name="articulo_id">

@@ -80,9 +80,9 @@ class ComprasTemporal extends BaseController
       $filaTxt.= "<td> $filaNum </td>";
       $filaTxt.= "<td>".$row['codigo']  ."</td>";
       $filaTxt.= "<td>".$row['nombre']  ."</td>";
-      $filaTxt.= "<td class='text-end'>". number_format ($row['precio'], 2, ".", "," )  ."</td>";
       // $filaTxt.= "<td class='text-end'>". number_format ($row['cantidad'], 2, ".", "," )."</td>";
       $filaTxt.= "<td class='text-end'>". number_format ($row['cantidad'], 0, ".", "," )."</td>";
+      $filaTxt.= "<td class='text-end'>". number_format ($row['precio'], 2, ".", "," )  ."</td>";
       $filaTxt.= "<td class='text-end'>". number_format ($row['subtotal'], 2, ".", "," )."</td>";
       // $filaTxt.= "<td><a onclick='eliminarArticulo($params)'>";  // No funciona
       // $filaTxt.= '<td><a onclick="eliminarArticulo('.$params.')">'; // Funciona Ok  1/2

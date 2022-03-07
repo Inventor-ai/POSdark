@@ -224,8 +224,6 @@
 
   function setDraggables() {
     const items = document.querySelectorAll('.item'),
-   //boxes = document.querySelectorAll('.box'),
-    //imgHolder = document.querySelector('#previewImagen');
     imgHolder = document.querySelector('.imageBox');
     console.log(imgHolder);
     items.forEach ( item => {

@@ -53,4 +53,25 @@ class ArticulosModel extends Model
     return $this->findAll();
   }
 
+  public function total()
+  {
+    return $this->where('activo', 1)->countAllResults(); // num_rows
+  }
+
+  public function minimos()
+  {
+    $filtro = "stock_minimo >= existencias AND ";
+    $filtro = "$filtro inventariable = 1 AND ";
+    $filtro = "$filtro activo = 1";
+    $this->where($filtro);
+    return $this->countAllResults();
+  }
+
+  public function codeList($activo = 1)
+  {
+    $this->select('codigo, nombre');
+    $this->where('activo', $activo);
+    return $this->findAll();
+  }
+
 }

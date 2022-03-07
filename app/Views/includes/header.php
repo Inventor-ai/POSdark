@@ -19,10 +19,10 @@ $webpage   = $session_user->webpage;
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title><?= $tabTitle ?></title>
-        <link href="<?=base_url()?>/css/datatables/style.css" rel="stylesheet" />
-        <link href="<?=base_url()?>/css/styles.css" rel="stylesheet" />
-        <link href="<?=base_url()?>/js/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
-        <script src="<?=base_url()?>/js/all.min.js"></script>
+        <link href="<?=base_url('css/datatables/style.css')?>" rel="stylesheet" />
+        <link href="<?=base_url('css/styles.css')?>" rel="stylesheet" />
+        <link href="<?=base_url('js/jquery-ui/jquery-ui.min.css')?>" rel="stylesheet" />
+        <script src="<?=base_url('js/all.min.js')?>"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoom.js')?>"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoomHTML.js')?>"></script>
         <link href="<?=base_url('assets/dropify/css/dropify.min.css')?>" rel="stylesheet" />
@@ -62,7 +62,7 @@ $webpage   = $session_user->webpage;
                         <i class="fas fa-user fa-fw"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="<?=base_url()?>/usuarios/cambia_password">
+                        <li><a class="dropdown-item" href="<?=base_url('usuarios/cambia_password')?>">
                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> Cambiar contraseña
                         </a></li>
                         <li><a class="dropdown-item" href="#!">

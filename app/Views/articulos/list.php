@@ -12,6 +12,7 @@ $currency = "$ ";
     <?php if ($onOff) {?>
       <a href="<?=base_url()."/$path/agregar"?>" class="btn btn-primary">Agregar</a>
     <?php } ?>
+    <a href="<?=base_url("$path/muestraLista")?>" class="btn btn-dark">Código de barras</a>
   </div>
 </div>
 

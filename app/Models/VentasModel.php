@@ -56,4 +56,20 @@ class VentasModel extends Model
     // print_r ($this->getLastQuery());
     // return $datos;
   }
+  
+  public function conteoDelDia($fecha)
+  {
+    $filtro = "activo = 1 AND DATE(fecha_alta) = '$fecha'";
+    return $this->where($filtro)->countAllResults();
+  }
+
+  public function totalDelDia($fecha)
+  {
+    $this->select("SUM(total) AS totalVentas");
+    $filtro = "activo = 1 AND DATE(fecha_alta) = '$fecha'";
+    return $this->where($filtro)->first();
+    // return $this->where($filtro)->findAll();
+    // return $this->where($filtro)->getRow();
+  }
+  
 }

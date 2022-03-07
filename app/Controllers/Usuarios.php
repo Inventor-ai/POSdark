@@ -349,7 +349,7 @@ class Usuarios extends BaseController
     if ($keyName == 'tienda_pagweb') {
         $switch = Usuarios::getSettingValue('tienda_vincularchk');
         if ($switch == 0 ) {
-            return '';
+            return base_url('inicio');
             // return '#';
         } else {
             $result = Usuarios::getSettingValue($keyName);
@@ -411,7 +411,7 @@ class Usuarios extends BaseController
                 $session = session();
                 $session->set($dataSession);
                 $this->loadSettings();  // Valores de configuración
-                return redirect()->to(base_url().'/configurar');
+                return redirect()->to(base_url().'/inicio');
             } else {
                 $msg['error'] = '¡La contraseña no coincide!';
                 echo view('login', $msg);
