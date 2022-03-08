@@ -184,9 +184,12 @@ class Compras extends BaseController
 
   public function muestraCompraPDF($compra_id)
   {
-    $data['compra_id'] = $compra_id;
+    $dataWeb   = [
+      'path'   => $this->module,
+      'report' => "generaCompraPdf/$compra_id"
+    ];
     echo view('/includes/header');
-    echo view('compras/ver_compra_pdf', $data);
+    echo view('/includes/showRpt', $dataWeb);
     echo view('/includes/footer');
   }
 

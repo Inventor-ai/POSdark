@@ -74,4 +74,13 @@ class ArticulosModel extends Model
     return $this->findAll();
   }
 
+  public function listarMinimos()
+  {
+    $filtro = "stock_minimo >= existencias AND ";
+    $filtro = "$filtro inventariable = 1 AND ";
+    $filtro = "$filtro activo = 1";
+    $this->where($filtro);
+    return $this->findAll();
+  }
+
 }

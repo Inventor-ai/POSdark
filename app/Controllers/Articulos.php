@@ -393,7 +393,8 @@ class Articulos extends BaseController
       //
       $i++;
       $text      = $item['codigo'];
-      $filepath  = WRITEPATH . "../public/images/barcodes/$text.png";
+      // $filepath  = WRITEPATH . "../public/images/barcodes/$text.png"; // Ok 
+      $filepath  = "images/barcodes/$text.png"; // Ok
       // $barCode   = new \Barcode();
       // $barCode->create( $filepath, $text, $size, $orientation, $code_type, $print, $sizefactor );
       $barCode->create( $filepath, $text, $size, $orientation, $code_type, $print );
@@ -405,16 +406,65 @@ class Articulos extends BaseController
       $pdf->SetFont('Arial','', 15);      
       $pdf->Cell( 45, 13, '', 0, 0, 'L');
       $pdf->Cell( 50, 13, $item['nombre'], 0, 1, 'L');
+      unlink($filepath);
     }
     $this->response->setHeader('Content-Type', 'application/pdf');
     $pdf->Output('listaCodigos.pdf', "I");    
   }
 
-  public function muestraLista()
+  private function showReport($dataWeb)
   {
     echo view('/includes/header');
-    echo view('articulos/ver_codigos');
+    echo view('/includes/showRpt', $dataWeb);
     echo view('/includes/footer');
+  }
+
+  public function muestraCodigos()
+  {
+    $dataWeb   = [
+      'path'   => $this->module,
+      'report' => 'generaBarras'
+    ];
+    $this->showReport($dataWeb);
+  }
+
+  public function mostrarMinimos()
+  {
+    $dataWeb   = [
+      'path'   => $this->module,
+      'report' => 'listarMinimos'
+    ];
+    $this->showReport($dataWeb);
+  }
+
+  public function listarMinimos ()
+  {
+    $pdf = new \FPDF('P', 'mm', 'letter');
+    $pdf->AddPage();
+    $pdf->SetMargins(10, 1, 10);
+    $pdf->SetTitle( utf8_decode ("Resurtir"));
+    $pdf->SetFont('Arial','B', 10);
+    $img = Usuarios::getSettingOf('tienda_logo');
+    $pdf->image( $img , 10, 10, 20, 20, 'PNG');
+    $pdf->Cell( 0, 5, utf8_decode ('Reporte de artículos con stock mínimo'), 0, 1, 'C');
+    $pdf->Ln(20);
+    $pdf->Cell(40, 5, utf8_decode ('Código'), 1, 0, 'C');
+    $pdf->Cell(85, 5, utf8_decode ('Nombre'), 1, 0, 'C');
+    $pdf->Cell(30, 5, utf8_decode ('Existencias'), 1, 0, 'C');
+    $pdf->Cell(30, 5, utf8_decode ('Stock mínimo'), 1, 1, 'C');
+    $pdf->SetFont('Arial','', 10);
+    $items = $this->dataModel->listarMinimos();
+    /**/
+    $i = 0;
+    forEach ($items as $item ) {
+      $i++;
+      $pdf->Cell( 40, 5, $item['codigo'], 1, 0, 'L');
+      $pdf->Cell( 85, 5, utf8_decode ($item['nombre']), 1, 0, 'L');
+      $pdf->Cell( 30, 5, $item['existencias'], 1, 0, 'C');
+      $pdf->Cell( 30, 5, ($item['stock_minimo']), 1, 1, 'C');
+    }
+    $this->response->setHeader('Content-Type', 'application/pdf');
+    $pdf->Output('resurtir.pdf', "I");    
   }
 
 }

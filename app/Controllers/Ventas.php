@@ -176,13 +176,14 @@ class Ventas extends BaseController
     // echo "¡Impresión del ticket de venta en desarrollo!";
   }
 
-// *  public function muestraVentaPDF($compra_id)
   public function muestraTicket($venta_id)
   {
-    $data['venta_id'] = $venta_id;
-// *    $data['compra_id'] = $compra_id;
+    $dataWeb   = [
+      'path'   => $this->module,
+      'report' => "generaTicket/$venta_id"
+    ];
     echo view('/includes/header');
-    echo view('ventas/ver_ticket', $data);
+    echo view('/includes/showRpt', $dataWeb);
     echo view('/includes/footer');
   }
 
