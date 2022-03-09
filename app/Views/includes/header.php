@@ -142,7 +142,6 @@ $webpage   = $session_user->webpage;
                   <div class="collapse" id="collapseReportes" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="<?=base_url()?>/articulos/mostrarMinimos">Reporte mínimos</a>
-                      <a class="nav-link" href="<?=base_url()?>/compras">Compras</a>
                     </nav>
                   </div>
                 </div>

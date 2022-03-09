@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\RolesModel;
+use App\Models\PermisosModel;
 
 class Roles extends BaseController
 {
@@ -15,14 +16,16 @@ class Roles extends BaseController
   protected $carrier  = [];
   protected $module;
   protected $dataModel;
+  protected $permisosModel;
 
   public function __construct()
   {
-    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
-    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
-    $this->items     = $this->item.$this->items; // Exámenes - No concatenate
-    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
+    $search        = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
+    $replaceBy     = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
+    $this->items   = $this->item.$this->items; // Exámenes - No concatenate
+    $this->module  = strtolower(str_replace($search, $replaceBy, $this->items));
     $this->dataModel = new RolesModel();
+    $this->permisosModel = new PermisosModel();
   }
 
   private function setDataSet()
@@ -184,6 +187,21 @@ class Roles extends BaseController
     //   return $this->eliminar($id, 1);
     $this->eliminar($id, 1);
     return redirect()->to(base_url()."/$this->module/index/0");
+  }
+
+  public function detalles($idRol)
+  {
+    $dataWeb = $this->getDataSet( 
+        "$this->item - Asignar permisos",
+        "$this->module",
+        $this->insert,
+        'post',
+        null, // $validation,
+        null, // $dataSet
+    ); 
+    echo view('/includes/header');
+    echo view("$this->module/details", $dataWeb);
+    echo view('/includes/footer');
   }
 
 }

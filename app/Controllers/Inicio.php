@@ -15,6 +15,9 @@ class Inicio extends BaseController
 
   public function index()
   {
+    $session = session();
+    if (!isset($session->usuario_id)) 
+       return redirect()->to(base_url());
     // return view('tables');
     // $dataHead = [ 
     //    'tabTitle'  => 'Army 5tore - VS',
@@ -26,9 +29,9 @@ class Inicio extends BaseController
     $this->dataModel = new VentasModel();
     // $data['ventas'] = $this->dataModel->conteoDelDia( '2022-02-21' ); // 2022-02-21
     // $data['ventas'] = $this->dataModel->conteoDelDia( '2022-02-22' ); // 2022-02-22
-    $hoy = '2022-02-21';
+    // $hoy = '2022-02-21';
     // $hoy = '2022-02-22';
-    // $hoy = date('Y-m-d');
+    $hoy = date('Y-m-d');
     $data = $this->dataModel->totalDelDia( $hoy );
     $data['ventas'] = $this->dataModel->conteoDelDia( $hoy );
 

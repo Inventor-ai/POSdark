@@ -1,4 +1,5 @@
 <?php
+
   $webSite = 'Virtual Army 5tore ' . date('Y');
 ?>
                   </div>

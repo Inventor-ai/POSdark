@@ -7,6 +7,7 @@ use App\Models\VentasDetalleModel;
 use App\Models\ComprasTemporalModel; // Parche dejado en el video
 use App\Models\ArticulosModel;
 use App\Models\UsersModel;
+use App\Models\CajasModel;
 
 class Ventas extends BaseController
 {
@@ -140,17 +141,22 @@ class Ventas extends BaseController
     // var_dump($datos);
     // return; 
     $session = session();
+    $cajas = new CajasModel();
+    $caja = $cajas->where('id', $session->caja_id)->first();
     // $session->usuario_id;
 // *    $resultadoId = $this->dataModel->insertaCompra($venta_id, $total, $session->usuario_id);
-    $resultadoId = $this->dataModel->insertaVenta($venta_id, $total, $session->usuario_id, 
-                                                   $session->caja_id, 
-                                                   $cliente_id,
-                                                   $forma_pago);
+    $folio = $caja['folio'];
+    // $resultadoId = $this->dataModel->insertaVenta($venta_id, $total, $session->usuario_id, 
+    $resultadoId = $this->dataModel->insertaVenta($folio, $total, $session->usuario_id, 
+                                                  $session->caja_id, 
+                                                  $cliente_id,
+                                                  $forma_pago);
     // $this->tempModel = new ComprasTemporalModel(); // Si es local, ¿Para qué una variable de clase?
     $tempModel = new ComprasTemporalModel();
     // $detalleModel = new ComprasDetalleModel();
     if ($resultadoId) {
 // *        $resultadoCompra = $tempModel->porCompra($compra_id);
+        $cajas->update($session->caja_id, ['folio'] => $folio++);
         $resultadoVenta = $tempModel->porCompra($venta_id);
 // *        $detalleModel  = new ComprasDetalleModel();
         $detalleModel  = new VentasDetalleModel();
@@ -204,13 +210,11 @@ class Ventas extends BaseController
     // ob_start();    
     $pdf->AddPage();
     $pdf->setMargins(5, 5, 1); //
-    // $pdf->setTitle('Venta');     //
     $pdf->setTitle('Ticket');     //
     $pdf->SetFont('Arial','B', 9);
     // $pdf->Cell(70, 5,'Venta de productos', 0, 1, 'C');
     $tiendaNombre = utf8_decode (Usuarios::getSettingValue('tienda_nombre'));
     $pdf->Cell(70, 4, $tiendaNombre, 0, 1, 'C');
-// *    $pdf->Cell(70, 5,$session->tiendaNombre, 0, 1, 'C');
 
     $pdf->SetFont('Arial','', 7);
     // $pdf->image( base_url() . "/assets/img/armyStoreMx.jpg", 170, 6, 23, 23, 'JPG');
@@ -218,9 +222,7 @@ class Ventas extends BaseController
     // $img = Usuarios::getSettingValue('tienda_logo');
     $img = Usuarios::getSettingOf('tienda_logo');
     $pdf->image( $img , 6, 6, 12, 12, 'PNG');
-    // $pdf->image( $img , 6, 6, 12, 12, 'PNG');
     // $pdf->Cell(5, 5, str_repeat(' ', 0). "$session->tiendaNombre", 1, 1, 'L');
-    // $pdf->Cell(65, 5, "$session->tiendaNombre", 0, 0, 'L'); // De compras
     $pdf->Cell(80, 4, utf8_decode ("Venta por: $dataUser->usuario / $dataUser->nombre"), 0, 1, 'C');
     $domicilio = utf8_decode ("Dirección: ". Usuarios::getSettingValue('tienda_direccion'));
     $pdf->Cell(73, 3, "$domicilio", 0, 1, 'C');
@@ -240,7 +242,7 @@ class Ventas extends BaseController
     // $pdf->SetTextColor(0, 0, 0);  // Color del texto (Negro)
     // $pdf->Cell(196, 5, "Detalle de productos", 1, 1, 'C');
     // $pdf->Cell(8, 5, "No", 1, 0, 'L');
-    // $pdf->Cell(7, 5, utf8_decode ("Código"), 1, 0, 'L');
+  // $pdf->Cell(7, 5, utf8_decode ("Código"), 1, 0, 'L');
     $pdf->Cell(9, 5, "Cant.", 0, 0, 'L');
     $pdf->Cell(33, 5, "Nombre", 0, 0, 'L');
     $pdf->Cell(15, 5, "Precio", 0, 0, 'L');
@@ -277,48 +279,3 @@ class Ventas extends BaseController
   }
 
 }
-
-
-/*
-  private function XsetDataSet()
-  {
-    return;
-    $dataSet = [
-      'nombre' => trim( $this->request->getPost('nombre') ),
-      
-    ];
-    // Custom initialize section. Set default value by field
-    if ($dataSet['nombre'] == '') $dataSet['nombre'] = '';    
-    return $dataSet;
-  }
-
-  private function XgetValidate($method = "post")
-  {
-    return;
-    // $rules = [
-    //    'nombre' => 'required'
-    // ];
-    $rules = [
-      'nombre' => [
-         'rules' => 'required|is_unique[categorias.nombre]',
-         'errors' => [
-            'required'  => "Debe proporcionarse el {field}|{field}",
-            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!"
-         ]
-      ]
-    ];
-    return ($this->request->getMethod() == $method &&
-            $this->validate($rules) );
-  }
-  
-
-  private function XsetCarrier($dataWeb, $value = '', $key = 'id')
-  {
-    return;
-    $dataWeb[$key] = $value;
-    $this->carrier = [
-      'validation' => $this->validator,
-      'datos'      => $dataWeb
-    ];
-  }
-*/

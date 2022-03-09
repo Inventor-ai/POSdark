@@ -6,6 +6,7 @@ use App\Models\ConfiguracionesModel;
 use App\Models\UsuariosModel;
 use App\Models\CajasModel;
 use App\Models\RolesModel;
+use App\Models\LogsModel;
 
 class Usuarios extends BaseController
 {
@@ -20,10 +21,13 @@ class Usuarios extends BaseController
   protected $loadAll   = true;
   protected $minLength = 3;  // Fix Settings for tests
   protected $maxLength = 5;  // Fix Settings for tests
-  // protected $session   = false;
+  protected $session; //   = false
   protected $carrier   = [];
   protected $module;
   protected $dataModel;
+  protected $dataCajas;
+  protected $dataRoles;
+  protected $dataLogs;
 
   public function __construct()
   {
@@ -34,6 +38,8 @@ class Usuarios extends BaseController
     $this->dataModel = new UsuariosModel();
     $this->dataCajas = new CajasModel();
     $this->dataRoles = new RolesModel();
+    $this->dataLogs  = new LogsModel();
+    $this->session   = session();
   }
 
   private function setDataSet()
@@ -385,8 +391,18 @@ class Usuarios extends BaseController
       // Agregar valores de configuración
     ];
     // var_dump($dataSession);
-    $session = session();
-    $session->set($dataSession);
+    $this->session->set($dataSession);
+  }
+
+  private function logSesion( $event = '' )
+  {
+    $this->dataLogs->save([
+      'usuario_id' => $this->session->usuario_id, 
+      // 'evento'     => 'Inicio de sesión', // Cambiar por catálogo de eventos
+      'evento'     => $event, // Cambiar por catálogo de eventos
+      'ip'         => $_SERVER['REMOTE_ADDR'],
+      'detalles'   => $_SERVER['HTTP_USER_AGENT']
+    ]);
   }
 
   public function valida()
@@ -400,6 +416,14 @@ class Usuarios extends BaseController
                      ->first();
         if ($data) {
             if (password_verify( $pwd, $data['password'] )) {
+                // $this->dataLogs->save([
+                //   'usuario_id' => $data['id'], 
+                //   'evento'     => 'Inicio de sesión', // Cambiar por catálogo de eventos
+                //   'ip'         => $_SERVER['REMOTE_ADDR'],
+                //   'detalles'   => $_SERVER['HTTP_USER_AGENT']
+                // ]);
+                $this->logSesion( 'Inicio de sesión' );
+
                 $dataSession = [
                   'usuario_id' => $data['id'],
                   'usuario'    => $data['usuario'],
@@ -430,8 +454,8 @@ class Usuarios extends BaseController
 
   public function logout()
   {
-    $session = session();
-    $session->destroy(); 
+    $this->logSesion( 'Cierre de sesión' );
+    $this->session->destroy(); 
     // session_destroy();  // php
     return redirect()->to(base_url());
   }
