@@ -32,7 +32,7 @@
           <td><?=$dato['nombre']?></td>
           <?php if ($onOff) {?>
             <td class="text-center">
-              <a href="<?=base_url()."/$path/detalles/".$dato['id']?>"
+              <a href="<?=base_url()."/$path/detalles/".$dato['id']."/".$dato['nombre']?>"
                  class="btn btn-primary"><i class="fas fa-list-alt"></i>
               </a>
               <a href="#confirm" data-bs-toggle="modal"

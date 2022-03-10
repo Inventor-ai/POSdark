@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\RolesModel;
 use App\Models\PermisosModel;
+use App\Models\RolesPermisosModel;
 
 class Roles extends BaseController
 {
@@ -17,6 +18,7 @@ class Roles extends BaseController
   protected $module;
   protected $dataModel;
   protected $permisosModel;
+  protected $rolPermisosModel;
 
   public function __construct()
   {
@@ -26,6 +28,7 @@ class Roles extends BaseController
     $this->module  = strtolower(str_replace($search, $replaceBy, $this->items));
     $this->dataModel = new RolesModel();
     $this->permisosModel = new PermisosModel();
+    $this->rolPermisosModel = new RolesPermisosModel();
   }
 
   private function setDataSet()
@@ -189,19 +192,60 @@ class Roles extends BaseController
     return redirect()->to(base_url()."/$this->module/index/0");
   }
 
-  public function detalles($idRol)
+  public function detalles($idRol, $rol)
   {
+    // En el video mueve esto a otro controlador
+    // $permiso = 'ProductosCatalogo';
+    // $permiso = 'MenuProductos';
+    // $acceso = $this->rolPermisosModel->verificaPermisos ($idRol, $permiso);
+    // var_dump($acceso);
+    // return;
+
+    $filtro   = "nombre NOT LIKE 'X%'";
+    $recursos = $this->permisosModel->where($filtro)->findAll();
+    $permisos = $this->rolPermisosModel->select('permiso_id')
+                     ->where('rol_id', $idRol)->findAll();
+    $perfil = array();
+    forEach($permisos as $permiso) $perfil[] = $permiso['permiso_id'];
+    forEach ($recursos as $index => $recurso) {
+      $recursos[$index]['checked'] = in_array($recurso['id'], array_values($perfil)) ? "checked" : "";
+    }
+    $data = [
+      'idRol'    => $idRol,
+      'recursos' => $recursos
+    ];
     $dataWeb = $this->getDataSet( 
-        "$this->item - Asignar permisos",
+        "$this->item: $rol - Asignar permisos",
         "$this->module",
-        $this->insert,
+        "guardaPermisos",
         'post',
-        null, // $validation,
-        null, // $dataSet
+         null, // $validation,
+        $data
     ); 
     echo view('/includes/header');
     echo view("$this->module/details", $dataWeb);
     echo view('/includes/footer');
+  }
+
+  public function guardaPermisos()
+  {
+    // var_dump($_POST);
+    if ($this->request->getMethod() == 'post') {
+        $rolId    = $this->request->getPost('rol_id');
+        $permisos = $this->request->getPost('permisos');
+        $this->rolPermisosModel->where('rol_id', $rolId)->delete();
+        foreach( $permisos as $permiso) {
+          // var_dump($permiso);
+          $this->rolPermisosModel->save([
+            'rol_id'     => $rolId,
+            'permiso_id' => $permiso
+          ]);
+        }
+    }
+    return redirect()->to($this->module); // Own
+    // return redirect()->to(base_url ($this->module)); // Analogy own version
+    // return redirect()->to(base_url ("roles"));       // Video own analogy
+    // return redirect()->to(base_url () . "roles" );   // Video
   }
 
 }

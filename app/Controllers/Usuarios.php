@@ -395,9 +395,11 @@ class Usuarios extends BaseController
   }
 
   private function logSesion( $event = '' )
+  // private function logSesion( $usuario_id, $event = '' )
   {
     $this->dataLogs->save([
-      'usuario_id' => $this->session->usuario_id, 
+      'usuario_id' => $this->session->usuario_id,
+      // 'usuario_id' => $usuario_id,
       // 'evento'     => 'Inicio de sesión', // Cambiar por catálogo de eventos
       'evento'     => $event, // Cambiar por catálogo de eventos
       'ip'         => $_SERVER['REMOTE_ADDR'],
@@ -422,8 +424,7 @@ class Usuarios extends BaseController
                 //   'ip'         => $_SERVER['REMOTE_ADDR'],
                 //   'detalles'   => $_SERVER['HTTP_USER_AGENT']
                 // ]);
-                $this->logSesion( 'Inicio de sesión' );
-
+                // $this->logSesion( $data['id'], 'Inicio de sesión' );
                 $dataSession = [
                   'usuario_id' => $data['id'],
                   'usuario'    => $data['usuario'],
@@ -432,8 +433,11 @@ class Usuarios extends BaseController
                   'caja_id'    => $data['caja_id'],
                   
                 ];
-                $session = session();
-                $session->set($dataSession);
+                // $session = session();
+                // $session->set($dataSession);
+                $this->session->set($dataSession);
+                $this->logSesion( 'Inicio de sesión' );
+                // $this->logSesion( 'Inicio de sesión' );
                 $this->loadSettings();  // Valores de configuración
                 return redirect()->to(base_url().'/inicio');
             } else {
@@ -454,6 +458,7 @@ class Usuarios extends BaseController
 
   public function logout()
   {
+    // $this->logSesion( $this->session->usuario_id,  'Cierre de sesión' );
     $this->logSesion( 'Cierre de sesión' );
     $this->session->destroy(); 
     // session_destroy();  // php

@@ -1,7 +1,10 @@
+<?php
+//  var_dump($data['permisos']);
+//  var_dump($data['recursos']);
+?>
 <div class="mb-3">
-   <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>"
-         autocomplete="off">
-         <?php csrf_field();?>
+   <form method="<?=$method?>" action="<?=base_url()."/$path/$action"?>" autocomplete="off">
+    <?php csrf_field();?>
     <div class="row mt-4">
         <div class="col-12 col-sm-9">
             <h4 class=""><?=$title?></h4>
@@ -11,16 +14,17 @@
             <a href="<?=base_url()."/$path"?>" class="btn btn-primary mb-3">Regresar</a>
         </div>
     </div>
-     <input type="hidden" name="id" value="<?php //$data['id']?>">
-     <div class="form-group">
-       <div class="row">
-         <div class="col-12 col-sm-6">
-            <label class="mb-2" for="nombre">Nombre</label> 
-            <input class="form-control" type="text" name="nombre" 
-                   id="nombre" value="<?php //$data['nombre']?>" autofocus required>
-         </div>
-       </div>
-    </div>
+    <input type="hidden" name="rol_id" value="<?=$data['idRol']?>">
+    <?php
+      foreach($data['recursos'] as $recurso) {
+        $chkId = 'chk'.$recurso['id'];
+        echo '<div class="form-check">
+                <input class="form-check-input" type="checkbox" value="'.$recurso['id'].'"'.
+                'name="permisos[]" id="'.$chkId.'" '.$recurso['checked'].'> <label class="form-check-label"'.
+                ' for="'.$chkId.'"> '.$recurso['nombre'].'</label>
+              </div>';
+      }
+    ?>
    </form>
 </div>
 <?php if ($validation) {?>
