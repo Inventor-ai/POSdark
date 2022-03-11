@@ -3,6 +3,7 @@
 namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\CajasModel;
+use App\Models\CajasArqueoModel;
 
 class Cajas extends BaseController
 {
@@ -130,7 +131,7 @@ class Cajas extends BaseController
         'post',
         $validation,
         $dataSet
-    ); 
+    );
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
@@ -202,6 +203,51 @@ class Cajas extends BaseController
     //   return $this->eliminar($id, 1);
     $this->eliminar($id, 1);
     return redirect()->to(base_url()."/$this->module/index/0");
+  }
+
+  public function arqueo($idCaja)
+  {
+    $arqueoModel = new CajasArqueoModel();
+    $arqueo = $arqueoModel->getDatos($idCaja);
+    echo "Arqueo de la caja $idCaja";
+/**/
+    $activo = 1;
+    $dataWeb   = [
+       'title'   => "Cierres de caja",
+       'item'    => $this->item,
+       'path'    => $this->module,
+       'onOff'   => $activo,
+       'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
+       'delete'  => 'dEliminar registro',
+       'close'   => 'cEliminar registro',
+       'data'    => $arqueo
+    ];
+    echo view('/includes/header');
+    echo view("$this->module/arqueos", $dataWeb);
+    echo view('/includes/footer');
+  }
+
+  public function nuevo_arqueo()
+  {
+    $session = session();
+    if ($this->request->getMethod() == 'post') {
+        # code...
+    } else {
+        $caja = $this->dataModel->where('id', $session->caja_id)->first();
+        $dataWeb   = [
+          'title'   => "Cierres de caja",
+        //   'item'    => $this->item,
+        //   'path'    => $this->module,
+        //  //  'onOff'   => $activo,
+        //  //  'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
+        //   'delete'  => 'dEliminar registro',
+        //   'close'   => 'cEliminar registro',
+          'data'    => $caja
+        ];
+        echo view('/includes/header');
+        echo view("$this->module/nuevo_arqueo", $dataWeb);
+        echo view('/includes/footer');
+    }
   }
 
 }

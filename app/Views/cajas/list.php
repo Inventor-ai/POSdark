@@ -38,6 +38,10 @@
           <td><?=$dato['folio']?></td>
           <?php if ($onOff) {?>
             <td class="text-center">
+              <a href="<?=base_url()."/$path/arqueo/".$dato['id']?>"
+                 class="btn btn-primary">
+                <i class="fas fa-clipboard-list"></i>
+              </a>
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
                  data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"

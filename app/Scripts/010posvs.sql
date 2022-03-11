@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 09-03-2022 a las 05:40:48
+-- Tiempo de generación: 11-03-2022 a las 04:41:35
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.3.21
 
@@ -85,6 +85,26 @@ CREATE TABLE IF NOT EXISTS `cajas` (
 INSERT INTO `cajas` (`id`, `caja`, `nombre`, `folio`, `activo`, `fecha_alta`, `fecha_edit`) VALUES
 (1, '1', 'Caja general', 1, 1, '2022-02-09 03:40:15', '2022-02-09 03:41:24'),
 (2, '2', 'Caja secundaria', 1, 1, '2022-02-09 03:42:52', '2022-02-09 03:42:52');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cajas_arqueo`
+--
+
+DROP TABLE IF EXISTS `cajas_arqueo`;
+CREATE TABLE IF NOT EXISTS `cajas_arqueo` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `caja_id` int NOT NULL,
+  `usuario_id` int NOT NULL,
+  `fecha_inicio` datetime NOT NULL,
+  `fecha_fin` datetime DEFAULT NULL,
+  `monto_inicial` decimal(10,2) NOT NULL,
+  `monto_final` decimal(10,2) DEFAULT NULL,
+  `total_ventas` int NOT NULL,
+  `estatus` int NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -294,7 +314,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `ip` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `detalles` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `log`
@@ -302,7 +322,10 @@ CREATE TABLE IF NOT EXISTS `log` (
 
 INSERT INTO `log` (`id`, `usuario_id`, `evento`, `fecha`, `ip`, `detalles`) VALUES
 (1, 3, 'Inicio de sesión', '2022-03-08 22:50:16', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.10'),
-(2, 3, 'Cierre de sesión', '2022-03-09 00:13:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.10');
+(2, 3, 'Cierre de sesión', '2022-03-09 00:13:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.10'),
+(3, 3, 'Inicio de sesión', '2022-03-10 03:30:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(4, 3, 'Cierre de sesión', '2022-03-10 04:37:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(5, 3, 'Inicio de sesión', '2022-03-10 04:37:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51');
 
 -- --------------------------------------------------------
 
@@ -400,17 +423,20 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `rol_id` int NOT NULL,
   `permiso_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `roles_permisos`
 --
 
 INSERT INTO `roles_permisos` (`id`, `rol_id`, `permiso_id`) VALUES
-(1, 2, 1),
-(2, 2, 2),
-(3, 2, 5),
-(4, 2, 6);
+(80, 2, 13),
+(79, 2, 11),
+(78, 2, 10),
+(77, 2, 9),
+(76, 2, 5),
+(75, 2, 2),
+(74, 2, 1);
 
 -- --------------------------------------------------------
 
