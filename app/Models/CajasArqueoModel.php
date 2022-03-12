@@ -31,16 +31,14 @@ class CajasArqueoModel extends Model
 
   public function getDatos( $idCaja )
   {
-    $this->select('cajas_arqueo.*, cajas.nombre');
-    // $this->select('cajas_arqueo.*, nombre');
-    // $this->join('cajas_arqueo', 'cajas.caja = cajas_arqueo.caja_id');
-    $this->join('cajas', 'cajas_arqueo.caja_id = cajas.caja');
-    $this->where('cajas_arqueo.caja_id', $idCaja); // Video
-    // $this->where('cajas.caja', $idCaja); // Own 
-    $this->orderBy('cajas_arqueo.id', 'DESC'); // Own 
-    $datos = $this->findAll();  // Video
-    return $datos;              // Video
-    // return $this->findAll();       // Own
-
+    // $this->select('cajas_arqueo.*, nombre'); // Own ok
+    $this->select('nombre, cajas_arqueo.*');    // Own ok
+    $this->join('cajas', 'cajas.caja = cajas_arqueo.caja_id');
+    // $this->where('cajas_arqueo.caja_id', $idCaja); // Video
+    $this->where('cajas.caja', $idCaja);        // Own 
+    $this->orderBy('cajas_arqueo.id', 'DESC');  // Own 
+    return $this->findAll();       // Own
+    // $datos = $this->findAll();  // Video
+    // return $datos;              // Video
   }
 }

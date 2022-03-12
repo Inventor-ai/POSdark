@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\CajasModel;
 use App\Models\CajasArqueoModel;
+use App\Models\VentasModel;
 
 class Cajas extends BaseController
 {
@@ -209,17 +210,18 @@ class Cajas extends BaseController
   {
     $arqueoModel = new CajasArqueoModel();
     $arqueo = $arqueoModel->getDatos($idCaja);
-    echo "Arqueo de la caja $idCaja";
-/**/
-    $activo = 1;
+    // echo "Arqueo de la caja $idCaja";
+    /**/
+    $activo = 1; // Eliminar variable y envío?
     $dataWeb   = [
-       'title'   => "Cierres de caja",
+      //  'title'   => "Cierres de caja",
+       'title'   => "Apertura de caja $idCaja",
        'item'    => $this->item,
        'path'    => $this->module,
-       'onOff'   => $activo,
-       'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
-       'delete'  => 'dEliminar registro',
-       'close'   => 'cEliminar registro',
+       'onOff'   => $activo,                                         // ??
+       'switch'  => $activo == 0 ? $this->enabled : $this->disabled, // ??
+       'close'   => 'Cerrar ',                            // ??
+       'delete'  => 'dEliminar registro',                            // ??
        'data'    => $arqueo
     ];
     echo view('/includes/header');
@@ -230,22 +232,94 @@ class Cajas extends BaseController
   public function nuevo_arqueo()
   {
     $session = session();
+    $arqueoModel = new CajasArqueoModel();
+    $existe = $arqueoModel->where([
+                'caja_id' => $session->caja_id,
+                "estatus" => 1
+    ])->countAllResults();
+    if ($existe > 0) {
+        echo "¡La caja ya está abierta!";
+        exit;
+    }
     if ($this->request->getMethod() == 'post') {
-        # code...
+        $fecha = date('Y-m-d H:i:s');
+        $arqueo = $arqueoModel->save([
+            'caja_id'       => $session->caja_id,
+            'usuario_id'    => $session->usuario_id,
+            'monto_inicial' => $this->request->getPost('monto_inicial'),
+            'fecha_inicio'  => $fecha,
+        ]);
+        return redirect()->to(base_url($this->module));
     } else {
         $caja = $this->dataModel->where('id', $session->caja_id)->first();
-        $dataWeb   = [
-          'title'   => "Cierres de caja",
-        //   'item'    => $this->item,
-        //   'path'    => $this->module,
-        //  //  'onOff'   => $activo,
-        //  //  'switch'  => $activo == 0 ? $this->enabled : $this->disabled,
-        //   'delete'  => 'dEliminar registro',
-        //   'close'   => 'cEliminar registro',
-          'data'    => $caja
-        ];
+        $dataWeb = $this->getDataSet(
+           "Apertura de caja",
+           $this->module,
+           "nuevo_arqueo",
+           "post",
+           null,
+           $caja
+        );    
         echo view('/includes/header');
         echo view("$this->module/nuevo_arqueo", $dataWeb);
+        echo view('/includes/footer');
+    }
+  }
+
+  public function cerrar()
+  {
+    $session = session();
+    $arqueoModel = new CajasArqueoModel();
+    $ventasModel = new VentasModel();
+    // $existe = $arqueoModel->where([
+    //             'caja_id' => $session->caja_id,
+    //             "estatus" => 1
+    // ])->countAllResults();
+    // if ($existe > 0) {
+    //     echo "¡La caja ya está abierta!";
+    //     exit;
+    // }
+    if ($this->request->getMethod() == 'post') {
+        $fecha = date('Y-m-d H:i:s');
+        /*
+        $arqueo = $arqueoModel->save([
+            'caja_id'       => $session->caja_id,
+            'usuario_id'    => $session->usuario_id,
+            'monto_inicial' => $this->request->getPost('monto_inicial'),
+            'fecha_inicio'  => $fecha,
+            // 'fecha_fin'     => null,
+            // 'monto_final'   => null,
+            // 'total_ventas'  => null,
+            // 'estatus'       => 1     // video
+        ]);
+        */
+        return redirect()->to(base_url($this->module));
+    } else {
+        $monto  = $ventasModel->totalDelDia( date('Y-m-d'));
+        $arqueo = $arqueoModel->where([
+                    'caja_id' => $session->caja_id,
+                    "estatus" => 1
+        ])->First();
+        $caja = $this->dataModel->where('id', $session->caja_id)->first();
+        $data           = $monto;
+        $data['caja']   = $caja;
+        $data['arqueo'] = $arqueo;
+        //     'arqueo' => $arqueo
+        // $data = [
+        //          'caja'   => $caja,
+        //          'arqueo' => $arqueo,
+        //          'monto'  => $monto
+        // ];
+        $dataWeb = $this->getDataSet(
+           "Cierre de caja", // Ok
+           $this->module,    // 
+           "nuevo_arqueo",   // 
+           "post",           // 
+           null,             // 
+           $data             // ok
+        );    
+        echo view('/includes/header');
+        echo view("$this->module/cerrar", $dataWeb);
         echo view('/includes/footer');
     }
   }

@@ -147,7 +147,7 @@ class Ventas extends BaseController
 // *    $resultadoId = $this->dataModel->insertaCompra($venta_id, $total, $session->usuario_id);
     $folio = $caja['folio'];
     // $resultadoId = $this->dataModel->insertaVenta($venta_id, $total, $session->usuario_id, 
-    $resultadoId = $this->dataModel->insertaVenta($folio, $total, $session->usuario_id, 
+    $resultadoId = $this->dataModel->insertaVenta($folio++, $total, $session->usuario_id, 
                                                   $session->caja_id, 
                                                   $cliente_id,
                                                   $forma_pago);
@@ -156,7 +156,7 @@ class Ventas extends BaseController
     // $detalleModel = new ComprasDetalleModel();
     if ($resultadoId) {
 // *        $resultadoCompra = $tempModel->porCompra($compra_id);
-        $cajas->update($session->caja_id, ['folio'] => $folio++);
+        $cajas->update($session->caja_id, ['folio' => $folio]);
         $resultadoVenta = $tempModel->porCompra($venta_id);
 // *        $detalleModel  = new ComprasDetalleModel();
         $detalleModel  = new VentasDetalleModel();

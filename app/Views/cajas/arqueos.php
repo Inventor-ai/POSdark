@@ -1,3 +1,13 @@
+<?php
+  // var_dump($data);
+  // $dato = $data[0];
+  // var_dump($dato);
+  // echo "<br> dato 0: ";
+  // echo  $dato['fecha_final'] == null ? 'nada' : $dato['fecha_final'];
+  // echo "<br> dato 1: ";
+  // echo isset ($dato['fecha_final']) ? 'fecha_final' : 'no set';
+  // return;
+?>
 <div class="row mt-4">
   <div class="col-12 col-sm-8">
       <h4 class=""><?=$title?></h4>
@@ -41,15 +51,15 @@
           <td><?=$dato['id']?></td>
           <td><?=$dato['fecha_inicio']?></td>
           <td><?=$dato['fecha_final']?></td>
-          <td><?=$dato['monto_inicial']?></td>
-          <td><?=$dato['monto_final']?></td>
-          <td><?=$dato['total_ventas']?></td>
+          <td class="text-end"><?="$ ".number_format($dato['monto_inicial'], 2, ".", ",")?></td>
+          <td class="text-end"><?="$ ".number_format($dato['monto_final'], 2, ".", ",")?></td>
+          <td class="text-end"><?=$dato['total_ventas']?></td>
           <?php if ($dato['estatus'] == 1 ) { ?>
             <td>Abierta</td>
             <td>
               <a href="#confirm" data-bs-toggle="modal"
                   data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                  data-href="<?=base_url()."/$path/cerrar/".$dato['id']?>"
+                  data-href="<?=base_url("/$path/cerrar/".$dato['id'])?>"
                   data-actionText="<?=$close?>" class="btn btn-danger">
                 <i class="fas fa-lock"></i>
               </a>
@@ -59,7 +69,7 @@
             <td>            
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                 data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
+                 data-href="<?=base_url("/$path/eliminar/".$dato['id'])?>"
                  data-actionText="<?=$delete?>" class="btn btn-danger">
                 <i class="fas fa-print"></i>
               </a>
