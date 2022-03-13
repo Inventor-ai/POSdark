@@ -221,7 +221,7 @@ class Cajas extends BaseController
        'onOff'   => $activo,                                         // ??
        'switch'  => $activo == 0 ? $this->enabled : $this->disabled, // ??
        'close'   => 'Cerrar ',                            // ??
-       'delete'  => 'dEliminar registro',                            // ??
+       'print'   => 'imprimir',                            // ??
        'data'    => $arqueo
     ];
     echo view('/includes/header');
@@ -242,7 +242,7 @@ class Cajas extends BaseController
         exit;
     }
     if ($this->request->getMethod() == 'post') {
-        $fecha = date('Y-m-d H:i:s');
+        $fecha  = date('Y-m-d H:i:s');
         $arqueo = $arqueoModel->save([
             'caja_id'       => $session->caja_id,
             'usuario_id'    => $session->usuario_id,
@@ -251,7 +251,7 @@ class Cajas extends BaseController
         ]);
         return redirect()->to(base_url($this->module));
     } else {
-        $caja = $this->dataModel->where('id', $session->caja_id)->first();
+        $caja    = $this->dataModel->where('id', $session->caja_id)->first();
         $dataWeb = $this->getDataSet(
            "Apertura de caja",
            $this->module,
@@ -281,18 +281,23 @@ class Cajas extends BaseController
     // }
     if ($this->request->getMethod() == 'post') {
         $fecha = date('Y-m-d H:i:s');
+        // print_r ($ventasModel->conteoDelDia( date('Y-m-d')));
+        // $ventasModel->conteoDelDia( date('Y-m-d') ), // null, 
         /*
-        $arqueo = $arqueoModel->save([
-            'caja_id'       => $session->caja_id,
-            'usuario_id'    => $session->usuario_id,
-            'monto_inicial' => $this->request->getPost('monto_inicial'),
-            'fecha_inicio'  => $fecha,
-            // 'fecha_fin'     => null,
-            // 'monto_final'   => null,
-            // 'total_ventas'  => null,
-            // 'estatus'       => 1     // video
-        ]);
         */
+        $arqueo = $arqueoModel->update($this->request->getPost('arqueo_id'),
+          [
+            // 'caja_id'       => $session->caja_id,
+            // 'usuario_id'    => $session->usuario_id,
+            // 'monto_inicial' => $this->request->getPost('monto_inicial'),
+            // 'fecha_inicio'  => $fecha,
+            'fecha_final'   => $fecha,
+            'monto_final'   => $this->request->getPost('monto_final'),
+            // 'total_ventas'  => $this->request->getPost('total_ventas'),
+            'total_ventas'  => $this->request->getPost('conteo_ventas'),
+            'estatus'       => 0
+        ]);
+
         return redirect()->to(base_url($this->module));
     } else {
         $monto  = $ventasModel->totalDelDia( date('Y-m-d'));
@@ -301,9 +306,17 @@ class Cajas extends BaseController
                     "estatus" => 1
         ])->First();
         $caja = $this->dataModel->where('id', $session->caja_id)->first();
-        $data           = $monto;
-        $data['caja']   = $caja;
-        $data['arqueo'] = $arqueo;
+
+
+        $conteo                = $ventasModel->conteoDelDia( date('Y-m-d'));
+        $data                  = $monto; // 'totalVentas' // Calculado No se guarda aún
+        $data['conteo']        = $conteo;
+        $data['caja_id']       = $caja['caja'];
+        $data['nombre']        = $caja['nombre'];
+        $data['arqueo_id']     = $arqueo['id'];
+        $data['monto_inicial'] = $arqueo['monto_inicial'];
+        // $data['caja']   = $caja;
+        // $data['arqueo'] = $arqueo;
         //     'arqueo' => $arqueo
         // $data = [
         //          'caja'   => $caja,
@@ -313,7 +326,7 @@ class Cajas extends BaseController
         $dataWeb = $this->getDataSet(
            "Cierre de caja", // Ok
            $this->module,    // 
-           "nuevo_arqueo",   // 
+           "cerrar",   // 
            "post",           // 
            null,             // 
            $data             // ok
@@ -322,6 +335,18 @@ class Cajas extends BaseController
         echo view("$this->module/cerrar", $dataWeb);
         echo view('/includes/footer');
     }
+  }
+
+  public function imprimir()
+  {
+    echo "<h2>Controlador: Caja > imprimir</h2> <br>";
+    echo "Generar el reporte de cierre de caja.<br>";
+    echo "Posible contenido del reporte<br>";
+    echo "<ol>";
+    echo "<li>Encabezado: Título, fecha </li>";
+    echo "<li>Cuerpo: Título, fecha </li>";
+    echo "</ol>";
+    echo "Mostrarlo en la vista para mosrtar imprirmir los reportes<br>";
   }
 
 }

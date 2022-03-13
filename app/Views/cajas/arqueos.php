@@ -59,19 +59,17 @@
             <td>
               <a href="#confirm" data-bs-toggle="modal"
                   data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                  data-href="<?=base_url("/$path/cerrar/".$dato['id'])?>"
+                  data-href="<?=base_url("/$path/cerrar")?>"
                   data-actionText="<?=$close?>" class="btn btn-danger">
+                  <!-- data-href="<?=base_url("/$path/cerrar/".$dato['id'])?>" -->
                 <i class="fas fa-lock"></i>
               </a>
             </td>
           <?php } else {?>
             <td>Cerrada</td>
             <td>            
-              <a href="#confirm" data-bs-toggle="modal"
-                 data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                 data-href="<?=base_url("/$path/eliminar/".$dato['id'])?>"
-                 data-actionText="<?=$delete?>" class="btn btn-danger">
-                <i class="fas fa-print"></i>
+              <a href="<?=base_url("/$path/$print/".$dato['id'])?>" class="btn btn-success">
+                 <i class="fas fa-print"></i>
               </a>
             </td>
           <?php }?>

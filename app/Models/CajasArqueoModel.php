@@ -15,7 +15,7 @@ class CajasArqueoModel extends Model
   protected $useSoftDeletes = false;
   protected $allowedFields = [
     'caja_id',       'usuario_id', 
-    'fecha_inicio',  'fecha_fin', 
+    'fecha_inicio',  'fecha_final', 
     'monto_inicial', 'monto_final', 
     'total_ventas',  'estatus'
   ];
