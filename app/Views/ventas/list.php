@@ -13,7 +13,7 @@
     <thead>
       <tr>
         <th>Fecha</th>
-        <th>Folio</th>
+        <th style="width: 10%;">Folio</th>
         <th>Cajero</th>
         <th>Cliente</th>
         <th>Total</th>
@@ -23,7 +23,7 @@
     <tfoot>
       <tr>
         <th>Fecha</th>
-        <th>Folio</th>
+        <th style="width: 10%;">Folio</th>
         <th>Cajero</th>
         <th>Cliente</th>
         <th>Total</th>
@@ -44,10 +44,14 @@
           <td><?=$dato['folio']?></td>
           <td><?=$dato['cajero']?></td>
           <td><?=$dato['cliente']?></td>
+
           <td class="text-end">
               <?="$ ".number_format($dato['total'], 2, ".", ",")?>
           </td>
-          <td class="text-center">
+          <td class="">
+            <a href="<?=base_url("factura/facturar/".$dato['id'])?>"
+               class="btn btn-success"><i class="fas fa-list"></i>
+            </a>
             <a href="#confirm" data-bs-toggle="modal"
                data-info="<?=$info?>" data-item="<?=$item?>"
                data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
@@ -55,7 +59,7 @@
               <i class="fas fa-trash"></i>
             </a>
             <a href="<?=base_url()."/$path/muestraTicket/".$dato['id']?>"
-               class="btn btn-primary"><i class="fas fa-file-alt"></i>
+               class="btn btn-primary"><i class="fas fa-list-alt"></i>
             </a>
           </td>
         </tr>

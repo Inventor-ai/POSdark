@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 11-03-2022 a las 04:41:35
+-- Tiempo de generación: 13-03-2022 a las 07:22:24
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.3.21
 
@@ -55,10 +55,10 @@ CREATE TABLE IF NOT EXISTS `articulos` (
 --
 
 INSERT INTO `articulos` (`id`, `codigo`, `nombre`, `precio_venta`, `precio_compra`, `existencias`, `stock_minimo`, `inventariable`, `id_unidad`, `id_categoria`, `fotos`, `activo`, `fecha_alta`, `fecha_edit`) VALUES
-(1, '123456701', 'Tenis', '150', '50', 40, 8, 1, 13, 1, 6, 1, '2022-02-06 05:21:51', '2022-03-08 03:41:08'),
-(2, '123456702', 'Tenis verdes', '450', '150', 5, 5, 1, 9, 1, 4, 1, '2022-02-15 11:42:08', '2022-03-06 23:45:03'),
-(3, '123456703', 'Tenis grises', '350', '200', 4, 5, 1, 9, 1, 3, 1, '2022-02-06 00:36:27', '2022-03-08 03:41:08'),
-(4, '12345001', 'fotos', '25', '10', 10, 5, 1, 2, 1, 0, 1, '2022-02-27 20:23:48', '2022-02-27 20:23:48');
+(1, '123456701', 'Tenis', '150', '50', 23, 8, 1, 13, 1, 6, 1, '2022-02-06 05:21:51', '2022-03-12 04:14:04'),
+(2, '123456702', 'Tenis verdes', '450', '150', 4, 5, 1, 9, 1, 4, 1, '2022-02-15 11:42:08', '2022-03-11 17:01:33'),
+(3, '123456703', 'Tenis grises', '350', '200', 1, 5, 1, 9, 1, 3, 1, '2022-02-06 00:36:27', '2022-03-12 04:14:04'),
+(4, '12345001', 'fotos', '25', '10', -1, 5, 1, 2, 1, 0, 1, '2022-02-27 20:23:48', '2022-03-11 17:11:47');
 
 -- --------------------------------------------------------
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `cajas` (
 
 INSERT INTO `cajas` (`id`, `caja`, `nombre`, `folio`, `activo`, `fecha_alta`, `fecha_edit`) VALUES
 (1, '1', 'Caja general', 1, 1, '2022-02-09 03:40:15', '2022-02-09 03:41:24'),
-(2, '2', 'Caja secundaria', 1, 1, '2022-02-09 03:42:52', '2022-02-09 03:42:52');
+(2, '2', 'Caja secundaria', 8, 1, '2022-02-09 03:42:52', '2022-03-12 04:14:04');
 
 -- --------------------------------------------------------
 
@@ -98,13 +98,20 @@ CREATE TABLE IF NOT EXISTS `cajas_arqueo` (
   `caja_id` int NOT NULL,
   `usuario_id` int NOT NULL,
   `fecha_inicio` datetime NOT NULL,
-  `fecha_fin` datetime DEFAULT NULL,
+  `fecha_final` datetime DEFAULT NULL,
   `monto_inicial` decimal(10,2) NOT NULL,
   `monto_final` decimal(10,2) DEFAULT NULL,
   `total_ventas` int NOT NULL,
   `estatus` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `cajas_arqueo`
+--
+
+INSERT INTO `cajas_arqueo` (`id`, `caja_id`, `usuario_id`, `fecha_inicio`, `fecha_final`, `monto_inicial`, `monto_final`, `total_ventas`, `estatus`) VALUES
+(1, 2, 3, '2022-03-11 18:55:29', '2022-03-12 15:42:14', '1500.00', '5525.00', 7, 0);
 
 -- --------------------------------------------------------
 
@@ -251,7 +258,7 @@ CREATE TABLE IF NOT EXISTS `compras_temporal` (
   `precio` decimal(10,2) NOT NULL,
   `subtotal` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `compras_temporal`
@@ -314,7 +321,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `ip` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `detalles` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `log`
@@ -325,7 +332,24 @@ INSERT INTO `log` (`id`, `usuario_id`, `evento`, `fecha`, `ip`, `detalles`) VALU
 (2, 3, 'Cierre de sesión', '2022-03-09 00:13:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.10'),
 (3, 3, 'Inicio de sesión', '2022-03-10 03:30:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
 (4, 3, 'Cierre de sesión', '2022-03-10 04:37:48', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
-(5, 3, 'Inicio de sesión', '2022-03-10 04:37:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51');
+(5, 3, 'Inicio de sesión', '2022-03-10 04:37:55', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(6, 1, 'Inicio de sesión', '2022-03-11 05:41:53', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(7, 1, 'Cierre de sesión', '2022-03-11 05:42:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(8, 3, 'Inicio de sesión', '2022-03-11 05:42:40', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(9, 1, 'Inicio de sesión', '2022-03-11 16:56:42', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(10, 1, 'Cierre de sesión', '2022-03-11 16:57:19', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(11, 2, 'Inicio de sesión', '2022-03-11 16:57:32', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(12, 2, 'Cierre de sesión', '2022-03-11 16:58:54', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(13, 3, 'Inicio de sesión', '2022-03-11 16:59:07', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(14, 3, 'Inicio de sesión', '2022-03-11 20:04:41', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(15, 3, 'Inicio de sesión', '2022-03-12 00:49:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(16, 3, 'Inicio de sesión', '2022-03-12 15:40:43', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(17, 3, 'Inicio de sesión', '2022-03-11 20:15:51', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(18, 3, 'Inicio de sesión', '2022-03-11 20:57:01', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(19, 3, 'Inicio de sesión', '2022-03-11 21:05:46', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(20, 3, 'Cierre de sesión', '2022-03-11 21:11:03', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(21, 3, 'Inicio de sesión', '2022-03-11 21:11:36', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(22, 3, 'Inicio de sesión', '2022-03-13 03:30:30', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51');
 
 -- --------------------------------------------------------
 
@@ -423,20 +447,20 @@ CREATE TABLE IF NOT EXISTS `roles_permisos` (
   `rol_id` int NOT NULL,
   `permiso_id` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `roles_permisos`
 --
 
 INSERT INTO `roles_permisos` (`id`, `rol_id`, `permiso_id`) VALUES
-(80, 2, 13),
-(79, 2, 11),
-(78, 2, 10),
-(77, 2, 9),
-(76, 2, 5),
+(74, 2, 1),
 (75, 2, 2),
-(74, 2, 1);
+(76, 2, 5),
+(77, 2, 9),
+(78, 2, 10),
+(79, 2, 11),
+(80, 2, 13);
 
 -- --------------------------------------------------------
 
@@ -526,7 +550,7 @@ CREATE TABLE IF NOT EXISTS `ventas` (
   `forma_pago` varchar(5) COLLATE utf8_spanish_ci NOT NULL,
   `activo` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `ventas`
@@ -541,7 +565,14 @@ INSERT INTO `ventas` (`id`, `folio`, `total`, `fecha_alta`, `usuario_id`, `caja_
 (6, '6215c5c4aca27', '450', '2022-02-23 05:29:08', 3, 2, 2, '001', 0),
 (7, '6225455d5f3e2', '2750', '2022-03-06 23:45:03', 3, 2, 1, '001', 1),
 (8, '62254a1b2dcb9', '1050', '2022-03-06 23:56:42', 3, 2, 1, '001', 1),
-(9, '6226d010c3fd7', '500', '2022-03-08 03:41:08', 3, 2, 1, '001', 1);
+(9, '6226d010c3fd7', '500', '2022-03-08 03:41:08', 3, 2, 1, '001', 1),
+(10, '1', '450', '2022-03-11 17:01:33', 3, 2, 1, '001', 1),
+(11, '2', '350', '2022-03-11 17:02:15', 3, 2, 1, '001', 1),
+(12, '3', '800', '2022-03-11 17:08:33', 3, 2, 1, '001', 1),
+(13, '4', '150', '2022-03-11 17:10:44', 3, 2, 1, '001', 1),
+(14, '5', '1025', '2022-03-11 17:11:47', 3, 2, 1, '001', 1),
+(15, '6', '300', '2022-03-12 04:13:03', 3, 2, 1, '001', 1),
+(16, '7', '1250', '2022-03-12 04:14:04', 3, 2, 1, '001', 1);
 
 -- --------------------------------------------------------
 
@@ -559,7 +590,7 @@ CREATE TABLE IF NOT EXISTS `venta_detalle` (
   `precio` decimal(10,2) NOT NULL,
   `fecha_alta` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `venta_detalle`
@@ -582,7 +613,17 @@ INSERT INTO `venta_detalle` (`id`, `venta_id`, `articulo_id`, `nombre`, `cantida
 (14, 7, 3, 'Tenis grises', 4, '350.00', '2022-03-06 23:45:03'),
 (15, 8, 3, 'Tenis grises', 3, '350.00', '2022-03-06 23:56:42'),
 (16, 9, 3, 'Tenis grises', 1, '350.00', '2022-03-08 03:41:08'),
-(17, 9, 1, 'Tenis', 1, '150.00', '2022-03-08 03:41:08');
+(17, 9, 1, 'Tenis', 1, '150.00', '2022-03-08 03:41:08'),
+(18, 10, 2, 'Tenis verdes', 1, '450.00', '2022-03-11 17:01:33'),
+(19, 11, 3, 'Tenis grises', 1, '350.00', '2022-03-11 17:02:15'),
+(20, 12, 1, 'Tenis', 3, '150.00', '2022-03-11 17:08:33'),
+(21, 12, 3, 'Tenis grises', 1, '350.00', '2022-03-11 17:08:33'),
+(22, 13, 4, 'fotos', 6, '25.00', '2022-03-11 17:10:44'),
+(23, 14, 1, 'Tenis', 6, '150.00', '2022-03-11 17:11:47'),
+(24, 14, 4, 'fotos', 5, '25.00', '2022-03-11 17:11:47'),
+(25, 15, 1, 'Tenis', 2, '150.00', '2022-03-12 04:13:03'),
+(26, 16, 1, 'Tenis', 6, '150.00', '2022-03-12 04:14:04'),
+(27, 16, 3, 'Tenis grises', 1, '350.00', '2022-03-12 04:14:04');
 
 --
 -- Restricciones para tablas volcadas
