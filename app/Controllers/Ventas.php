@@ -193,7 +193,6 @@ class Ventas extends BaseController
     echo view('/includes/footer');
   }
 
-// *  public function generaTicket($compra_id)
   public function generaTicket($venta_id)
   {
     $signo  = "$ ";
