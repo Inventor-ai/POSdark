@@ -66,7 +66,7 @@ class Factura extends BaseController
     var_dump($datosFactura);
   }  
 
-  public function facturaV33($data)
+  public function facturaV33Old($data)
   {
     date_default_timezone_set('America/Mexico_City');
     $datosFactura = array();
@@ -84,7 +84,7 @@ class Factura extends BaseController
     $datosFactura["folio"]                 = $data["folio"];
     $datosFactura["fecha"]                 = date('YmdHis');
     // $datosFactura["formaPago"] = "01";
-    $datosFactura["formaPago"]             = $data['forma_pago'];
+    $datosFactura["formaPago"]             = $data['formaPago'];
     $datosFactura["noCertificado"]         = $data['noCertificado'];
     // $datosFactura["subTotal"] = "1000.00";
     $datosFactura["subTotal"]              = $data['subTotal'];
@@ -117,7 +117,7 @@ class Factura extends BaseController
     // $datosFactura['receptor']['usocfdi']   = 'P01';
     $datosFactura['receptor']['usocfdi']   = $data['receptor']['usocfdi'];
     
-    // $datosFactura["conceptos"][]           = array(
+    // $datosFactura["conceptos"][] = array(
     //               "clave"       => "01010101", 
     //               "sku"         => "75654123", 
     //               "descripcion" =>"Venta de productos", 
@@ -133,14 +133,18 @@ class Factura extends BaseController
     //               "iTasaOCuota" => "0.160000", 
     //               "iImporte"    => "160.00");
 
-    $datosFactura["conceptos"][] = $data['receptor'];
+    // $datosFactura["conceptos"][] = $data['conceptos'];
+    $datosFactura["conceptos"] = $data['conceptos'];
     
     // $datosFactura['traslados']['impuesto'] = "002";
     // $datosFactura['traslados']['tasa']     = "0.160000";
     // $datosFactura['traslados']['importe']  = "160.00";
 
-    $datosFactura['traslados'][] = $data['traslados'];
+    $datosFactura['traslados'] = $data['traslados'];
+    echo "datosFactura<br>";
     var_dump($datosFactura);
+    echo "data<br>";
+    var_dump($data);
     return;
     
     $xml = new \GeneraXML();
@@ -158,8 +162,51 @@ class Factura extends BaseController
 
   }
 
-  public function facturar($idVenta)
+  public function facturaV33($data)
   {
+    date_default_timezone_set('America/Mexico_City');
+    $dirCfdi = APPPATH . 'Libraries/cfdi_sat/cfdi/';
+    $dir     = APPPATH . 'Libraries/cfdi_sat/';
+    // $nombre  = "A1";
+
+    $nombre = $data["serie"].$data["folio"];
+    $data["version"]           = "3.3";
+    $data["fecha"]             = date('YmdHis');
+    $data["tipoDeComprobante"] = "I";
+    // echo "data 33<br>";
+    // var_dump($data);
+    // return;
+    
+    $xml = new \GeneraXML();
+    $xmlBase = $xml->satxmlsv33($data, '', $dir, '');	
+    
+    $timbra = new \Pac();
+    // $cfdi = $timbra->enviar("UsuarioPruebasWS","b9ec2afa3361a59af4b4d102d3f704eabdf097d4","TCM970625MB1", $xmlBase);
+    $cfdi = $timbra->enviar("UsuarioPruebasWS",                         // Usuario
+                            "b9ec2afa3361a59af4b4d102d3f704eabdf097d4", // Contraseña
+                            // $data['emisor']['rfc'], // "TCM970625MB1",  // RFC - SOAPFault
+                            "TCM970625MB1",  // RFC para hacer las pruebas.
+                            $xmlBase);
+    
+    if($xml)
+    {
+      file_put_contents($dirCfdi.$nombre.'.xml', base64_decode($cfdi->xml));
+      // unlink($dirXML.$nombre'.xml');  // Del repositorio - 2022-03-13
+      unlink($dir.'/tmp/'.$nombre.'.xml');
+    }
+
+  }
+
+  public function facturar($venta_id)
+  {
+    // get from config: Folio factura
+    $folio = "3"; // Cambiar manualmente para pruebas.
+    // get from config: Serie facturas (X RFC ó X sucursal?)
+    $serie = "A"; // Cambiar manualmente para pruebas.
+
+  //   public static function getValueOf($fieldName, $id)
+  // {
+  //   return $this->dataModel->select($fieldName)->where('id')->first();
 
     // $data['emisor']['rfc']     = utf8_decode (Usuarios::getSettingValue('tienda_rfc'));
     // $data['emisor']['nombre']  = utf8_decode (Usuarios::getSettingValue('tienda_nombre'));
@@ -175,8 +222,12 @@ class Factura extends BaseController
 
     // $signo       = "$ ";
     $datosventa   = $this->dataModel->where('id', $venta_id)->first();
-    // $detalleModel = new VentasDetalleModel();
-    // $detalleVenta = $detalleModel->articulos($venta_id);
+
+    // Cambiar las siguientes dos líneas por función estática (crearla), 
+    // o bien, crear en el modelo de ventas una función con join completo
+    $detalleModel = new VentasDetalleModel();
+    $detalleVenta = $detalleModel->conceptos($venta_id);
+
     // $userModel    = new UsersModel();
     // $dataUser     = $userModel->usuario( $datosventa['usuario_id'] );
     // $session      = session();
@@ -186,31 +237,87 @@ class Factura extends BaseController
     $clienteNombre           = 'Publico en general'; // hardcode para demo
     $receptor['rfc']         = 'XAXX010101000';      // hardcode para demo
     $receptor['nombre']      = str_replace($this->search, $this->replaceBy, $clienteNombre);
-    $receptor['usocfdi']     = '601';  // $datosventa <= Seleccionado y registrado durante venta
+    $receptor['usocfdi']     = 'P01';  // $datosventa <= Seleccionado y registrado durante venta
 
+    // $conceptos[] = array(
+    //        "clave"       => "01010101", 
+    //        "sku"         => "75654123", 
+    //        "descripcion" =>"Venta de productos", 
+    //        "cantidad"    => "1", 
+    //        "claveUnidad" => "H87", 
+    //        "unidad"      => "Pieza", 
+    //        "precio"      => "1000.00", 
+    //        "importe"     => "1000.00", 
+    //        "descuento"   => "0.00", 
+    //        "iBase"       => "1000.00", 
+    //        "iImpuesto"   => "002", 
+    //        "iTipoFactor" => "Tasa", 
+    //        "iTasaOCuota" => "0.160000", 
+    //        "iImporte"    => "160.00"
+    // );
     
-
-    $conceptos = array(
-           "clave"       => "01010101", 
-           "sku"         => "75654123", 
-           "descripcion" =>"Venta de productos", 
-           "cantidad"    => "1", 
-           "claveUnidad" => "H87", 
-           "unidad"      => "Pieza", 
-           "precio"      => "1000.00", 
-           "importe"     => "1000.00", 
-           "descuento"   => "0.00", 
-           "iBase"       => "1000.00", 
-           "iImpuesto"   => "002", 
-           "iTipoFactor" => "Tasa", 
-           "iTasaOCuota" => "0.160000", 
-           "iImporte"    => "160.00"
-    );
-
+    //  var_dump ($descripcion);
+    //  var_dump ($detalleVenta);
+    //  return;
+    $trasImporte = 0;
+    forEach ($detalleVenta as $concepto) {
+       // config decimales o convertir a enteros al hacer el registro?
+      $sku         = Articulos::getValueOf('codigo', $concepto['articulo_id']);
+      // $descripcion = Articulos::getValueOf('nombre', 1);
+      $descripcion = $concepto['nombre'];
+      // $cantidad    = number_format($concepto['cantidad'], 2, ".", "");
+      $cantidad    = $concepto['cantidad'];
+      $unidad      = Unidades::getValueOf('nombre', $concepto['articulo_id']);
+      // Parche temporal en esta aplicación
+      $tasa        = "0.160000"; // TO DO: get from config / detalleventa ?
+      $iTasaCuota  = $tasa; // Agregar a cada registro detalleVenta según config x Articulo
+      // Parche calculando precio sin IVA para demo 
+      // $precio      = $concepto['precio']; // Video/Sistema actual - Corregir en módulo
+      $precio      = number_format($concepto['precio'] / ( 1 + $iTasaCuota), 2, ".", "");
+      // $precio      = $iBase; 
+      $importe     = $precio * $cantidad;
+      $iBase       = $importe;
+      // $descuento   = ;
+      $iImporte    = $iBase * $iTasaCuota;
+      $iBase       = number_format($iBase, 2, ".", "");
+      $precio      = number_format($precio, 2, ".", "");
+      $importe     = number_format($importe, 2, ".", "");
+      $iImporte    = number_format($iImporte, 2, ".", "");
+      $iTasaCuota  = number_format($iTasaCuota, 6, ".", "");
+      $trasImporte+= $iImporte;
+      $conceptos[] = array(
+             "clave"       => "01010101",           // Del catálogo del SAT?
+            //  "clave"       => $clave,           
+            //  "sku"         => "75654123",           // articulo['codigo']
+             "sku"         => $sku,           // articulo['codigo']
+            //  "descripcion" =>"Venta de productos",  // articulo['nombre']
+             "descripcion" => $descripcion,  // articulo['nombre']
+            //  "cantidad"    => "1",
+             "cantidad"    => $cantidad,
+             "claveUnidad" => "H87",       // SAT catálogo
+            //  "unidad"      => "Pieza",     // SAT catálogo? articulo['id_unidad'] -> unidades['nombre']
+             "unidad"      => $unidad,     // SAT catálogo? articulo['id_unidad'] -> unidades['nombre']
+            //  "precio"      => "1000.00",
+             "precio"      => $precio,
+            //  "importe"     => "1000.00", 
+             "importe"     => $importe,
+             "descuento"   => "0.00", 
+            //  "iBase"       => "1000.00", 
+             "iBase"       => $iBase, 
+             "iImpuesto"   => "002",       // Catálogo del SAT?
+             "iTipoFactor" => "Tasa",      // ??
+            //  "iTasaOCuota" => "0.160000",  // From config SAT?
+             "iTasaOCuota" => $iTasaCuota,  // From config SAT?
+            //  "iImporte"    => "160.00"
+             "iImporte"    => $iImporte
+      );
+    }
 
     // Actualmente no existe. Agregar
-    $data["serie"]           = "A"; // get from config: Serie facturas (X RFC ó X sucursal?)
-    $data["folio"]           = "1"; // get from config: Folio factura 
+    $data["serie"]   = $serie; // get from config: Serie facturas (X RFC ó X sucursal?)
+
+    // $data["folio"]           = "1"; // get from config: Folio factura 
+    $data["folio"]           = $folio; // get from config: Folio factura 
     $data['noCertificado']   = "20001000000300022762"; // get from config: filenames .pem
 
     $data['descuento']       = "0.00";     // $datosventa - No existe. Agregar
@@ -218,17 +325,22 @@ class Factura extends BaseController
     $data["metodoPago"]      = "PUE";      // El registrado en la venta (Incorporar)
 
     $data["lugarExpedicion"] = "01000";  // CodPos fiscal o de la sucursal
-    $data['forma_pago']      = $datosventa['forma_pago'];
+    $data['formaPago']       = $datosventa['forma_pago'];
 
-    $data['subTotal']        = $datosventa['total'] / (1 + $tasa); // Demo test only
+    // $subtotal = round($datosventa['total'] / (1 + $tasa), 2);  // Demo test only
+    // $data['subTotal']        = (string) $subtotal;
+    $subtotal = number_format($datosventa['total'] / (1 + $tasa), 2, ".", ""); // Demo test only
+    $data['subTotal']        = $subtotal;
 
-    // $IVA                     = .16;  // TO DO: get from config?
-    $tasa                    = "0.160000"; // TO DO: get from config?
     $traslados['impuesto']   = "002";       
     $traslados['tasa']       = $tasa;      // TO DO: get from config?
-    $traslados['importe']    = $data['subTotal'] * $tasa;
+    // $traslados['importe']    = $data['subTotal'] * $tasa;
+    // $importe = number_format($datosventa['total'] - $subtotal, 2, ".", ""); // Demo test only
+    // $traslados['importe']    = $importe;
+    $traslados['importe']    = number_format($trasImporte, 2, ".", "");
 
-    $data['total']           = $datosventa['total'];
+    // $data['total']           = (string) round($datosventa['total'], 2);
+    $data['total']           = number_format($datosventa['total'], 2, ".", "");
     $data['emisor']          = $emisor;
     $data['receptor']        = $receptor;
     $data['conceptos']       = $conceptos;
@@ -236,11 +348,14 @@ class Factura extends BaseController
     // $data['traslados']['impuesto'] = "002";
     // $data['traslados']['tasa']     = "0.160000";
     // $data['traslados']['importe']  = "160.00";
-    var_dump ($data);
-    // $pdf = new \FPDF('P', 'mm', array(80, 200));
-    $this->facturaV33($data);
-    // $this->facturaV33($data);
 
+    // echo "facturar ($venta_id) <br>";
+    // var_dump ($data);
+    // // $pdf = new \FPDF('P', 'mm', array(80, 200));
+    // echo "facturaV33data <br>";
+    // $this->facturaV33data();
+    // echo "facturaV33 <br>";
+    $this->facturaV33($data);
   }
 
 

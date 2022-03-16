@@ -236,5 +236,11 @@ class Unidades extends BaseController
     $this->eliminar($id, 1);
     return redirect()->to(base_url()."/$this->module/index/0");
   }
+  
+  public static function getValueOf($fieldName, $id)
+  {
+    $dataModel = new UnidadesModel();
+    return $dataModel->select($fieldName)->where('id', $id)->first()[$fieldName];
+  }
 
 }

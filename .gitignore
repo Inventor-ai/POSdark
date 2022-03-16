@@ -130,3 +130,7 @@ nb-configuration.xml
 
 # images for testing
 public/images/
+
+# testing invoices
+app/Libraries/cfdi_sat/tmp
+app/Libraries/cfdi_sat/cfdi

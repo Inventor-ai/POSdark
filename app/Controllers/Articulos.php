@@ -467,4 +467,10 @@ class Articulos extends BaseController
     $pdf->Output('resurtir.pdf', "I");    
   }
 
+  public static function getValueOf($fieldName, $id)
+  {
+    $dataModel = new ArticulosModel();
+    return $dataModel->select($fieldName)->where('id', $id)->first()[$fieldName];
+  }
+      
 }
