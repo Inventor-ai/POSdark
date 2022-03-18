@@ -23,9 +23,9 @@ $venta_id = uniqid();
     <div class="col-sm-6 mb-3">
       <label for="cliente" class="form-label">Forma de pago</label>
       <select name="forma_pago" id="forma_pago" class="form-select" required>
-          <option value="001">Efectivo</option>
-          <option value="002">Tarjeta</option>
-          <option value="003">Transferencia</option>
+          <option value="01">Efectivo</option>
+          <option value="02">Tarjeta</option>
+          <option value="03">Transferencia</option>
       </select>
     </div>
   </div>

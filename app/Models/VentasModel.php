@@ -16,7 +16,8 @@ class VentasModel extends Model
   protected $allowedFields = [
     'folio',   'total',      'usuario_id', 
     'caja_id', 'cliente_id', 'forma_pago',
-    'activo'
+    'activo',  'uuid' ,      'fecha_timbrado',
+    'timbrado'
   ];
 
   protected $useTimestamps = true;

@@ -51,7 +51,7 @@ class Factura extends BaseController
     
     echo "data 33<br>";
     var_dump($data);
-    phpinfo(INFO_ALL);
+    // phpinfo(INFO_ALL);
     // return;
     
     $xml = new \GeneraXML();
@@ -82,8 +82,15 @@ class Factura extends BaseController
 
   public function facturar($venta_id)
   {
+    $timbrado = $this->dataModel->select('timbrado')-where('id', $venta_id)-first();
+    if ($timbrado == 1) {
+       echo "La venta ya ha sido facturada";
+       exit;
+       // Cambiar esto por una vista o implementar el modal.
+       // Sería más intersante disparar el modal desde php
+    }
     // get from config: Folio factura
-    $folio = "4"; // Cambiar manualmente para pruebas.
+    $folio = "6"; // Cambiar manualmente para pruebas.
     // get from config: Serie facturas (X RFC ó X sucursal?)
     $serie = "A"; // Cambiar manualmente para pruebas.
     $datosventa   = $this->dataModel->where('id', $venta_id)->first();
@@ -276,6 +283,10 @@ class Factura extends BaseController
     // $this->facturaV33data();
     // echo "facturaV33 <br>";
     $this->facturaV33($data);
+
+    // // $this->generaPdf("$serie$folio");
+    // $this->generaPdf($venta_id);
+    $this->generaPdf("$serie$folio", $venta_id);
   }
 
   public function facturarFailed($venta_id)
@@ -590,15 +601,72 @@ class Factura extends BaseController
 
   }
 
-  public function generaPdf($xmlFile)
+  // public function generaPdf($xmlFile)
+  // public function generaPdf($venta_id)
+  public function generaPdf($xmlFile, $venta_id)
   {
-    // var_dump($xmlFile);
+
+    // $xmlFile = '';
+    // echo "xmlFile : $xmlFile <br>";
+    // echo "venta_id: $venta_id <br>";
     // return;
+    /*
+      // get this from system configurations
+      // Libraries SAT CFDI
+      $dirCfdi = APPPATH . 'Libraries/cfdi_sat/cfdi/';
+
+      $xmlFile = "$dirCfdi$serie$folio";
+      if ( is_file ($xmlFile) ) {
+      }
+    */
+    // var_dump($xmlFile);
+
     $dirCfdi = APPPATH . 'Libraries/cfdi_sat/cfdi/';
     $xml = simplexml_load_file("$dirCfdi$xmlFile.xml");
     $ns  = $xml->getNamespaces(true);
     $xml->registerXPathNamespace('c', $ns['cfdi']);
     $xml->registerXPathNamespace('t', $ns['tfd']);
+
+    // $uuid          = '';
+    // $fechaTimbrado = '';
+    $path = '//t:TimbreFiscalDigital';    
+    echo "$path <br>";
+    /*
+    // Código del video
+    $uuid          = '';
+    $fechaTimbrado = '';
+    forEach($xml->xpath($path) as $tfd) {
+      $uuid          = $tfd['UUID'];
+      $fechaTimbrado = $tfd['FechaTimbrado'];
+    }
+    echo "0: uuid: $uuid <br>";
+    echo "0: fechaTimbrado: $fechaTimbrado <br>";
+    */
+
+    $nodo          = $xml->xpath($path);
+    $uuid          = $nodo[0]['UUID'];
+    $fechaTimbrado = $nodo[0]['FechaTimbrado'];
+
+    echo "1: uuid: $uuid <br>";
+    echo "1: fechaTimbrado: $fechaTimbrado <br>";
+    var_dump($uuid);
+    var_dump($fechaTimbrado);
+    ;
+
+    $this->dataModel->update($venta_id, [
+      'timbrado'       => 1,
+      'uuid'           => $uuid,
+      'fecha_timbrado' => $fechaTimbrado
+    ]);
+
+
+    return
+    var_dump($nodo);
+    var_dump($nodo[0]);
+    var_dump($nodo[0]['UUID']);
+    echo $nodo[0]['UUID'] . "<br>" ;
+    return;
+
     forEach($xml->xpath('//cfdi:Comprobante') as $cfdiComprobante) {
       var_dump ($cfdiComprobante['Version']);
       var_dump ($cfdiComprobante['Fecha']);
@@ -642,6 +710,28 @@ class Factura extends BaseController
       // var_dump ($tfd['Folio']);
       // var_dump ($tfd['Total']);
     }
+
+    $path = '//t:TimbreFiscalDigital';
+    echo $path;
+    forEach($xml->xpath($path) as $tfd) {
+      var_dump ($tfd['UUID']);
+      echo  $tfd['UUID'];
+      var_dump ($tfd['FechaTimbrado']);
+      echo  $tfd['FechaTimbrado'];
+    }
+
+    $path = '//t:TimbreFiscalDigital';
+    $obj  = $xml->xpath($path);
+    var_dump($obj);
+    var_dump($obj[0]);
+    var_dump($obj[0]['UUID']);
+    echo $obj[0]['UUID'] . "<br>" ;
+    // echo $obj['UUID'] . "<br>" ; // Fail
+    // echo $obj[0]['UUID'] . "<br>" ;
+    // var_dump($obj[0][0]['UUID']);
+    
+    
+    // ->attributes;
 
     // $path = '//cfdi:Comprobante//cfdi:Complemento//tfd:TimbreFiscalDigital';
     // echo $path;
