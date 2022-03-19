@@ -26,6 +26,10 @@ $webpage   = $session_user->webpage;
         <script src="<?=base_url('js/fancy-zoom/FancyZoom.js')?>"></script>
         <script src="<?=base_url('js/fancy-zoom/FancyZoomHTML.js')?>"></script>
         <link href="<?=base_url('assets/dropify/css/dropify.min.css')?>" rel="stylesheet" />
+
+        <!-- ChartJS v3.7.1 -->
+        <script src="<?=base_url('js/chart.js')?>"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
     </head>
     <!-- <body class="sb-nav-fixed" onload="setupZoom()"> -->
     <body class="sb-nav-fixed">
