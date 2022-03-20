@@ -18,12 +18,14 @@ if ($session_user->nombre != null) {
         <meta name="author" content="" />
         <title><?= $tabTitle ?></title>
         <!-- <link href="css/styles.css" rel="stylesheet" /> -->
-        <link href="<?=base_url()?>/css/styles.css" rel="stylesheet" />
+        <link href="<?=base_url("css/styles.css")?>" rel="stylesheet" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="bg-primary">
-        <?php print_r($session_user->nombre)?>
-        <?php var_dump ($session_user->nombre)?>
+        <?php //base_url()?>
+        <?php //base_url("css/styles.css")?>
+        <?php //print_r($session_user->nombre)?>
+        <?php //var_dump ($session_user->nombre)?>
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>

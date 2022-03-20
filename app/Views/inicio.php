@@ -50,6 +50,9 @@
         <canvas id="myChart"></canvas>
     </div>
   </div>
+  <div class="col-12 col-md-4">
+    <a class="btn btn-success" href="<?=base_url("inicio/excel")?>">Descargar excel</a>
+  </div>
 </div>
 
 <script>

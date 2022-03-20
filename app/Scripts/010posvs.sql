@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 18-03-2022 a las 04:11:06
+-- Tiempo de generación: 20-03-2022 a las 03:30:00
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.3.21
 
@@ -134,9 +134,9 @@ CREATE TABLE IF NOT EXISTS `categorias` (
 --
 
 INSERT INTO `categorias` (`id`, `nombre`, `activo`, `fecha_edit`) VALUES
-(1, 'Calzado x', 1, '2022-02-06 03:34:20'),
+(1, 'Calzado x', 0, '2022-03-20 04:03:35'),
 (2, 'Blancos', 1, NULL),
-(3, 'Calzado x', 1, '2022-02-07 04:15:35');
+(3, 'Calzado x', 1, '2022-03-20 04:03:51');
 
 -- --------------------------------------------------------
 
@@ -323,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `ip` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `detalles` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `log`
@@ -359,7 +359,11 @@ INSERT INTO `log` (`id`, `usuario_id`, `evento`, `fecha`, `ip`, `detalles`) VALU
 (27, 3, 'Inicio de sesión', '2022-03-17 08:42:24', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
 (28, 3, 'Inicio de sesión', '2022-03-18 03:58:19', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
 (29, 3, 'Cierre de sesión', '2022-03-18 03:59:13', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
-(30, 1, 'Inicio de sesión', '2022-03-18 03:59:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51');
+(30, 1, 'Inicio de sesión', '2022-03-18 03:59:22', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(31, 3, 'Inicio de sesión', '2022-03-19 00:13:21', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(32, 2, 'Inicio de sesión', '2022-03-19 02:14:45', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(33, 2, 'Inicio de sesión', '2022-03-19 20:29:07', '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51'),
+(34, 2, 'Inicio de sesión', '2022-03-20 04:00:02', '192.168.1.69', 'Mozilla/5.0 (Linux; Android 8.0.0; SM-G930F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844');
 
 -- --------------------------------------------------------
 
