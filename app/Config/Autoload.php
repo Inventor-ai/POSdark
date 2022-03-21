@@ -69,7 +69,6 @@ class Autoload extends AutoloadConfig
       'Barcode' => APPPATH . 'Libraries/Barcode.php',
       'GeneraXML' => APPPATH . 'Libraries/cfdi_sat/satxmlsv33.php',
       'Pac'  => APPPATH . 'Libraries/cfdi_sat/timbra.php',
-      'Spreadsheet'  => APPPATH . '/ThirdParty/PhpOffice/PhpSpreadsheet/Spreadsheet.php',
     ];
 
     /**

@@ -14,8 +14,8 @@ use App\Models\VentasModel;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use App\ThirdParty\PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use App\ThirdParty\PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use \PhpOffice\PhpSpreadsheet\Spreadsheet;
-use \PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Inicio extends BaseController
 {
@@ -68,20 +68,26 @@ class Inicio extends BaseController
     
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
-    echo "excel";
-    return;
     
     $sheet->setCellValue('A1', 'Hello World !');
     
     $writer = new Xlsx($spreadsheet);
-    $writer->save('hello world.xlsx');
+    $archivo = 'hello world.xlsx';
+    $writer->save($archivo);
+    echo "excel generado en: <br>";
+    echo __DIR__ . "\\$archivo<br>";
+    echo "descargar desde: <br>";
+    echo base_url($archivo) . "<br>";
+    echo "Mover esta rutina a una vista en formato de lista <br>";
+    echo "Comenzar por artículos escaso. (Orden de resurtido) <br>";
+    return;
 
     // require __DIR__ . '/../Header.php';
     
     // $helper->log('Create new Spreadsheet object');
     // $spreadsheet = new \PHPspSheet\Spreadsheet();
     // $spreadsheet = new \PHPspSheet\Spreadsheet();
-    $spreadsheet = new \Spreadsheet();
+    $spreadsheet = new Spreadsheet();
     
    
     // Set document properties
