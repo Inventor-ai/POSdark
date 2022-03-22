@@ -178,7 +178,7 @@ class Ventas extends BaseController
     }
     // return redirect()->to(base_url().'/articulos');
 // *    return redirect()->to(base_url()."/compras/muestraCompraPDF/$resultadoId");
-    return redirect()->to(base_url()."/ventas/muestraTicket/$resultadoId"); // Para probar
+    return redirect()->to(base_url("ventas/muestraTicket/$resultadoId")); // Para probar
     // echo "¡Impresión del ticket de venta en desarrollo!";
   }
 

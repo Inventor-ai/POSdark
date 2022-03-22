@@ -161,9 +161,12 @@
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
              // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
               // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
-              $imagen = "/foto$i.png";
-              $imagen = 'images/'."$path/".$data['id'].$imagen;
-              $imagen = base_url ($imagen);
+
+              // $imagen = "/foto$i.png";
+              // $imagen = 'images/'."$path/".$data['id'].$imagen;
+              // $imagen = base_url ($imagen);
+
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
           ?>
             <div class="col mb-3">
             <a href="<?=$imagen?>">
@@ -188,11 +191,11 @@
 
   // $('.dropify').dropify();
 <!-- </script>
-<script> 
+<script>
 -->
 
   const imgSelected = document.querySelector('.imageSelect'),
-    previewImagen = document.querySelector('.imageBox');
+      previewImagen = document.querySelector('.imageBox');
 
   // Escuchar cuando cambie
   imgSelected.addEventListener("change", () => {

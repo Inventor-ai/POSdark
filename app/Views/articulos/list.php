@@ -8,11 +8,12 @@ $currency = "$ ";
       <h4 class=""><?=$title?></h4>
   </div>
   <div class="col-12 col-sm-4 text-right" style="text-align:right">
-    <a href="<?=base_url()."/$path/index/".($onOff == 0?"1":"0")?>" class="btn btn-warning"><?=$switch?></a>
+    <a href="<?=base_url()."/$path/index/".($onOff == 0?"1":"0")?>" class="btn btn-warning mb-2"><?=$switch?></a>
     <?php if ($onOff) {?>
-      <a href="<?=base_url()."/$path/agregar"?>" class="btn btn-primary">Agregar</a>
+      <a href="<?=base_url()."/$path/agregar"?>" class="btn btn-primary mb-2">Agregar</a>
     <?php } ?>
-    <a href="<?=base_url("$path/muestraCodigos")?>" class="btn btn-dark">Código de barras</a>
+    <a href="<?=base_url("$path/muestraCodigos")?>" class="btn btn-dark mb-2">Código de barras</a>
+    <a href="<?=base_url("$path/rptMinExcel")?>" class="btn btn-success mb-2"><i class="fa fa-file-excel"></i></a>
   </div>
 </div>
 

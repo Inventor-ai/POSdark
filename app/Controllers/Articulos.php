@@ -5,6 +5,8 @@ use App\Controllers\BaseController;
 use App\Models\ArticulosModel; // Replace It
 use App\Models\UnidadesModel;
 use App\Models\CategoriasModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Articulos extends BaseController
 {
@@ -14,6 +16,7 @@ class Articulos extends BaseController
   protected $disabled = 'Eliminados';
   protected $insert   = 'insertar';
   protected $update   = 'actualizar';
+  protected $xlsFile  = 'helloWorld.xlsx';
   protected $carrier  = [];
   protected $module;
   protected $dataModel;
@@ -464,7 +467,7 @@ class Articulos extends BaseController
       $pdf->Cell( 30, 5, ($item['stock_minimo']), 1, 1, 'C');
     }
     $this->response->setHeader('Content-Type', 'application/pdf');
-    $pdf->Output('resurtir.pdf', "I");    
+    $pdf->Output('resurtir.pdf', "I");
   }
 
   public static function getValueOf($fieldName, $id)
@@ -472,5 +475,155 @@ class Articulos extends BaseController
     $dataModel = new ArticulosModel();
     return $dataModel->select($fieldName)->where('id', $id)->first()[$fieldName];
   }
-      
+
+  public function rptMinExcel()
+  {
+    $this->minimos(); // Genera el archivo, lo guarda y cierra
+    return redirect()->to(base_url($this->xlsFile)); // Descarga el archivo
+  }
+
+  public function minimos()
+  { // Investigar ajuste del ancho de celdas, negritas, centrado, formato de número...
+    $spreadsheet = new Spreadsheet();
+    $spreadsheet->getProperties()
+        ->setCreator('Punto de venta WEB')
+        ->setLastModifiedBy('Punto de venta WEB')
+        ->setTitle('Relación de artículos a resurtir')
+        ->setSubject('Formato para resurtir artículos')
+        ->setDescription('Relación de artículos que están en sus niveles mínimos o agotados.')
+        ->setKeywords('artículos inventario resurtir')
+        ->setCategory('Artículos stock min');
+
+    $sheet = $spreadsheet->getActiveSheet();
+    
+    $sheet->setCellValue('A1', 'Num')
+          ->setCellValue('B1', 'Código')
+          ->setCellValue('C1', 'Nombre')
+          ->setCellValue('D1', 'Stock mínimo')
+          ->setCellValue('E1', 'Existencias')
+          ->setCellValue('F1', 'Compra');
+    $items = $this->dataModel->listarMinimos();
+    $i = 1;
+    forEach ($items as $item ) {
+      $i++;
+      $sheet->setCellValue("A$i", $i-1)
+      ->setCellValue("B$i", $item['codigo'])
+      ->setCellValue("C$i", $item['nombre'])
+      ->setCellValue("D$i", $item['stock_minimo'])
+      ->setCellValue("E$i", $item['existencias']);
+    }
+    $writer = new Xlsx($spreadsheet);
+    $writer->save($this->xlsFile);
+  }
+
+  public function minimosTest ()
+  {
+    /*
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    
+    $sheet->setCellValue('A1', 'Hello World !');
+    
+    $writer = new Xlsx($spreadsheet);
+    $archivo = 'helloWorld.xlsx';
+    $writer->save($archivo);
+    */
+
+    // require __DIR__ . '/../Header.php';
+    
+    // $helper->log('Create new Spreadsheet object');
+    // $spreadsheet = new \PHPspSheet\Spreadsheet();
+    // $spreadsheet = new \PHPspSheet\Spreadsheet();
+    $spreadsheet = new Spreadsheet();
+    
+   
+    // Set document properties
+    // $helper->log('Set document properties');
+    $spreadsheet->getProperties()
+        ->setCreator('Maarten Balliauw')
+        ->setLastModifiedBy('Maarten Balliauw')
+        ->setTitle('PhpSpreadsheet Test Document')
+        ->setSubject('PhpSpreadsheet Test Document')
+        ->setDescription('Test document for PhpSpreadsheet, generated using PHP classes.')
+        ->setKeywords('office PhpSpreadsheet php')
+        ->setCategory('Test result file');
+    
+    // Add some data
+    // $helper->log('Add some data');
+    $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A1', 'Hello')
+        ->setCellValue('B2', 'world!')
+        ->setCellValue('C1', 'Hello')
+        ->setCellValue('D2', 'world!');
+    
+    // Miscellaneous glyphs, UTF-8
+    $spreadsheet->setActiveSheetIndex(0)
+        ->setCellValue('A4', 'Miscellaneous glyphs')
+        ->setCellValue('A5', 'éàèùâêîôûëïüÿäöüç');
+    
+    $spreadsheet->getActiveSheet()
+        ->setCellValue('A8', "Hello\nWorld");
+    $spreadsheet->getActiveSheet()
+        ->getRowDimension(8)
+        ->setRowHeight(-1);
+    $spreadsheet->getActiveSheet()
+        ->getStyle('A8')
+        ->getAlignment()
+        ->setWrapText(true);
+    
+    $value = "-ValueA\n-Value B\n-Value C";
+    $spreadsheet->getActiveSheet()
+        ->setCellValue('A10', $value);
+    $spreadsheet->getActiveSheet()
+        ->getRowDimension(10)
+        ->setRowHeight(-1);
+    $spreadsheet->getActiveSheet()
+        ->getStyle('A10')
+        ->getAlignment()
+        ->setWrapText(true);
+    $spreadsheet->getActiveSheet()
+        ->getStyle('A10')
+        ->setQuotePrefix(true);
+    
+    // Rename worksheet
+    // $helper->log('Rename worksheet');
+    $spreadsheet->getActiveSheet()
+        ->setTitle('Simple');
+    
+    // Save
+    // $helper->write($spreadsheet, __FILE__, ['Xlsx', 'Xls', 'Ods']);
+    $writer = new Xlsx($spreadsheet);
+    $writer->save($this->xlsFile);
+  }
+
+/*
+  // Ok - Blank old
+  // public function rptMinExcelOk()
+  // {
+  //   $dataWeb   = [
+  //     'path'   => $this->module,
+  //     'report' => "minimos"
+  //   ];
+  //   echo view('/includes/header');
+  //   echo view('/includes/showRpt', $dataWeb);
+  //   echo view('/includes/footer');
+  //   return redirect()->to(base_url($archivo)); // Descarga el archivo
+  //   // echo "Mover esta rutina a una vista en formato de lista <br>";
+  //   // echo "Comenzar por artículos escasos. (Orden de resurtido) <br>";
+
+  //   // return redirect()->to(base_url("helloWorld.xlsx"));
+  //   // echo "Donas";
+  //   // return redirect()->to(base_url("$this->module/excelDone"));
+  // }
+
+  // public function excelDone()
+  // {
+  //   echo "excel generado y descargado <br>";
+    // echo "excel generado en: <br>";
+    // echo __DIR__ . "\\$archivo<br>";
+    // echo "descargar desde: <br>";
+    // echo base_url($archivo) . "<br>";
+  // }
+*/
+
 }

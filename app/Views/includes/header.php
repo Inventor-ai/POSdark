@@ -145,7 +145,8 @@ $webpage   = $session_user->webpage;
                   </a>
                   <div class="collapse" id="collapseReportes" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="<?=base_url()?>/articulos/mostrarMinimos">Reporte mínimos</a>
+                      <a class="nav-link" href="<?=base_url("articulos/mostrarMinimos")?>">Reporte mínimos</a>
+                      <a class="nav-link" href="<?=base_url("articulos/rptMinExcel")?>">Rpt.mínimos Excel</a>
                     </nav>
                   </div>
                 </div>
