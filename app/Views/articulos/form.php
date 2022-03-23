@@ -115,9 +115,12 @@
           // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
           // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
           //  $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
-           $imagen = "/foto$i.png";
-           $imagen = 'images/'."$path/".$data['id'].$imagen;
-           $imagen = base_url ($imagen);
+
+          //  $imagen = "/foto$i.png";
+          //  $imagen = 'images/'."$path/".$data['id'].$imagen;
+          //  $imagen = base_url ($imagen);
+
+           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
         ?>
           <div class="col mb-3">
             <!-- <div class="mb-1"> -->
@@ -140,9 +143,12 @@
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
              // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
               // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
-              $imagen = "/foto$i.png";
-              $imagen = 'images/'."$path/".$data['id'].$imagen;
-              $imagen = base_url ($imagen);
+
+              // $imagen = "/foto$i.png";
+              // $imagen = 'images/'."$path/".$data['id'].$imagen;
+              // $imagen = base_url ($imagen);
+
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
           ?>
             <div class="col-4 col-sm-2">
             <!-- <a href="<?=$imagen?>"> -->
@@ -173,6 +179,63 @@
               <input type="file" class="dropify" data-default-file="<?=$imagen?>" style="width: 80px;" />
             </a>
             </div>
+          <?php } ?>
+        </div>
+        <div class="row row cols-auto">
+          <p>line 4</p>
+          <?php for ($i=0; $i < $data['fotos']; $i++) {
+            //  $j = $i + 1;
+             // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
+             // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
+             // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
+              // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
+
+              // $imagen = "/foto$i.png";
+              // $imagen = 'images/'."$path/".$data['id'].$imagen;
+              // $imagen = base_url ($imagen);
+
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+          ?>
+            <!-- <div class="col mb-3">
+              <a href="<?=$imagen?>">
+                <div class="dropify-wrapper touch-fallback has-preview">
+                  <input type="file" class="dropify" data-default-file="<?=$imagen?>" style="width: 80px;" />
+                </div>
+              </a>
+            </div> -->
+
+            <div class="col mb-3">
+              <div class="dropify-wrapper touch-fallback has-preview">
+                <div class="dropify-message">
+                  <span class="file-icon"><p>Drag and drop a file here or click</p></span>
+                  <p class="dropify-error">Ooops, something wrong appended.</p>
+                </div>
+                <div class="dropify-loader" style="display: none;"></div>
+                <div class="dropify-errors-container">
+                  <ul></ul>
+                </div>
+                <input type="file" class="dropify" data-default-file="<?=$imagen?>" style="width: 80px;">
+                <button type="button" class="dropify-clear">Remove</button>
+                <div class="dropify-preview" style="display: block;">
+                  <span class="dropify-render">
+                    <a href="<?=$imagen?>">
+                      <img src="<?=$imagen?>">
+                    </a>
+                  </span>
+                  <div class="dropify-infos">
+                    <div class="dropify-infos-inner">
+                      <p class="dropify-filename">
+                        <span class="file-icon"></span>
+                        <span class="dropify-filename-inner">foto3.png</span>
+                      </p>
+                      <p class="dropify-infos-message">Drag and drop or click to replace</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
           <?php } ?>
         </div>
       </div>
