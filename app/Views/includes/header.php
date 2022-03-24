@@ -159,10 +159,10 @@ $webpage   = $session_user->webpage;
                   </a>
                   <div class="collapse" id="collapseAdmon" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="<?=base_url()?>/configurar">Configuración</a>
-                      <a class="nav-link" href="<?=base_url()?>/usuarios">Usuarios</a>
-                      <a class="nav-link" href="<?=base_url()?>/roles">Roles</a>
-                      <a class="nav-link" href="<?=base_url()?>/cajas">Cajas</a>
+                      <a class="nav-link" href="<?=base_url("configurar")?>">Configuración</a>
+                      <a class="nav-link" href="<?=base_url("usuarios")?>">Usuarios</a>
+                      <a class="nav-link" href="<?=base_url("roles")?>">Roles</a>
+                      <a class="nav-link" href="<?=base_url("cajas")?>">Cajas</a>
                     </nav>
                   </div>
 
