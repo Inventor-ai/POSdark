@@ -19,15 +19,15 @@
                 </footer>
             </div>
         </div>
-        <script src="<?=base_url()?>/js/bootstrap.bundle.min.js"></script>
-        <script src="<?=base_url()?>/js/scripts.js"></script>
+        <script src="<?=base_url('js/bootstrap.bundle.min.js')?>"></script>
+        <script src="<?=base_url('/js/scripts.js')?>"></script>
         <script src="<?=base_url()?>/js/simple-datatables.js"></script>
         <script src="<?=base_url()?>/js/datatables-simple-demo.js"></script>
-        <script src="<?=base_url()?>/js/modal/confirm.js"></script>
+        <script src="<?=base_url('js/modal/confirm.js')?>"></script>
         <script src="<?=base_url()?>/js/vsutils.js"></script>
          
-        <script src="<?=base_url()?>/js/jquery/jquery.min.js"></script>
-        <script src="<?=base_url()?>/js/jquery-ui/jquery-ui.min.js"></script>
+        <script src="<?=base_url('js/jquery/jquery.min.js')?>"></script>
+        <script src="<?=base_url('js/jquery-ui/jquery-ui.min.js')?>"></script>
         <script src="<?=base_url('js/dropify.min.js')?>"></script>
         
         <script>

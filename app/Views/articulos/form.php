@@ -237,6 +237,32 @@
 
 
           <?php } ?>
+          linea 5
+        <div class="row">
+          <div class="cols-auto">
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
+              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            </div>
+          </div>
+        </div>  
         </div>
       </div>
     </div>

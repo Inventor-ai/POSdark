@@ -1,0 +1,20 @@
+/* 
+https://www.baulphp.com/ajustar-una-imagen-a-un-div-ejemplo-completo/
+https://www.baulphp.com/download/imagenes-responsive-en-css3-y-html5/
+*/
+
+.img{
+    margin:10px auto;
+    border-radius:5px;
+    border: 1px solid #999;
+    padding:13px;
+    width:220px;
+    height:220px;
+    background-size: 100% 100%;
+    background-repeat:no-repeat;
+    background:url(../img/imagen.jpg);
+    background-size: cover;
+    }
+  .img img{
+    width: 100%;
+  }
