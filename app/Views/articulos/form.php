@@ -108,6 +108,36 @@
     <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
     <hr> <!-- ¿Dejar esta línea? - Preguntar -->
     <div class="form-group mt-2">
+      <div class="row row cols-auto">
+        <?php for ($i=0; $i < $data['fotos']; $i++) {
+           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+        ?>
+          <div class="col-12 col-md-3 col-sm-6 text-center">
+            <div class="col mb-3" style="border: #777 1px solid;">
+              <!-- <div class="row"> -->
+                <button type="button" class="btn btn-light position-relative">
+                  <figure class="figure text-center">
+                    <img src="<?=$imagen?>"
+                          class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                          onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                    </span>
+                    <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
+                    <figcaption class="figure-caption text-center"><?="foto$i.png"?></figcaption>
+                  </figure>
+                </button>
+              <!-- </div> -->
+            </div>
+          </div>
+        <?php }
+        $noImg = base_url('assets/img/img-no-disponible.jpg');
+        ?>
+      </div>
+    </div>
+
+
+    <p>line 1</p>
+    <div class="form-group mt-2">
       <div class="row row-cols-auto" >
         <?php for ($i=0; $i < $data['fotos']; $i++) {
           // $j = $i + 1;
@@ -131,7 +161,7 @@
               </a>
             <!-- </div> -->
           </div>
-        <?php } 
+        <?php }
         $noImg = base_url('assets/img/img-no-disponible.jpg');
         ?>
         <hr>
@@ -237,33 +267,218 @@
 
 
           <?php } ?>
-          linea 5
-        <div class="row">
-          <div class="cols-auto">
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+          <p>line 5</p>
+        <!-- <div class="container"> -->
+          <div class="row row cols-auto">
+            <div class="col-12 col-md-3">
+              <div class="col mb-3">
+                <div class="row">
+                  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col">
+                    span
+                  </div>
+                  <div class="col">boton</div>
+                </div>
+              </div>
             </div>
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            <div class="col-12 col-md-3">
+              <div class="col mb-3">
+                <div class="row">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col">
+                    span
+                  </div>
+                  <div class="col">boton</div>
+                </div>
+              </div>
             </div>
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3">
+                <div class="row">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col">
+                    span
+                  </div>
+                  <div class="col">boton</div>
+                </div>
+              </div>
             </div>
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3">
+                <div class="row">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col">
+                    span
+                  </div>
+                  <div class="col">boton</div>
+                </div>
+              </div>
             </div>
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3">
+                <div class="row">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col-8">
+                    span
+                  </div>
+                  <div class="col-2 text-center">
+                    <button class="btn btn-danger">Borrar</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3">
+                <div class="row">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col-8">
+                    span
+                  </div>
+                  <div class="col-2 text-center">
+                    <button class="btn btn-danger">Borrar</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="" style="width : 150px; height: 150px; background: #def; padding: 5px; border: 1px red solid; margin: 5px;">
-              <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3">
+                <div class="row">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                </div>
+                <div class="row">
+                  <div class="col-10">
+                    span
+                  </div>
+                  <div class="col-2">
+                    <button class="btn btn-danger">&times</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
+                  <figure class="figure text-center">
+                    <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                         class="figure-img img-fluid rounded mt-3" alt="...">
+                    <figcaption class="figure-caption text-center">
+                      A caption for the above image.
+                      <button class="btn-danger">
+                        &times
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                         99+ <span class="visually-hidden">unread messages</span>
+                        </span>
+                      </button>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
+                  <figure class="figure text-center">
+                    <button type="button" class="btn btn-light position-relative">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                    <figcaption class="figure-caption text-center">
+                      <span>
+                        A caption for the above image.
+                      </span>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
+                  <figure class="figure text-center">
+                    <button type="button" class="btn btn-light position-relative">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                    <figcaption class="figure-caption text-center">
+                      <span>
+                        A caption for the above image.
+                      </span>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
+                  <figure class="figure text-center">
+                    <button type="button" class="btn btn-light position-relative">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                    <figcaption class="figure-caption text-center">
+                      <span>
+                        A caption for the above image.
+                      </span>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <!-- <div class="row"> -->
+                  <button type="button" class="btn btn-light position-relative">
+                    <figure class="figure text-center">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                      <figcaption class="figure-caption text-center">
+                        <span>
+                          A caption for the above image.
+                        </span>
+                        A caption for the above image.
+                      </figcaption>
+                    </figure>
+                  </button>
+                <!-- </div> -->
+              </div>
             </div>
           </div>
-        </div>  
-        </div>
+        <!-- </div>   -->
+<button type="button" class="btn btn-light position-relative">
+  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+       class="figure-img img-fluid rounded mt-3" alt="...">
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+        onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+  </span>
+</button>
+        <!-- </div> -->
+        <p>line 6</p>
+        
       </div>
     </div>
   </form> 
@@ -275,6 +490,11 @@
 <?php }?>
 
 <script>
+  function badge(e) {
+    console.log('clickedBadge:', e);
+  }
+
+
   console.log('script jalando');
   setupZoom();
 

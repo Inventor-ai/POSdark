@@ -34,11 +34,11 @@
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                 data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
+                 data-href="<?=base_url("$path/eliminar/".$dato['id'])?>"
                  data-actionText="<?=$delete?>" class="btn btn-danger">
                 <i class="fas fa-trash"></i>
               </a>
-              <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
+              <a href="<?=base_url("$path/editar/".$dato['id'])?>"
                 class="btn btn-success"><i class="fas fa-pencil-alt"></i>
               </a>
             </td>
@@ -47,7 +47,7 @@
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                 data-href="<?=base_url()."/$path/recuperar/".$dato['id']?>"
+                 data-href="<?=base_url("/$path/recuperar/".$dato['id'])?>"
                  data-actionText="<?=$recover?>"
                  class="btn btn-warning">
                  <i class="fas fa-undo"></i>
