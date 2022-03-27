@@ -105,15 +105,60 @@
       <label class="form-label"  for="fotos">Imagen</label>
       <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
     </div>
-    <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
+    <!-- <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p> -->
+    <!--  -->
+    <div class="row">
+      <div class="col-10">
+        <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
+      </div>
+      <div class="col-2 text-end">
+        <button type="button" onClick="viewToggle()" class="btn btn-dark">
+          <i class="fas fa-grip-horizontal view-toggle-btn"></i>
+        </button>
+        <button type="button" onClick="viewToggle()" class="btn btn-light">
+          <i class="fas fa-grip-horizontal view-toggle-btn"></i>
+        </button>
+        <button type="button" onClick="viewToggle()">
+          <i class="fas fa-grip-horizontal view-toggle-btn"></i>
+        </button>
+      </div>
+    </div>
+
+    <button type="button" onClick="viewToggle()" class="btn btn-dark">
+      <i class="fas fa-grip-horizontal view-toggle-btn"></i>
+    </button>
+    <!--
+    <div class="col-2 text-end">
+      <button onClick="viewToggle()" class="btn btn-dark"><i class="fas fa-grip-horizontal"></i></button>
+      <button onClick="viewToggle()" class="btn btn-dark"><i class="fas fa-expand"></i></button>
+      <button onClick="viewToggle()" class="btn btn-light"><i class="fas fa-grip-horizontal"></i></button>
+      <button onClick="viewToggle()" class="btn btn-light"><i class="fas fa-expand"></i></button>
+      <button onClick="viewToggle()"><i class="fas fa-grip-horizontal"></i></button>
+      <button onClick="viewToggle()"><i class="fas fa-expand"></i></button>
+    </div>
+    <button><i class="fas fa-search"></i></button>
+    <button><i class="fas fa-search-plus"></i></button>
+    <button><i class="fas fa-binoculars"></i></button>
+    <button><i class="fas fa-random"></i></button>
+    <button><i class="fas fa-arrows-alt-h"></i></button>
+    <button><i class="fas fa-sign-language"></i></button>
+    <button><i class="fas fa-expand-arrows-alt"></i></button>
+    <button><i class="fas fa-expand"></i></button>
+    <button><i class="fas fa-grip-horizontal"></i></button>
+    <button><i class="fas fa-grip-vertical"></i></button>    
+    <button><i class="fab fa-buromobelexperte"></i></button>
+     -->
     <hr> <!-- ¿Dejar esta línea? - Preguntar -->
     <div class="form-group mt-2">
-      <div class="row row cols-auto">
+      <!-- <div class="row row cols-auto"> -->
+      <div class="row row cols-auto" style="border: 2px solid">
         <?php for ($i=0; $i < $data['fotos']; $i++) {
            $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
         ?>
-          <div class="col-12 col-md-3 col-sm-6 text-center">
-            <div class="col mb-3" style="border: #777 1px solid;">
+          <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
+          <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
+          <div class="col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
+            <div class="col" style="border: #777 1px solid;">
               <!-- <div class="row"> -->
                 <button type="button" class="btn btn-light position-relative">
                   <figure class="figure text-center">
@@ -132,6 +177,7 @@
         <?php }
         $noImg = base_url('assets/img/img-no-disponible.jpg');
         ?>
+        <div class="mt-3"></div>
       </div>
     </div>
 
@@ -370,20 +416,105 @@
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3" style="border: #777 1px solid;">
                 <div class="row">
+                  <!-- <a href="#" class="position-relative"> -->
+                  <div class="position-relative">
+                    <figure class="figure text-center">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                           <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
+                            999+ <span class="visually-hidden">unread messages</span>
+                           </span>
+                      <figcaption class="figure-caption text-center">
+                        A caption for the above image.
+                        <button class="btn-danger">
+                          &times
+                        </button>
+                      </figcaption>
+                    </figure>
+                  </div>
+                  <!-- </a> -->
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
                   <figure class="figure text-center">
-                    <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
-                         class="figure-img img-fluid rounded mt-3" alt="...">
+                    <button type="button" class="btn btn-light position-relative">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge bg-danger"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                    </button>
                     <figcaption class="figure-caption text-center">
-                      A caption for the above image.
-                      <button class="btn-danger">
-                        &times
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                         99+ <span class="visually-hidden">unread messages</span>
-                        </span>
-                      </button>
+                      <span>
+                        A caption for the above image.
+                      </span>
                     </figcaption>
                   </figure>
                 </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
+                  <figure class="figure text-center">
+                    <button type="button" class="btn btn-light position-relative">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge bg-warning"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                    <figcaption class="figure-caption text-center">
+                      <span>
+                        A caption for the above image.
+                      </span>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <div class="row">
+                  <figure class="figure text-center">
+                    <button type="button" class="btn btn-light position-relative">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge bg-success"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                    <figcaption class="figure-caption text-center">
+                      <span>
+                        A caption for the above image.
+                      </span>
+                    </figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-sm-6 text-center">
+              <div class="col mb-3" style="border: #777 1px solid;">
+                <!-- <div class="row"> -->
+                  <button type="button" class="btn btn-light position-relative">
+                    <figure class="figure text-center">
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                           class="figure-img img-fluid rounded mt-3" alt="...">
+                      <span class="position-absolute top-0 start-100 translate-middle badge bg-dark"
+                            onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                      </span>
+                      <figcaption class="figure-caption text-center">
+                        <span>
+                          A caption for the above image.
+                        </span>
+                        A caption for the above image.
+                      </figcaption>
+                    </figure>
+                  </button>
+                <!-- </div> -->
               </div>
             </div>
             <div class="col-12 col-md-3 col-sm-6 text-center">
@@ -476,6 +607,36 @@
         onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
   </span>
 </button>
+<a href="#" class="btn btn-light position-relative mt-3">
+  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+       class="figure-img img-fluid rounded mt-3" alt="...">
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+        onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+  </span>
+</a>
+<a href="#" class="btn btn-warnig position-relative mt-3">
+  mensajes
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+        onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+  </span>
+</a>
+<a href="#" class="btn btn-dark position-relative mt-3">
+  mensajes
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+     99+ <span class="visually-hidden">unread messages</span>
+  </span>
+</a>
+<button mat-button class="position-relative mt-3">text
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            99+ <span class="visually-hidden">unread messages</span>
+                           </span>
+</button>
+<button class="position-relative mt-3">msg_send
+<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            99+ <span class="visually-hidden">unread messages</span>
+                           </span>
+</button>
+
         <!-- </div> -->
         <p>line 6</p>
         
@@ -492,6 +653,7 @@
 <script>
   function badge(e) {
     console.log('clickedBadge:', e);
+    alert ('clickedBadge');
   }
 
 
@@ -601,4 +763,112 @@
    if (destino.target.nodeName == 'DIV' )
        e.target.appendChild(itemDragged);
  }
+
+//  var t;
+ function viewToggleOk() { // Ok - First one
+   const modes = ['fa-grip-horizontal', 'fa-expand'];
+   const vwTg = document.getElementsByClassName('view-toggle-btn');
+   var modeSwitch;
+   const modeSetView = viewItems();
+  //  t = modeSetView;
+   console.log(modeSetView);
+   for (let index = 0; index < vwTg.length; index++) {
+    //  const element = vwTg[index];
+    modeSwitch = vwTg[index].className.baseVal.indexOf(modes[0]) < 0;
+    //  console.log('modeSwitch 0: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
+    if (modeSwitch) {
+       vwTg[index].classList.remove(modes[1]);
+       vwTg[index].classList.add(modes[0]);
+    } else {
+       vwTg[index].classList.remove(modes[0]);
+       vwTg[index].classList.add(modes[1]);
+    }
+    console.log('modeSwitch 1: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
+   }
+   const expand = ['col-12', 'fa-expand'];
+   const shrink = ['fa-grip-horizontal', 'fa-expand'];
+   for (let index = 0; index < modeSetView.length; index++) {
+     if (modeSwitch) {
+      //  const element = modeSetView[index];
+      modeSetView[index].classList.add(expand[index]);
+      // modeSetView[index].classList.add('col-12');      // xs
+      modeSetView[index].classList.add('col-sm-6');    // sm
+      modeSetView[index].classList.add('col-md-4');    // md
+      modeSetView[index].classList.remove('col-4');    // xs
+      modeSetView[index].classList.remove('col-sm-3'); // sm
+      modeSetView[index].classList.remove('col-md-3'); // md
+
+      modeSetView[index].classList.add('col-lg-3');
+      modeSetView[index].classList.remove('col-lg-2');
+      modeSetView[index].classList.remove(shrink[index]);
+
+     } else {
+      modeSetView[index].classList.add(shrink[index]);
+      modeSetView[index].classList.add('col-4');       // xs
+      modeSetView[index].classList.add('col-sm-3');    // sm
+      modeSetView[index].classList.add('col-md-3');    // md
+      // modeSetView[index].classList.remove('col-12');   // xs  
+      modeSetView[index].classList.remove('col-sm-6'); // sm
+      modeSetView[index].classList.remove('col-md-4'); // md
+
+      modeSetView[index].classList.remove(expand[index]);
+      
+
+      modeSetView[index].classList.add('col-lg-2');
+      modeSetView[index].classList.remove('col-lg-3');
+     }
+   }
+ }
+
+ function viewToggle() {
+   const modes = ['fa-grip-horizontal', 'fa-expand'];
+   const vwTg = document.getElementsByClassName('view-toggle-btn');
+   var modeSwitch;
+   const modeSetView = viewItems();
+  //  t = modeSetView;
+   console.log(modeSetView);
+   for (let index = 0; index < vwTg.length; index++) {
+    //  const element = vwTg[index];
+    modeSwitch = vwTg[index].className.baseVal.indexOf(modes[0]) < 0;
+    //  console.log('modeSwitch 0: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
+    if (modeSwitch) {
+       vwTg[index].classList.remove(modes[1]);
+       vwTg[index].classList.add(modes[0]);
+    } else {
+       vwTg[index].classList.remove(modes[0]);
+       vwTg[index].classList.add(modes[1]);
+    }
+    console.log('modeSwitch 1: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
+   }
+   for (let index = 0; index < modeSetView.length; index++) {
+     if (modeSwitch) {
+      //  const element = modeSetView[index];
+      modeSetView[index].classList.add('col-12');      // xs
+      modeSetView[index].classList.add('col-sm-6');    // sm
+      modeSetView[index].classList.add('col-md-4');    // md
+      modeSetView[index].classList.remove('col-4');    // xs
+      modeSetView[index].classList.remove('col-sm-3'); // sm
+      modeSetView[index].classList.remove('col-md-3'); // md
+
+      modeSetView[index].classList.add('col-lg-3');
+      modeSetView[index].classList.remove('col-lg-2');
+
+     } else {
+      modeSetView[index].classList.add('col-4');       // xs
+      modeSetView[index].classList.add('col-sm-3');    // sm
+      modeSetView[index].classList.add('col-md-3');    // md
+      modeSetView[index].classList.remove('col-12');   // xs  
+      modeSetView[index].classList.remove('col-sm-6'); // sm
+      modeSetView[index].classList.remove('col-md-4'); // md
+
+      modeSetView[index].classList.add('col-lg-2');
+      modeSetView[index].classList.remove('col-lg-3');
+     }
+   }
+ }
+
+ function viewItems() {
+   return document.getElementsByClassName('view-mode');
+ }
+
 </script>
