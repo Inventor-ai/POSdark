@@ -1,6 +1,25 @@
 <?php
 // var_dump($data);
 ?>
+<style>
+.box {
+    /* height: 250px;
+    width: 150px; */
+    border: solid 3px #ccc;
+    margin: 10px;
+
+    /* align items in the box */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hide {
+  display: none;
+}
+
+</style>
 <div class="mb-3">
   <form method="<?=$method?>" enctype="multipart/form-data" action="<?=base_url("$path/$action")?>"
          autocomplete="off">
@@ -157,12 +176,14 @@
         ?>
           <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
           <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
-          <div class="col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
-            <div class="col" style="border: #777 1px solid;">
-              <!-- <div class="row"> -->
-                <button type="button" class="btn btn-light position-relative">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
+            <!-- <div class="col box" style="border: #26e18a 2px dashed;"> -->
+              <div class="col box" style="border: #777 1px solid;">
+                <div id="<?="spacer$i" ?>" class="mb-3 spacer hide" style="border:#900 2px dashed;height:100px;"></div>
+                <!-- <div class="mb-2" style="border: #900 1px dashed;"></div> -->
+                <button id="<?="$i" ?>" type="button" class="btn btn-light position-relative item" draggable="true">
                   <figure class="figure text-center">
-                    <img src="<?=$imagen?>"
+                    <img src="<?=$imagen?>" draggable="false"
                           class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
                           onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -171,7 +192,7 @@
                     <figcaption class="figure-caption text-center"><?="foto$i.png"?></figcaption>
                   </figure>
                 </button>
-              <!-- </div> -->
+                <!-- <div class="mb-2" style="border: #900 1px dashed;"></div> -->
             </div>
           </div>
         <?php }
@@ -696,24 +717,24 @@
     setDraggables();
   });
 
+/* 
   function setDraggables() {
     const items = document.querySelectorAll('.item'),
-    imgHolder = document.querySelector('.imageBox');
+      imgHolder = document.querySelector('.imageBox');
     console.log(imgHolder);
     items.forEach ( item => {
       item.addEventListener('dragstart', dragStart);
       item.addEventListener('dragend', dragEnd);
     });
 
-   /*
-   boxes.forEach ( box => {
-     box.addEventListener('dragenter', dragEnter);
-     //box.addEventListener('dragover', dragEnter); // t2
-     box.addEventListener('dragover', dragOver);
-     box.addEventListener('dragleave', dragLeave);
-     box.addEventListener('drop', drop);
-   });
-   */
+  //  boxes.forEach ( box => {
+  //    box.addEventListener('dragenter', dragEnter);
+  //    //box.addEventListener('dragover', dragEnter); // t2
+  //    box.addEventListener('dragover', dragOver);
+  //    box.addEventListener('dragleave', dragLeave);
+  //    box.addEventListener('drop', drop);
+  //  });
+   
    imgHolder.addEventListener('dragenter', dragEnter);
      //box.addEventListener('dragover', dragEnter); // t2
    imgHolder.addEventListener('dragover', dragOver);
@@ -763,112 +784,9 @@
    if (destino.target.nodeName == 'DIV' )
        e.target.appendChild(itemDragged);
  }
-
-//  var t;
- function viewToggleOk() { // Ok - First one
-   const modes = ['fa-grip-horizontal', 'fa-expand'];
-   const vwTg = document.getElementsByClassName('view-toggle-btn');
-   var modeSwitch;
-   const modeSetView = viewItems();
-  //  t = modeSetView;
-   console.log(modeSetView);
-   for (let index = 0; index < vwTg.length; index++) {
-    //  const element = vwTg[index];
-    modeSwitch = vwTg[index].className.baseVal.indexOf(modes[0]) < 0;
-    //  console.log('modeSwitch 0: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
-    if (modeSwitch) {
-       vwTg[index].classList.remove(modes[1]);
-       vwTg[index].classList.add(modes[0]);
-    } else {
-       vwTg[index].classList.remove(modes[0]);
-       vwTg[index].classList.add(modes[1]);
-    }
-    console.log('modeSwitch 1: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
-   }
-   const expand = ['col-12', 'fa-expand'];
-   const shrink = ['fa-grip-horizontal', 'fa-expand'];
-   for (let index = 0; index < modeSetView.length; index++) {
-     if (modeSwitch) {
-      //  const element = modeSetView[index];
-      modeSetView[index].classList.add(expand[index]);
-      // modeSetView[index].classList.add('col-12');      // xs
-      modeSetView[index].classList.add('col-sm-6');    // sm
-      modeSetView[index].classList.add('col-md-4');    // md
-      modeSetView[index].classList.remove('col-4');    // xs
-      modeSetView[index].classList.remove('col-sm-3'); // sm
-      modeSetView[index].classList.remove('col-md-3'); // md
-
-      modeSetView[index].classList.add('col-lg-3');
-      modeSetView[index].classList.remove('col-lg-2');
-      modeSetView[index].classList.remove(shrink[index]);
-
-     } else {
-      modeSetView[index].classList.add(shrink[index]);
-      modeSetView[index].classList.add('col-4');       // xs
-      modeSetView[index].classList.add('col-sm-3');    // sm
-      modeSetView[index].classList.add('col-md-3');    // md
-      // modeSetView[index].classList.remove('col-12');   // xs  
-      modeSetView[index].classList.remove('col-sm-6'); // sm
-      modeSetView[index].classList.remove('col-md-4'); // md
-
-      modeSetView[index].classList.remove(expand[index]);
-      
-
-      modeSetView[index].classList.add('col-lg-2');
-      modeSetView[index].classList.remove('col-lg-3');
-     }
-   }
- }
-
- function viewToggle() {
-   const modes = ['fa-grip-horizontal', 'fa-expand'];
-   const vwTg = document.getElementsByClassName('view-toggle-btn');
-   var modeSwitch;
-   const modeSetView = viewItems();
-  //  t = modeSetView;
-   console.log(modeSetView);
-   for (let index = 0; index < vwTg.length; index++) {
-    //  const element = vwTg[index];
-    modeSwitch = vwTg[index].className.baseVal.indexOf(modes[0]) < 0;
-    //  console.log('modeSwitch 0: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
-    if (modeSwitch) {
-       vwTg[index].classList.remove(modes[1]);
-       vwTg[index].classList.add(modes[0]);
-    } else {
-       vwTg[index].classList.remove(modes[0]);
-       vwTg[index].classList.add(modes[1]);
-    }
-    console.log('modeSwitch 1: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
-   }
-   for (let index = 0; index < modeSetView.length; index++) {
-     if (modeSwitch) {
-      //  const element = modeSetView[index];
-      modeSetView[index].classList.add('col-12');      // xs
-      modeSetView[index].classList.add('col-sm-6');    // sm
-      modeSetView[index].classList.add('col-md-4');    // md
-      modeSetView[index].classList.remove('col-4');    // xs
-      modeSetView[index].classList.remove('col-sm-3'); // sm
-      modeSetView[index].classList.remove('col-md-3'); // md
-
-      modeSetView[index].classList.add('col-lg-3');
-      modeSetView[index].classList.remove('col-lg-2');
-
-     } else {
-      modeSetView[index].classList.add('col-4');       // xs
-      modeSetView[index].classList.add('col-sm-3');    // sm
-      modeSetView[index].classList.add('col-md-3');    // md
-      modeSetView[index].classList.remove('col-12');   // xs  
-      modeSetView[index].classList.remove('col-sm-6'); // sm
-      modeSetView[index].classList.remove('col-md-4'); // md
-
-      modeSetView[index].classList.add('col-lg-2');
-      modeSetView[index].classList.remove('col-lg-3');
-     }
-   }
- }
-
- function viewItems() {
-   return document.getElementsByClassName('view-mode');
- }
+*/ 
 
 </script>
+<!-- change name and content to toggle mode -->
+<!-- <script src="<?=base_url("js/dragdrop.js")?>"></script> -->
+<script src="<?=base_url("js/dragdrop.js")?>"></script>
