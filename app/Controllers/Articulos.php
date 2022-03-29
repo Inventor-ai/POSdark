@@ -169,8 +169,8 @@ class Articulos extends BaseController
           $imageFile = $this->request->getFile('file');
           $imageFile->move(WRITEPATH . 'uploads');    
           $data = [
-             'ile_name' =>  $imageFile->getName(),
-             'file_type'  => $imageFile->getClientMimeType()
+             'ile_name'  => $imageFile->getName(),
+             'file_type' => $imageFile->getClientMimeType()
           ];
           // $save = $db->insert($data);
           print_r('Image uploaded correctly!');
@@ -304,11 +304,20 @@ class Articulos extends BaseController
     echo view('/includes/footer');
   }
 
+  private function photos01($imgs = [])
+  {
+    echo "Processing " . count($imgs);
+    foreach ($imgs as $img) {
+      var_dump($img);
+    }
+  }
+
   public function actualizar()
   {
     $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
     // **** 0
+    $this->photos01($_POST['imgs']);
     var_dump($_POST);
     var_dump($_FILES);
     var_dump($dataWeb);

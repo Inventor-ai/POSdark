@@ -1,4 +1,5 @@
 <?php
+$ext = "jpg";
 // var_dump($data);
 ?>
 <link href="<?=base_url("css/dragdrop.css")?>" rel="stylesheet" />
@@ -105,13 +106,46 @@
         </div>
       </div>
     </div>
-    
+    <!-- Ok - Original -->
     <div class="mt-2">
       <label class="form-label"  for="fotos">Imagen</label>
       <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+      <!-- <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple> -->
     </div>
     <!-- <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p> -->
-    <!--  -->
+    <!-- test group 0 -->
+    <div class="row mt-3">
+      <div class="col-1">
+        <button type="button" class="btn btn-danger">&times;</button>
+      </div>  
+      <div class="col-1">
+        <label class="form-label"  for="fotos">0</label>
+      </div>
+      <div class="col-10">
+        <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-1">
+        <button type="button" class="btn btn-danger">&times;</button>
+      </div>  
+      <div class="col-1">
+        <label class="form-label"  for="fotos">1</label>
+      </div>
+      <div class="col-10">
+        <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-2">
+        <button type="button" class="btn btn-danger">&times;</button>
+        <label class="form-label"  for="fotos">2</label>
+      </div>
+      <div class="col-10">
+        <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+      </div>
+    </div>
+    <!-- test group 1 -->
     <div class="row">
       <div class="col-10">
         <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
@@ -159,7 +193,7 @@
       <!-- <div class="row row cols-auto" style="border: 2px solid"> -->
       <!-- <div class="row row cols-auto" style="border: #ced4da 1px solid"> -->
         <?php for ($i=0; $i < $data['fotos']; $i++) {
-           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
         ?>
           <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
           <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
@@ -177,7 +211,15 @@
                           onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
                   </span>
                   <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
-                  <figcaption class="figure-caption text-center"><?="foto$i.png"?></figcaption>
+                  <figcaption class="figure-caption text-center"><?="foto$i.$ext"?></figcaption>
+                  <!-- <figcaption class="figure-caption text-center">Cargada</figcaption> -->
+                  <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
+                  <!-- <figcaption class="figure-caption text-center">Pendiente</figcaption> -->
+                  <figcaption class="figure-caption text-danger">Pendiente</figcaption>
+                  <figcaption class="figure-caption text-success">Cargada</figcaption>
+                  <figcaption class="figure-caption text-primary">Cargada</figcaption>
+                  <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
+                  <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption>
                   <input type="hidden" name="imgs[]" value="<?="foto$i"?>">
                 </figure>
               </button>
@@ -191,7 +233,7 @@
       </div>
     </div>
 
-
+    <hr>
     <p>line 1</p>
     <div class="form-group mt-2">
       <div class="row row-cols-auto" >
@@ -206,7 +248,7 @@
           //  $imagen = 'images/'."$path/".$data['id'].$imagen;
           //  $imagen = base_url ($imagen);
 
-           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
         ?>
           <div class="col mb-3">
             <!-- <div class="mb-1"> -->
@@ -218,7 +260,6 @@
             <!-- </div> -->
           </div>
         <?php }
-        $noImg = base_url('assets/img/img-no-disponible.jpg');
         ?>
         <hr>
         <div class="row row cols-auto">
@@ -234,7 +275,7 @@
               // $imagen = 'images/'."$path/".$data['id'].$imagen;
               // $imagen = base_url ($imagen);
 
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
           ?>
             <div class="col-4 col-sm-2">
             <!-- <a href="<?=$imagen?>"> -->
@@ -258,7 +299,7 @@
               // $imagen = 'images/'."$path/".$data['id'].$imagen;
               // $imagen = base_url ($imagen);
 
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
           ?>
             <div class="col mb-3">
             <a href="<?=$imagen?>">
@@ -280,7 +321,7 @@
               // $imagen = 'images/'."$path/".$data['id'].$imagen;
               // $imagen = base_url ($imagen);
 
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.png");
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
           ?>
             <!-- <div class="col mb-3">
               <a href="<?=$imagen?>">
@@ -329,7 +370,7 @@
             <div class="col-12 col-md-3">
               <div class="col mb-3">
                 <div class="row">
-                  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col">
@@ -342,7 +383,7 @@
             <div class="col-12 col-md-3">
               <div class="col mb-3">
                 <div class="row">
-                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col">
@@ -355,7 +396,7 @@
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3">
                 <div class="row">
-                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col">
@@ -368,7 +409,7 @@
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3">
                 <div class="row">
-                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col">
@@ -381,7 +422,7 @@
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3">
                 <div class="row">
-                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col-8">
@@ -396,7 +437,7 @@
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3">
                 <div class="row">
-                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col-8">
@@ -411,17 +452,16 @@
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3">
                 <div class="row">
-                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png" alt="Cargando imagen...">
+                  <img class="img" src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg" alt="Cargando imagen...">
                 </div>
                 <div class="row">
                   <div class="col-10">
                     span
                   </div>
-                  <div class="col-2">
+                  <div class="col-1">
                     <button class="btn btn-danger">&times</button>
                   </div>
-                </div>
-              </div>
+                </div>1              </div>
             </div>
             <div class="col-12 col-md-3 col-sm-6 text-center">
               <div class="col mb-3" style="border: #777 1px solid;">
@@ -429,7 +469,7 @@
                   <!-- <a href="#" class="position-relative"> -->
                   <div class="position-relative">
                     <figure class="figure text-center">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                            <span class="position-absolute top-0 start-90 translate-middle badge bg-danger">
                             999+ <span class="visually-hidden">unread messages</span>
@@ -451,7 +491,7 @@
                 <div class="row">
                   <figure class="figure text-center">
                     <button type="button" class="btn btn-light position-relative">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge bg-danger"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -471,7 +511,7 @@
                 <div class="row">
                   <figure class="figure text-center">
                     <button type="button" class="btn btn-light position-relative">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge bg-warning"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -491,7 +531,7 @@
                 <div class="row">
                   <figure class="figure text-center">
                     <button type="button" class="btn btn-light position-relative">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge bg-success"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -511,7 +551,7 @@
                 <!-- <div class="row"> -->
                   <button type="button" class="btn btn-light position-relative">
                     <figure class="figure text-center">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge bg-dark"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -532,7 +572,7 @@
                 <div class="row">
                   <figure class="figure text-center">
                     <button type="button" class="btn btn-light position-relative">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -552,7 +592,7 @@
                 <div class="row">
                   <figure class="figure text-center">
                     <button type="button" class="btn btn-light position-relative">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -572,7 +612,7 @@
                 <div class="row">
                   <figure class="figure text-center">
                     <button type="button" class="btn btn-light position-relative">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -592,7 +632,7 @@
                 <!-- <div class="row"> -->
                   <button type="button" class="btn btn-light position-relative">
                     <figure class="figure text-center">
-                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+                      <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
                            class="figure-img img-fluid rounded mt-3" alt="...">
                       <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
                             onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
@@ -611,14 +651,14 @@
           </div>
         <!-- </div>   -->
 <button type="button" class="btn btn-light position-relative">
-  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
        class="figure-img img-fluid rounded mt-3" alt="...">
   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
         onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
   </span>
 </button>
 <a href="#" class="btn btn-light position-relative mt-3">
-  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.png"
+  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
        class="figure-img img-fluid rounded mt-3" alt="...">
   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
         onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>

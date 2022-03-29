@@ -57,7 +57,7 @@
   function showPhotos(itemId, itemText, itemImgs) {
     if (itemImgs == 0) return;
     const title = document.getElementById("ModalCarouselLabel");
-    title.innerHTML = itemText;
+    title.innerHTML = itemText; // !! Modificar por uso de nodos
     const IG  = 'itemsGallery';
     const url = '<?=base_url('galleryPhotos/')?>';
     // console.log('clicked img: ', e);
@@ -109,7 +109,8 @@
       */
       const photo = document.createElement('img');
     //   photo.src = path + (index < 10 ? '0':'') + (index + 1) + ".png";
-      photo.src = path + index + ".png";
+      // photo.src = path + index + ".png";
+      photo.src = path + index + ".jpg";
       // photo.classList.add("d-block w-100");
       photo.classList.add("d-block");
       photo.classList.add("w-100");

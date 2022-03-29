@@ -8,9 +8,9 @@ $currency = "$ ";
       <h4 class=""><?=$title?></h4>
   </div>
   <div class="col-12 col-sm-4 text-right" style="text-align:right">
-    <a href="<?=base_url()."/$path/index/".($onOff == 0?"1":"0")?>" class="btn btn-warning mb-2"><?=$switch?></a>
+    <a href="<?=base_url("$path/index/".($onOff == 0?"1":"0"))?>" class="btn btn-warning mb-2"><?=$switch?></a>
     <?php if ($onOff) {?>
-      <a href="<?=base_url()."/$path/agregar"?>" class="btn btn-primary mb-2">Agregar</a>
+      <a href="<?=base_url("$path/agregar")?>" class="btn btn-primary mb-2">Agregar</a>
     <?php } ?>
     <a href="<?=base_url("$path/muestraCodigos")?>" class="btn btn-dark mb-2">Código de barras</a>
     <a href="<?=base_url("$path/rptMinExcel")?>" class="btn btn-success mb-2"><i class="fa fa-file-excel"></i></a>
@@ -48,7 +48,8 @@ $currency = "$ ";
     <tbody>
       <?php foreach($data as $dato) {
         $imagen = $dato['fotos'] ? 
-                   base_url('images/articulos/'.$dato['id'].'/foto0.png'):
+                  //  base_url('images/articulos/'.$dato['id'].'/foto0.png'):
+                   base_url('images/articulos/'.$dato['id'].'/foto0.jpg'):
                    base_url('assets/img/img-no-disponible.jpg');
         $caption = "". $dato['nombre'] ;
                 // Bloque de vista previa una sola foto
@@ -72,7 +73,7 @@ $currency = "$ ";
             <!-- <a href="<?=$imagen?>" title=" <?=$caption?>"></a> -->
               <img src="<?=$imagen?>"
                    style="width: 65px;" 
-                   alt="foto de <?=$dato['nombre']?>"
+                   alt="<?=$dato['nombre']?> - Foto"
                    onclick="showPhotos(<?=$dato['id']?>, '<?=$caption?>', <?=$dato['fotos']?>)"
               >
               <!-- onclick="showPhotos(event, <?=$dato['id']?>, '<?=$caption?>', <?=$dato['fotos']?>)" -->
@@ -89,11 +90,11 @@ $currency = "$ ";
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                 data-href="<?=base_url()."/$path/eliminar/".$dato['id']?>"
+                 data-href="<?=base_url("$path/eliminar/".$dato['id'])?>"
                  data-actionText="<?=$delete?>" class="btn btn-danger">
                 <i class="fas fa-trash"></i>
               </a>
-              <a href="<?=base_url()."/$path/editar/".$dato['id']?>"
+              <a href="<?=base_url("$path/editar/".$dato['id'])?>"
                 class="btn btn-success"><i class="fas fa-pencil-alt"></i>
               </a>
             </td>
@@ -102,7 +103,7 @@ $currency = "$ ";
             <td class="text-center">
               <a href="#confirm" data-bs-toggle="modal"
                  data-info="<?=$dato['nombre']?>" data-item="<?=$item?>"
-                 data-href="<?=base_url()."/$path/recuperar/".$dato['id']?>"
+                 data-href="<?=base_url("$path/recuperar/".$dato['id'])?>"
                  data-actionText="<?=$recover?>"
                  class="btn btn-warning">
                  <i class="fas fa-undo"></i>
