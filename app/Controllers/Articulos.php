@@ -97,6 +97,7 @@ class Articulos extends BaseController
       'id_unidad'     => $this->request->getPost('id_unidad'),
       'id_categoria'  => $this->request->getPost('id_categoria'),
       'fotos'         => $this->request->getPost('fotos'),
+      'imgs'          => $this->request->getPost('imgs'),
         // 'activo'        => $this->request->getPost('activo')
     ];
     // Custom initialize section. Set default value by field
@@ -197,8 +198,9 @@ class Articulos extends BaseController
     // Validar que:
     //  El precio de venta sea mayor que el de compra
     //  por lo menos, x $ / %, ó ?...
-    return ($this->request->getMethod() == $method &&
-            $this->validate($rules) );
+    // return ($this->request->getMethod() == $method &&
+    //         $this->validate($rules) );
+    return ($method == "post" && $this->validate($rules));
   }
 
   private function setCarrier($dataWeb, $value = '', $key = 'id')
@@ -306,10 +308,17 @@ class Articulos extends BaseController
   {
     $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
+    // **** 0
+    var_dump($_POST);
+    var_dump($_FILES);
+    var_dump($dataWeb);
+    return;
+    // **** 1
     if ($this->getValidate( $this->request->getMethod() )) {
         // $msg = "¡Actualización exitosa!";
         $this->dataModel->update( $id, $dataWeb );
         return redirect()->to(base_url()."/$this->module");
+        // develop Only - delete it
     }
     $this->setCarrier($dataWeb, $id);
     $this->editar($id);

@@ -82,6 +82,19 @@ function viewThumbs() {
            element.classList.remove( thumbs ? shrink[i] : expand[i]);
       }
  }
+
+//  var origen, destino;
+ function dropIt(e) {
+   var box = e.target.parentNode.nodeName;
+   if (e.target.nodeName == 'path')
+       box = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+   else if (e.target.nodeName == 'svg')
+       box = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+   else if (e.target.nodeName == 'SPAN')
+       box = e.target.parentNode.parentNode.parentNode.parentNode;
+   box.remove();
+   //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove()
+  }
   
   //  function t(p1, p2 = 10) {
   //    console.log(p1, p2);
@@ -168,19 +181,20 @@ function viewModeOk() {
  }
 */
 
-
-var origen, destino;
+// var src;
+// var origen, destino;
 
  function setDraggables() {
     const items = document.querySelectorAll('.item'),
-      imgHolder = document.querySelector('.box');
-    console.log(imgHolder);
+          boxes = document.querySelectorAll('.box');
+    //   imgHolder = document.querySelector('.box');
+    // console.log(imgHolder);
     items.forEach ( item => {
       item.addEventListener('dragstart', dragStart);
       item.addEventListener('dragend', dragEnd);
     });
 
-   /*
+   /**/
    boxes.forEach ( box => {
      box.addEventListener('dragenter', dragEnter);
      //box.addEventListener('dragover', dragEnter); // t2
@@ -188,18 +202,19 @@ var origen, destino;
      box.addEventListener('dragleave', dragLeave);
      box.addEventListener('drop', drop);
    });
-   */
-   imgHolder.addEventListener('dragenter', dragEnter);
-     //box.addEventListener('dragover', dragEnter); // t2
-   imgHolder.addEventListener('dragover', dragOver);
-   imgHolder.addEventListener('dragleave', dragLeave);
-   imgHolder.addEventListener('drop', drop);
+   
+//    imgHolder.addEventListener('dragenter', dragEnter);
+//      //box.addEventListener('dragover', dragEnter); // t2
+//    imgHolder.addEventListener('dragover', dragOver);
+//    imgHolder.addEventListener('dragleave', dragLeave);
+//    imgHolder.addEventListener('drop', drop);
  }
 
   function dragStart(e) {
    e.dataTransfer.setData('text/plain', e.target.id);
    setTimeout( () => {
      e.target.classList.add('hide');
+    //  src = e.target.parentElement;
      //  origen = e.target.parentElement; //
      //  origen = e.target; //
      //  origen = e; //
@@ -207,7 +222,7 @@ var origen, destino;
     //  origen = e.target.parentNode; //
     //  console.log('dragStart: ', origen);
     //  e.target.parentNode.childen[0].classList.remove('hide'); // Fail
-     e.target.parentNode.children['0'].classList.remove('hide');
+    //  e.target.parentNode.children['0'].classList.remove('hide'); // Try out
    }, 0);
  }
 
@@ -215,14 +230,30 @@ var origen, destino;
    e.preventDefault();
    const itemDragged = document.getElementById(e.target.id);
    itemDragged.classList.remove('hide');
-   origen = e.target.parentNode; //
-//    e.target.parentNode.childen['0'].classList.add('hide');
-   destino = e;
+//    origen = e.target.parentNode; //
+//    e.target.parentNode.children['0'].classList.add('hide');      // Try out
+ }
+
+ function imgInfo() {
+   return '|IMG|FIGCAPTION';
  }
 
  function dragEnter(e) {
    e.preventDefault();
-   e.target.classList.add('drag-over');
+   const DragOver = 'drag-over';
+   const IMGinfo  = imgInfo();
+//    const IMGinfo  = '|IMG|FIGCAPTION';
+   //    e.target.classList.add('drag-over'); 
+   //    console.log(origen);
+   if (e.target.nodeName == 'BUTTON') {
+       e.target.classList.add(DragOver);
+    //    e.target.parentNode.classList.add('drag-over');
+   } else if (e.target.nodeName == 'FIGURE') {
+       e.target.parentElement.classList.add(DragOver);
+    //    } else if (e.target.nodeName == 'IMG') {
+       } else if (IMGinfo.indexOf(e.target.nodeName) > -1) {
+       e.target.parentElement.parentElement.classList.add(DragOver);
+   }
  }
 
  function dragOver(e) { // t1
@@ -230,21 +261,78 @@ var origen, destino;
  }
 
  function dragLeave(e) {
-   e.target.classList.remove('drag-over');
+   const DragOver = 'drag-over';
+   const IMGinfo  = imgInfo();
+//    const IMGinfo  = '|IMG|FIGCAPTION';
+//    e.target.classList.remove('drag-over');
+//    origen = e;
+   if (e.target.nodeName == 'BUTTON') {
+       e.target.classList.remove(DragOver);
+   } else if (e.target.nodeName == 'FIGURE') {
+       e.target.parentElement.classList.remove(DragOver);
+//    } else if (e.target.nodeName == 'IMG') {
+//    } else if (e.target.nodeName == 'IMG' || e.target.nodeName == 'IMG') {
+   } else if (IMGinfo.indexOf(e.target.nodeName) > -1) {
+       e.target.parentElement.parentElement.classList.remove(DragOver);
+   }
  }
 
- function drop(e) {
+ function drop_OK01(e) { // 1st version Works Ok - interchage fotos
+   const IMGinfo  = imgInfo();
    //e.target.classList.remove('drag-over');
+    // origen = e;
+    // console.log('drop - e:', e);
+    // console.log(e.target.nodeName);
    dragLeave(e);
    const id = e.dataTransfer.getData('text/plain');
    // const itemDragged = document.getElementById(e.target.id);
    const itemDragged = document.getElementById(id);
-  //  destino = e;
-  //  console.log('drop - e:', e);
+   var boxTgt;
+   if (IMGinfo.indexOf(e.target.nodeName) > -1) 
+       boxTgt = e.target.parentNode.parentNode.parentNode;
+   else if (e.target.nodeName == 'FIGURE')
+       boxTgt = e.target.parentNode.parentNode;
+   else if (e.target.nodeName == 'BUTTON') 
+       boxTgt = e.target.parentNode;
   //  console.log('drop - target:', e.target);
    //  if (destino.target.localName == 'div' )
-   if (destino.target.nodeName == 'DIV' )
-       e.target.appendChild(itemDragged);
+   if (boxTgt.children[1].nodeName             == 'BUTTON' &&
+       boxTgt.children[1].children[0].nodeName == 'FIGURE') {
+    //    origen = itemDragged;
+       itemDragged.parentElement.appendChild(boxTgt.children[1]);
+    //    itemDragged.parentElement.children['0'].classList.add('hide'); // try out
+       boxTgt.appendChild(itemDragged);
+    }
+ }
+
+ function drop(e) {
+   const IMGinfo  = imgInfo();
+   //e.target.classList.remove('drag-over');
+    // origen = e;
+    // console.log('drop - e:', e);
+    // console.log(e.target.nodeName);
+   dragLeave(e);
+   const id = e.dataTransfer.getData('text/plain');
+   const itemDragged = document.getElementById(id);
+   // const itemDragged = document.getElementById(e.target.id);
+   var boxTgt;
+   if (IMGinfo.indexOf(e.target.nodeName) > -1) 
+       boxTgt = e.target.parentNode.parentNode.parentNode;
+   else if (e.target.nodeName == 'FIGURE')
+       boxTgt = e.target.parentNode.parentNode;
+   else if (e.target.nodeName == 'BUTTON') 
+       boxTgt = e.target.parentNode;
+//    console.log('drop - boxTgt:', boxTgt);
+//    console.log('drop - boxTgt:', e.target.id);
+//    origen  = e;
+//    origen  = itemDragged;
+//    destino = boxTgt;
+   // Optimizar no volviendo a bajar por la estructura del DOM
+//    console.log('drop on', e.target.nodeName, 
+//        '|path|svg|SPAN'.indexOf(e.target.nodeName) < 0
+//    );
+   if ('|path|svg|SPAN'.indexOf(e.target.nodeName) < 0) 
+       boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, boxTgt.parentNode);
  }
 
 console.log('dragdrop: On');
