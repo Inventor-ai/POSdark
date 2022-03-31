@@ -314,6 +314,10 @@ class Articulos extends BaseController
 
   public function actualizar()
   {
+    // $texto = 'foto0.png|foto1.jpg|foto2.jpeg|foto3.png|foto4.jpg|foto5.jpeg|foto6.png|foto7.jpg|foto8.jpeg|foto9.png';
+    // var_dump($texto);
+    // print_r (explode ("|", $texto));
+
     $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
     // **** 0

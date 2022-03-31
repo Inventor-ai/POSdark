@@ -1,5 +1,5 @@
 <?php
-$ext = "jpg";
+// $imgExt = "jpg";
 // var_dump($data);
 ?>
 <link href="<?=base_url("css/dragdrop.css")?>" rel="stylesheet" />
@@ -193,7 +193,8 @@ $ext = "jpg";
       <!-- <div class="row row cols-auto" style="border: 2px solid"> -->
       <!-- <div class="row row cols-auto" style="border: #ced4da 1px solid"> -->
         <?php for ($i=0; $i < $data['fotos']; $i++) {
-           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+          //  $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg"); // old
+           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
         ?>
           <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
           <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
@@ -211,7 +212,7 @@ $ext = "jpg";
                           onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
                   </span>
                   <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
-                  <figcaption class="figure-caption text-center"><?="foto$i.$ext"?></figcaption>
+                  <figcaption class="figure-caption text-center"><?="foto$i"?></figcaption>
                   <!-- <figcaption class="figure-caption text-center">Cargada</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Pendiente</figcaption> -->
@@ -219,6 +220,7 @@ $ext = "jpg";
                   <figcaption class="figure-caption text-success">Cargada</figcaption>
                   <figcaption class="figure-caption text-primary">Cargada</figcaption>
                   <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
+                  <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption>
                   <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption>
                   <input type="hidden" name="imgs[]" value="<?="foto$i"?>">
                 </figure>
@@ -244,11 +246,12 @@ $ext = "jpg";
           // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
           //  $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
 
-          //  $imagen = "/foto$i.png";
+          //  $imagen = "/foto$i.png"; // old
+          //  $imagen = "/foto$i";
           //  $imagen = 'images/'."$path/".$data['id'].$imagen;
           //  $imagen = base_url ($imagen);
 
-           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
         ?>
           <div class="col mb-3">
             <!-- <div class="mb-1"> -->
@@ -271,11 +274,13 @@ $ext = "jpg";
              // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
               // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
 
-              // $imagen = "/foto$i.png";
+              // $imagen = "/foto$i.png"; // old
+              // $imagen = "/foto$i";
               // $imagen = 'images/'."$path/".$data['id'].$imagen;
               // $imagen = base_url ($imagen);
 
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+              // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
           ?>
             <div class="col-4 col-sm-2">
             <!-- <a href="<?=$imagen?>"> -->
@@ -295,11 +300,13 @@ $ext = "jpg";
              // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
               // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
 
-              // $imagen = "/foto$i.png";
+              // $imagen = "/foto$i.png";  // old
+              // $imagen = "/foto$i";
               // $imagen = 'images/'."$path/".$data['id'].$imagen;
               // $imagen = base_url ($imagen);
 
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+              // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
           ?>
             <div class="col mb-3">
             <a href="<?=$imagen?>">
@@ -317,11 +324,13 @@ $ext = "jpg";
              // $imagen = base_url('images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png");
               // $imagen = "/foto".($j < 10 ? "0" : "")."$j.png";
 
-              // $imagen = "/foto$i.png";
+              // $imagen = "/foto$i.png";  // old
+              // $imagen = "/foto$i";
               // $imagen = 'images/'."$path/".$data['id'].$imagen;
               // $imagen = base_url ($imagen);
 
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+              // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
+              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
           ?>
             <!-- <div class="col mb-3">
               <a href="<?=$imagen?>">
