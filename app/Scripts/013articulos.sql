@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 07-02-2022 a las 01:43:04
+-- Tiempo de generación: 01-04-2022 a las 01:07:36
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.3.21
 
@@ -39,24 +39,27 @@ CREATE TABLE IF NOT EXISTS `articulos` (
   `inventariable` tinyint NOT NULL,
   `id_unidad` smallint NOT NULL,
   `id_categoria` smallint NOT NULL,
+  `foto` varchar(15) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
+  `fotos` tinyint NOT NULL DEFAULT '0',
   `activo` tinyint NOT NULL DEFAULT '1',
-  `fecha_alta` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `fecha_alta` timestamp NOT NULL,
   `fecha_edit` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `codigo` (`codigo`),
   UNIQUE KEY `nombre` (`nombre`),
   KEY `fk_articulo_unidad` (`id_unidad`),
   KEY `fk_articulo_categoria` (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `articulos`
 --
 
-INSERT INTO `articulos` (`id`, `codigo`, `nombre`, `precio_venta`, `precio_compra`, `existencias`, `stock_minimo`, `inventariable`, `id_unidad`, `id_categoria`, `activo`, `fecha_edit`) VALUES
-(1, '123456701', 'Tenis', '150', '50', 10, 8, 1, 13, 1, 1, '2022-02-06 05:21:51'),
-(2, '123456702', 'Tenis verdes', '450', '0', 3, 5, 1, 9, 1, 1, '2022-02-06 00:29:31'),
-(3, '123456703', 'Tenis grises', '350', '200', 6, 5, 1, 9, 1, 1, '2022-02-06 00:36:27');
+INSERT INTO `articulos` (`id`, `codigo`, `nombre`, `precio_venta`, `precio_compra`, `existencias`, `stock_minimo`, `inventariable`, `id_unidad`, `id_categoria`, `foto`, `fotos`, `activo`, `fecha_alta`, `fecha_edit`) VALUES
+(1, '123456701', 'Tenis', '150', '50', 19, 8, 1, 13, 3, '', 6, 1, '2022-02-06 05:21:51', '2022-03-28 10:18:55'),
+(2, '123456702', 'Tenis verdes', '450', '150', 0, 5, 1, 9, 1, '', 4, 1, '2022-02-15 11:42:08', '2022-03-18 04:00:57'),
+(3, '123456703', 'Tenis grises', '350', '200', -1, 5, 1, 9, 1, '', 3, 1, '2022-02-06 00:36:27', '2022-03-18 04:00:57'),
+(4, '12345001', 'fotos', '25', '10', -3, 5, 1, 2, 1, '', 0, 1, '2022-02-27 20:23:48', '2022-03-18 04:00:57');
 
 --
 -- Restricciones para tablas volcadas
