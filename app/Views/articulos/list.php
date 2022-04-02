@@ -47,9 +47,9 @@ $currency = "$ ";
     </tfoot>
     <tbody>
       <?php foreach($data as $dato) {
-        $imagen = $dato['fotos'] ? 
+        $imagen = $dato['foto'] ? 
                   //  base_url('images/articulos/'.$dato['id'].'/foto0.png'):
-                   base_url('images/articulos/'.$dato['id'].'/foto0.jpg'):
+                   base_url('images/articulos/'.$dato['id'].'/'.$dato['foto']):
                    base_url('assets/img/img-no-disponible.jpg');
         $caption = "". $dato['nombre'] ;
                 // Bloque de vista previa una sola foto
@@ -60,25 +60,12 @@ $currency = "$ ";
       ?>
         <tr>
           <td><?=$dato['nombre']?></td>
-          <!-- photoZoom -->
-          <!-- 
-          <td class="text-end">
-            <a href="<?=$imagen?>" title=" <?=$caption?>">
-              <img src="<?=$imagen?>" alt="foto de <?=$dato['nombre']?>" style="width: 75px;">
-            </a>
-          </td>
-          -->
-
           <td class="text-end">  <!-- Carousel -->
-            <!-- <a href="<?=$imagen?>" title=" <?=$caption?>"></a> -->
-              <img src="<?=$imagen?>"
-                   style="width: 65px;" 
-                   alt="<?=$dato['nombre']?> - Foto"
-                   onclick="showPhotos(<?=$dato['id']?>, '<?=$caption?>', <?=$dato['fotos']?>)"
-              >
-              <!-- onclick="showPhotos(event, <?=$dato['id']?>, '<?=$caption?>', <?=$dato['fotos']?>)" -->
-            <!-- class="d-block w-75" -->
-            <!-- class="d-block w-100" -->
+            <img src="<?=$imagen?>"
+                 style="width: 65px;" 
+                 alt="<?=$dato['nombre']?> - Foto"
+                 onclick="showPhotos(<?=$dato['id']?>, '<?=$caption?>', <?=$dato['fotos']?>)"
+            >
           </td>
           <td class="text-end"><?=$prVenta?></td>
           <td class="text-end"><?=$dato['existencias']?></td>

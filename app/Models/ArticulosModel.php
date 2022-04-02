@@ -18,7 +18,7 @@ class ArticulosModel extends Model
     'precio_venta', 'precio_compra',
     'existencias', 'stock_minimo',
     'id_unidad'  , 'id_categoria',
-    'fotos', 'activo'  
+    'foto', 'fotos', 'activo'  
   ];
 
   protected $useTimestamps = true;
@@ -41,8 +41,8 @@ class ArticulosModel extends Model
 
   public function indexList($activo = 1)
   {
-    $campos = 'articulos.id as id, articulos.nombre as nombre, fotos, '
-            . 'precio_venta, existencias, codigo, precio_compra, '
+    $campos = 'articulos.id as id, articulos.nombre as nombre, foto, '
+            . 'fotos, precio_venta, existencias, codigo, precio_compra, '
             // . 'id_unidad, id_categoria, '
             . 'unidades.nombre as unidad, '
             . 'categorias.nombre as categoria';
