@@ -1,6 +1,11 @@
 <?php
+// Parameter for config
 $currency = "$ ";
-// var_dump($data);
+$pathImgs = 'images';
+
+// 'images/articulos'
+var_dump($data);
+var_dump($path); // articulos
 ?>
 
 <div class="row mt-4">
@@ -48,10 +53,10 @@ $currency = "$ ";
     <tbody>
       <?php foreach($data as $dato) {
         $imagen = $dato['foto'] ? 
-                  //  base_url('images/articulos/'.$dato['id'].'/foto0.png'):
                    base_url('images/articulos/'.$dato['id'].'/'.$dato['foto']):
                    base_url('assets/img/img-no-disponible.jpg');
-        $caption = "". $dato['nombre'] ;
+        $caption = "". $dato['nombre'];
+        $url     = base_url("$pathImgs/$path/".$dato['id']).'/';
                 // Bloque de vista previa una sola foto
                 //  . " - Precio: ".$currency.$dato['precio_venta'] 
                 //  . " - Existencias: ". $dato['existencias'];
@@ -64,8 +69,7 @@ $currency = "$ ";
             <img src="<?=$imagen?>"
                  style="width: 65px;" 
                  alt="<?=$dato['nombre']?> - Foto"
-                 onclick="showPhotos(<?=$dato['id']?>, '<?=$caption?>', <?=$dato['fotos']?>)"
-            >
+                 onclick="showPhotos('<?=$url?>', '<?=$caption?>', '<?=$dato['fotos']?>')">
           </td>
           <td class="text-end"><?=$prVenta?></td>
           <td class="text-end"><?=$dato['existencias']?></td>
