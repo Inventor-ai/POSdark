@@ -53,13 +53,20 @@
 
 <script>
   //  setupZoom();
+  function setAtt(nodo, attrName, attrVal) {
+    const attrObj = document.createAttribute(attrName);
+    attrObj. value = attrVal;
+    nodo.setAttributeNode(attrObj);
+  }
+
   function showPhotos(path, itemText, photoItems) {
+    if ( !(photoItems) ) return;
     const itemImgs = photoItems.split("|");
-    if (itemImgs.length == 0 || !(photoItems) ) return;
+    // if (itemImgs.length == 0 || !(photoItems) ) return;
     const title = document.getElementById("ModalCarouselLabel");
 
-    title.innerHTML = itemText; // !! Modificar por uso de nodos
-    const IG  = 'itemsGallery';
+    title.innerHTML = itemText;
+    const IG = 'itemsGallery';
     var vsCarousel = document.querySelector(IG);
     const indicators = $('#'+IG+' .carousel-indicators');
     const inners = $('#'+IG+' .carousel-inner');
@@ -90,8 +97,9 @@
       // inners.appendChild(div);
       inners.append(div);
     }
-    var myModalPhotos = new bootstrap.Modal(document.getElementById('ModalCarousel')
-                                            // , { keyboard: false }
+    var myModalPhotos = new bootstrap.Modal(
+                            document.getElementById('ModalCarousel')
+                            // , { keyboard: false }
     )
     myModalPhotos.toggle();
   }
@@ -169,9 +177,4 @@
     myModalPhotos.toggle();
   }
 
-  function setAtt(nodo, attrName, attrVal) {
-    const attrObj = document.createAttribute(attrName);
-    attrObj. value = attrVal;
-    nodo.setAttributeNode(attrObj);
-  }
 </script>
