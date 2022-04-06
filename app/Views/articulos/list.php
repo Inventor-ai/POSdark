@@ -3,9 +3,8 @@
 $currency = "$ ";
 $pathImgs = 'images';
 
-// 'images/articulos'
-var_dump($data);
-var_dump($path); // articulos
+// var_dump($data);
+// var_dump($path); // articulos
 ?>
 
 <div class="row mt-4">
