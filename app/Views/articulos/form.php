@@ -119,10 +119,10 @@
         <button type="button" class="btn btn-danger">&times;</button>
       </div>  
       <div class="col-1">
-        <label class="form-label"  for="fotos">0</label>
+        <label class="form-label" for="fotos">0</label>
       </div>
       <div class="col-10">
-        <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+        <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
       </div>
     </div>
     <div class="row mt-3">
@@ -133,7 +133,7 @@
         <label class="form-label"  for="fotos">1</label>
       </div>
       <div class="col-10">
-        <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+        <input class="form-control" type="file" id="fotos1" name="fotos[]" accept="image/png,.jpg" multiple>
       </div>
     </div>
     <div class="row mt-3">
@@ -142,7 +142,7 @@
         <label class="form-label"  for="fotos">2</label>
       </div>
       <div class="col-10">
-        <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
+        <input class="form-control" type="file" id="fotos2" name="fotos[]" accept="image/png,.jpg" multiple>
       </div>
     </div>
     <!-- test group 1 -->
@@ -192,9 +192,15 @@
       <div class="row row cols-auto">
       <!-- <div class="row row cols-auto" style="border: 2px solid"> -->
       <!-- <div class="row row cols-auto" style="border: #ced4da 1px solid"> -->
-        <?php for ($i=0; $i < $data['fotos']; $i++) {
-          //  $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg"); // old
-           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+        <?php
+         $fotos = explode('|', $data['fotos']);
+         $items = count($fotos);
+         var_dump($items);
+         var_dump($fotos);
+         foreach ($fotos as $key => $foto) {
+            // var_dump($key);
+            // var_dump($foto);
+           $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
         ?>
           <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
           <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
@@ -202,9 +208,7 @@
             <!-- <div class="col box" style="border: #26e18a 2px dashed;"> -->
               <!-- <div class="col box" style="border: #777 1px solid;"> -->
             <div class="col box">
-              <!-- <div id="<?="spacer$i" ?>" class="mb-3 spacer hide" style="border:dashed 2px #900;height:100px;"></div> -->
-                <!-- <div class="mb-2" style="border: #900 1px dashed;"></div> -->
-              <button id="<?="foto$i" ?>" type="button" class="btn btn-light position-relative item" draggable="true">
+              <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true">
                 <figure class="figure text-center">
                   <img src="<?=$imagen?>" draggable="false"
                           class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
@@ -212,7 +216,7 @@
                           onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
                   </span>
                   <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
-                  <figcaption class="figure-caption text-center"><?="foto$i"?></figcaption>
+                  <figcaption class="figure-caption text-center"><?=$foto?></figcaption>
                   <!-- <figcaption class="figure-caption text-center">Cargada</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Pendiente</figcaption> -->
@@ -222,7 +226,7 @@
                   <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
                   <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption>
                   <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption>
-                  <input type="hidden" name="imgs[]" value="<?="foto$i"?>">
+                  <input type="hidden" name="imgs[]" value="<?=$foto?>">
                 </figure>
               </button>
               <!-- <div class="mb-2" style="border: #900 1px dashed;"></div> -->
