@@ -115,14 +115,11 @@
     <!-- <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p> -->
     <!-- test group 0 -->
     <div class="row mt-3">
-      <div class="col-1">
-        <button type="button" class="btn btn-danger">&times;</button>
-      </div>  
-      <div class="col-1">
-        <label class="form-label" for="fotos">0</label>
-      </div>
-      <div class="col-10">
+      <div class="col-11">
         <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
+      </div>
+      <div class="col-1">
+        <button type="button" class="btn btn-success">+</button>
       </div>
     </div>
     <div class="row mt-3">
