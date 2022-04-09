@@ -221,8 +221,8 @@
                   <figcaption class="figure-caption text-success">Cargada</figcaption>
                   <figcaption class="figure-caption text-primary">Cargada</figcaption>
                   <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
-                  <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption>
-                  <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption>
+                  <!-- <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption> -->
+                  <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
                   <input type="hidden" name="imgs[]" value="<?=$foto?>">
                 </figure>
               </button>
@@ -232,6 +232,18 @@
         <?php }
         $noImg = base_url('assets/img/img-no-disponible.jpg');
         ?>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
+          <div class="col box">
+            <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="false">
+              <figure class="figure text-center">
+                <figcaption class="figure-caption text-center">Última posición</figcaption>
+                <figcaption class="figure-caption text-center">Arrastrar y soltar aquí</figcaption>
+                <figcaption class="figure-caption text-center">la que será la última foto</figcaption>
+                <img src="<?=$imagen?>" draggable="false" class="figure-img img-fluid rounded mt-3" style="opacity: 0;">
+              </figure>
+            </button>
+          </div>
+        </div>
         <div class="mt-3"></div>
       </div>
     </div>
@@ -717,12 +729,9 @@
 <script>
 
   console.log('script jalando');
-  setupZoom();
+  // setupZoom();
 
   // $('.dropify').dropify();
-<!-- </script>
-<script>
--->
 
   const imgSelected = document.querySelector('.imageSelect'),
       previewImagen = document.querySelector('.imageBox');
