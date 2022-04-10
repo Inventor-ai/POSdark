@@ -1,5 +1,5 @@
 
-function viewThumbs() {
+ function viewThumbs() {
    const vwTg = document.getElementsByClassName('view-toggle-btn');
    return (vwTg[0].className.baseVal.indexOf('expand') < 0);
  }
@@ -94,7 +94,7 @@ function viewThumbs() {
        box = e.target.parentNode.parentNode.parentNode.parentNode;
    box.remove();
    //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove()
-  }
+ }
   
   //  function t(p1, p2 = 10) {
   //    console.log(p1, p2);
@@ -119,8 +119,8 @@ function viewThumbs() {
   
   // **************************************************************//
 
-  /*
-function viewModeOk() {
+/*
+ function viewModeOk() {
   //  const modeSetView = viewItems();
    const thumbs = viewThumbs();
   //  const modeSetView = document.getElementsByClassName('view-mode');
@@ -210,15 +210,19 @@ function viewModeOk() {
 //    imgHolder.addEventListener('drop', drop);
  }
 
+  const photoScroll = 1;
   function dragStart(e) {
    e.dataTransfer.setData('text/plain', e.target.id);
    setTimeout( () => {
-     e.target.classList.add('hide');
+   if (photoScroll) 
+      e.target.parentNode.parentNode.classList.add('hide');
+   else 
+      e.target.classList.add('hide');
     //  src = e.target.parentElement;
      //  origen = e.target.parentElement; //
      //  origen = e.target; //
-     //  origen = e; //
-     //  console.log('dragStart: ', e);
+      // origen = e; //
+      // console.log('dragStart: ', e);
     //  origen = e.target.parentNode; //
     //  console.log('dragStart: ', origen);
     //  e.target.parentNode.childen[0].classList.remove('hide'); // Fail
@@ -229,7 +233,11 @@ function viewModeOk() {
  function dragEnd(e) {
    e.preventDefault();
    const itemDragged = document.getElementById(e.target.id);
-   itemDragged.classList.remove('hide');
+   if (photoScroll) 
+      itemDragged.parentNode.parentNode.classList.remove('hide');  // Ok Original fix place 2/2
+   else 
+      itemDragged.classList.remove('hide');
+   
 //    origen = e.target.parentNode; //
 //    e.target.parentNode.children['0'].classList.add('hide');      // Try out
  }
@@ -308,7 +316,7 @@ function viewModeOk() {
  function drop(e) {
    const IMGinfo  = imgInfo();
    //e.target.classList.remove('drag-over');
-    // origen = e;
+   //  origen = e;
     // console.log('drop - e:', e);
     // console.log(e.target.nodeName);
    dragLeave(e);
@@ -322,7 +330,9 @@ function viewModeOk() {
        boxTgt = e.target.parentNode.parentNode;
    else if (e.target.nodeName == 'BUTTON') 
        boxTgt = e.target.parentNode;
-//    console.log('drop - boxTgt:', boxTgt);
+
+   
+   console.log('drop - boxTgt:', boxTgt);
 //    console.log('drop - boxTgt:', e.target.id);
 //    origen  = e;
 //    origen  = itemDragged;
@@ -332,8 +342,48 @@ function viewModeOk() {
 //        '|path|svg|SPAN'.indexOf(e.target.nodeName) < 0
 //    );
    if ('|path|svg|SPAN'.indexOf(e.target.nodeName) < 0) 
-       boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, boxTgt.parentNode);
+       boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
+                                                 boxTgt.parentNode);
  }
 
-console.log('dragdrop: On');
-setDraggables()
+ console.log('dragdrop: On');
+ setDraggables()
+ 
+ console.log('script jalando');
+ // setupZoom();
+
+ // $('.dropify').dropify();
+
+ const imgSelected = document.querySelector('.imageSelect'),
+     previewImagen = document.querySelector('.imageBox');
+
+ // Escuchar cuando cambie
+ imgSelected.addEventListener("change", () => {
+   // Los archivos seleccionados, pueden ser muchos o uno
+   const archivos = imgSelected.files;
+   console.log(archivos);
+   // Si no hay archivos salimos de la función y quitamos la imagen
+   if (!archivos || !archivos.length) {
+     //$imagenPrevisualizacion.src = "";
+     console.log('Revisar efectos al guardar cambios');
+     return;
+   }
+   //previewImagen
+   for (i = 0; i < archivos.length; i++) {
+    //const img = document.createElement('img');
+    const img = document.createElement('IMG');
+    const objectURL = URL.createObjectURL(archivos[i]);
+    img.id = 'foto' + i ;
+    img.src = objectURL;
+    img.classList.add('item');
+    img.setAttribute ('dragable', true);
+    //const attr document.createAttribute('draggable');
+    //attr.value = 'true';
+    previewImagen.appendChild(img);
+   }
+   setDraggables();
+ });
+
+//  "lastOne"   // 
+// boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
+//    boxTgt.parentNode);  //  "lastOne"

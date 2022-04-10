@@ -107,21 +107,28 @@
       </div>
     </div>
     <!-- Ok - Original -->
-    <div class="mt-2">
-      <label class="form-label"  for="fotos">Imagen</label>
+    <!-- 
+     <div class="mt-2">
+      <label class="form-label"  for="fotos">Imágenes seleccionadas: <span id="imgsCount" >0</span></label>
       <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
-      <!-- <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple> -->
-    </div>
+     </div>
+    -->
     <!-- <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p> -->
     <!-- test group 0 -->
+    
     <div class="row mt-3">
-      <div class="col-11">
-        <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
-      </div>
-      <div class="col-1">
-        <button type="button" class="btn btn-success">+</button>
+      <div class="form-group">
+        <label class="form-label"  for="fotos">Imágenes seleccionadas: <span id="imgsCount" >0</span></label>
+        <div id="album" class="col-10 col-md-11">
+          <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
+          <input class="form-control" type="file" id="fotos1" name="fotos[]" accept="image/png,.jpg" multiple>
+        </div>
+        <div class="col-2 col-sm-1">
+          <button type="button" class="btn btn-success" title="Añadir más fotos" style="font-size: 16px;">+</button>
+        </div>
       </div>
     </div>
+   <!--     
     <div class="row mt-3">
       <div class="col-1">
         <button type="button" class="btn btn-danger">&times;</button>
@@ -142,6 +149,7 @@
         <input class="form-control" type="file" id="fotos2" name="fotos[]" accept="image/png,.jpg" multiple>
       </div>
     </div>
+   -->
     <!-- test group 1 -->
     <div class="row">
       <div class="col-10">
@@ -206,6 +214,7 @@
               <!-- <div class="col box" style="border: #777 1px solid;"> -->
             <div class="col box">
               <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true">
+              <!-- <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true"> -->
                 <figure class="figure text-center">
                   <img src="<?=$imagen?>" draggable="false"
                           class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
@@ -231,14 +240,17 @@
           </div>
         <?php }
         $noImg = base_url('assets/img/img-no-disponible.jpg');
+        $lastPos = "Última posición. Arrastrar y soltar aquí la que será la última foto";
+        $lastPos = "";        
         ?>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
+        <div id="lastOne" class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
           <div class="col box">
-            <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="false">
+            <button id="holder" type="button" class="btn position-relative item" draggable="false">
               <figure class="figure text-center">
-                <figcaption class="figure-caption text-center">Última posición</figcaption>
-                <figcaption class="figure-caption text-center">Arrastrar y soltar aquí</figcaption>
-                <figcaption class="figure-caption text-center">la que será la última foto</figcaption>
+                <figcaption class="figure-caption text-center"><?=$lastPos?></figcaption>
+                <!-- <figcaption class="figure-caption text-center">Última posición</figcaption> -->
+                <!-- <figcaption class="figure-caption text-center">Arrastrar y soltar aquí</figcaption> -->
+                <!-- <figcaption class="figure-caption text-center">la que será la última foto</figcaption> -->
                 <img src="<?=$imagen?>" draggable="false" class="figure-img img-fluid rounded mt-3" style="opacity: 0;">
               </figure>
             </button>
@@ -722,49 +734,10 @@
   </div>
 <?php }?>
 
-
-
-
-
 <script>
-
-  console.log('script jalando');
-  // setupZoom();
-
-  // $('.dropify').dropify();
-
-  const imgSelected = document.querySelector('.imageSelect'),
-      previewImagen = document.querySelector('.imageBox');
-
-  // Escuchar cuando cambie
-  imgSelected.addEventListener("change", () => {
-    // Los archivos seleccionados, pueden ser muchos o uno
-    const archivos = imgSelected.files;
-    console.log(archivos);
-    // Si no hay archivos salimos de la función y quitamos la imagen
-    if (!archivos || !archivos.length) {
-      //$imagenPrevisualizacion.src = "";
-      console.log('Revisar efectos al guardar cambios');
-      return;
-    }
-    //previewImagen
-    for (i = 0; i < archivos.length; i++) {
-     //const img = document.createElement('img');
-     const img = document.createElement('IMG');
-     const objectURL = URL.createObjectURL(archivos[i]);
-     img.id = 'foto' + i ;
-     img.src = objectURL;
-     img.classList.add('item');
-     img.setAttribute ('dragable', true);
-
-     //const attr document.createAttribute('draggable');
-     //attr.value = 'true';
-     previewImagen.appendChild(img);
-    }
-    setDraggables();
-  });
-
+  
 /* 
+  // Original version 1
   function setDraggables() {
     const items = document.querySelectorAll('.item'),
       imgHolder = document.querySelector('.imageBox');
@@ -831,7 +804,7 @@
    if (destino.target.nodeName == 'DIV' )
        e.target.appendChild(itemDragged);
  }
-*/ 
+*/
 
 </script>
 <!-- change name and content to toggle mode -->
