@@ -19,7 +19,7 @@
           <?php if ($method != '') {?>
            <button type="submit" class="btn btn-success mb-3">Guardar</button>
            <?php }?>
-           <a href="<?=base_url()."/$path"?>" class="btn btn-primary mb-3">Regresar</a>
+           <a href="<?=base_url($path)?>" class="btn btn-primary mb-3">Regresar</a>
         </div>
     </div>
     <input type="hidden" name="id" value="<?=$data['id']?>">
@@ -118,13 +118,13 @@
     
     <div class="row mt-3">
       <div class="form-group">
-        <label class="form-label"  for="fotos">Imágenes seleccionadas: <span id="imgsCount" >0</span></label>
+        <label class="form-label"  for="fotos">Fotos en el álbum: <span id="imgsCount">0</span></label>
         <div id="album" class="col-10 col-md-11">
-          <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
-          <input class="form-control" type="file" id="fotos1" name="fotos[]" accept="image/png,.jpg" multiple>
+          <!-- <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
+          <input class="form-control" type="file" id="fotos1" name="fotos[]" accept="image/png,.jpg" multiple> -->
         </div>
-        <div class="col-2 col-sm-1">
-          <button type="button" class="btn btn-success" title="Añadir más fotos" style="font-size: 16px;">+</button>
+        <div class="col-12">
+          <button type="button" onclick="addPhotos()" class="col-12 btn btn-success" title="Añadir más fotos">Agregar fotos</button>
         </div>
       </div>
     </div>
@@ -192,7 +192,7 @@
     <button><i class="fas fa-grip-vertical"></i></button>    
     <button><i class="fab fa-buromobelexperte"></i></button>
      -->
-    <hr> <!-- ¿Dejar esta línea? - Preguntar -->
+    <hr> <!-- <-- ¿Dejar esta línea? - Preguntar -->
     <div class="form-group mt-2">
       <div class="row row cols-auto">
       <!-- <div class="row row cols-auto" style="border: 2px solid"> -->
@@ -217,9 +217,9 @@
               <!-- <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true"> -->
                 <figure class="figure text-center">
                   <img src="<?=$imagen?>" draggable="false"
-                          class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
+                       class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
-                          onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+                        onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
                   </span>
                   <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
                   <figcaption class="figure-caption text-center"><?=$foto?></figcaption>
@@ -248,9 +248,6 @@
             <button id="holder" type="button" class="btn position-relative item" draggable="false">
               <figure class="figure text-center">
                 <figcaption class="figure-caption text-center"><?=$lastPos?></figcaption>
-                <!-- <figcaption class="figure-caption text-center">Última posición</figcaption> -->
-                <!-- <figcaption class="figure-caption text-center">Arrastrar y soltar aquí</figcaption> -->
-                <!-- <figcaption class="figure-caption text-center">la que será la última foto</figcaption> -->
                 <img src="<?=$imagen?>" draggable="false" class="figure-img img-fluid rounded mt-3" style="opacity: 0;">
               </figure>
             </button>
@@ -261,6 +258,7 @@
     </div>
 
     <hr>
+   /* Sección de pruebas - Eliminar - Inicio */
     <p>line 1</p>
     <div class="form-group mt-2">
       <div class="row row-cols-auto" >
@@ -276,7 +274,7 @@
           //  $imagen = 'images/'."$path/".$data['id'].$imagen;
           //  $imagen = base_url ($imagen);
 
-           $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+           $imagen = base_url ("images/$path/".$data['id']."/foto$i");
         ?>
           <div class="col mb-3">
             <!-- <div class="mb-1"> -->
@@ -684,48 +682,48 @@
             </div>
           </div>
         <!-- </div>   -->
-<button type="button" class="btn btn-light position-relative">
-  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
-       class="figure-img img-fluid rounded mt-3" alt="...">
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
-        onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
-  </span>
-</button>
-<a href="#" class="btn btn-light position-relative mt-3">
-  <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
-       class="figure-img img-fluid rounded mt-3" alt="...">
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
-        onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
-  </span>
-</a>
-<a href="#" class="btn btn-warnig position-relative mt-3">
-  mensajes
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
-        onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
-  </span>
-</a>
-<a href="#" class="btn btn-dark position-relative mt-3">
-  mensajes
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-     99+ <span class="visually-hidden">unread messages</span>
-  </span>
-</a>
-<button mat-button class="position-relative mt-3">text
-<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            99+ <span class="visually-hidden">unread messages</span>
-                           </span>
-</button>
-<button class="position-relative mt-3">msg_send
-<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            99+ <span class="visually-hidden">unread messages</span>
-                           </span>
-</button>
+        <button type="button" class="btn btn-light position-relative">
+          <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
+              class="figure-img img-fluid rounded mt-3" alt="...">
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+          </span>
+        </button>
+        <a href="#" class="btn btn-light position-relative mt-3">
+          <img src="http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg"
+              class="figure-img img-fluid rounded mt-3" alt="...">
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+          </span>
+        </a>
+        <a href="#" class="btn btn-warnig position-relative mt-3">
+          mensajes
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                onClick="badge(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+          </span>
+        </a>
+        <a href="#" class="btn btn-dark position-relative mt-3">
+          mensajes
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            99+ <span class="visually-hidden">unread messages</span>
+          </span>
+        </a>
+        <button mat-button class="position-relative mt-3">text
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    99+ <span class="visually-hidden">unread messages</span>
+                                  </span>
+        </button>
+        <button class="position-relative mt-3">msg_send
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    99+ <span class="visually-hidden">unread messages</span>
+                                  </span>
+        </button>
 
         <!-- </div> -->
         <p>line 6</p>
-        
       </div>
     </div>
+   /* Sección de pruebas - Eliminar - Fin    */     
   </form> 
 </div>
 <?php if ($validation) {?>

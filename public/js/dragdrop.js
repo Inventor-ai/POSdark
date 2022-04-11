@@ -10,7 +10,7 @@
    const vwTg = document.getElementsByClassName('view-toggle-btn');
     //  const modes = viewModes();
     //  const vwTg = document.getElementsByClassName(viewToggleButton());
-    /*
+    /** tmp do until button style selected */
      var modeSwitch;
      for (let index = 0; index < vwTg.length; index++) {
       //  const element = vwTg[index];
@@ -26,14 +26,16 @@
       // vwTg[index].classList.add(modes[modeSwitch?1:0]);
       console.log('modeSwitch 1: ', modeSwitch, modes[0], modes[1], vwTg[index].className.baseVal);
      }
-    */
-    // Ok - 0
+    /** tmp do until button style selected */
+   /*
+   // Ok - 0
    modeSwitch = vwTg[0].className.baseVal.indexOf(modes[0]) < 0;
    // modeSwitch = viewThumbs();
    vwTg[0].classList.remove(modes[modeSwitch?1:0]);
    vwTg[0].classList.add(modes[modeSwitch?0:1]);
    // console.log(modeSwitch);
-   // Ok - 1
+   // Ok - 1 
+   */ 
    //  viewMode(modeSwitch);
     viewMode();
  }
@@ -83,7 +85,6 @@
       }
  }
 
-//  var origen, destino;
  function dropIt(e) {
    var box = e.target.parentNode.nodeName;
    if (e.target.nodeName == 'path')
@@ -183,12 +184,17 @@
 
 // var src;
 // var origen, destino;
+ function setItemsCount(num) {
+   const totItems = document.getElementById('imgsCount');
+   totItems.innerHTML = num;
+ }
 
  function setDraggables() {
     const items = document.querySelectorAll('.item'),
           boxes = document.querySelectorAll('.box');
     //   imgHolder = document.querySelector('.box');
     // console.log(imgHolder);
+    setItemsCount(items.length - 1);
     items.forEach ( item => {
       item.addEventListener('dragstart', dragStart);
       item.addEventListener('dragend', dragEnd);
@@ -202,6 +208,7 @@
      box.addEventListener('dragleave', dragLeave);
      box.addEventListener('drop', drop);
    });
+
    
 //    imgHolder.addEventListener('dragenter', dragEnter);
 //      //box.addEventListener('dragover', dragEnter); // t2
@@ -354,6 +361,7 @@
 
  // $('.dropify').dropify();
 
+/*
  const imgSelected = document.querySelector('.imageSelect'),
      previewImagen = document.querySelector('.imageBox');
 
@@ -383,7 +391,87 @@
    }
    setDraggables();
  });
+*/
 
 //  "lastOne"   // 
 // boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
 //    boxTgt.parentNode);  //  "lastOne"
+
+ var origen, destino;
+
+var iFoto = 0;
+function addPhotos() {
+  console.log('addPhotos', iFoto);
+  const album = document.getElementById('album');
+//   if (album.children.length )
+  var sf = $("<input>", {
+               //  class: "form-control",
+                class: "d-none newPhotos",
+                 type: "file",
+               accept:"image/png,.jpg",
+              multiple: "",
+                    id: "fotos" + iFoto
+  });
+
+  sf[0].addEventListener("change", ()=> {
+    const selFiles = sf[0].files;
+    //  if (selFiles.length == 0)
+    if (!selFiles || !selFiles.length)
+    {
+       console.log('sin archivos');
+       return;
+    }
+    album.appendChild(sf[0]);
+   //previewImagen
+   origen = selFiles;
+
+   for (i = 0; i < selFiles.length; i++) {
+    //const img = document.createElement('img');
+    const img = document.createElement('IMG');
+    const objectURL = URL.createObjectURL(selFiles[i]);
+   //  img.id = 'foto' + i ;
+    img.id = selFiles[i].name;
+    img.src = objectURL;
+    img.classList.add('item');
+    img.setAttribute ('dragable', true);
+    //const attr document.createAttribute('draggable');
+       //attr.value = 'true';
+   //  previewImagen.appendChild(img);
+    const lastOne = document.getElementById('lastOne');
+   //  img.insertBefore(sf[0], lastOne.parentNode);
+    lastOne.parentNode.insertBefore(img, lastOne)
+   // lastOne.insertBefore(sf[0], lastOne.parentNode);
+   //  boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
+   //    boxTgt.parentNode);
+    //  <div id="lastOne"
+   }
+   setDraggables();
+   iFoto++; // input/output or true /false
+  });
+
+
+  sf.click();
+  //   items.length
+  /*
+  $("<input>", {
+     class: "form-control",
+      type: "file",
+    accept:"image/png,.jpg",
+    multiple: "",
+        id: "fotos2"}).insertAfter('#fotos1');
+  */
+}
+
+function removeFileFromFileList(index) {
+  const dt = new DataTransfer();
+  const input = document.getElementById('files');
+  const { files } = input;
+  
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (index !== i)
+      dt.items.add(file); // here you exclude the file. thus removing it.
+  }
+  
+  input.files = dt.files; // Assign the updates list
+}
