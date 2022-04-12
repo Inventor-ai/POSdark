@@ -1,4 +1,3 @@
-
  function viewThumbs() {
    const vwTg = document.getElementsByClassName('view-toggle-btn');
    return (vwTg[0].className.baseVal.indexOf('expand') < 0);
@@ -85,6 +84,7 @@
       }
  }
 
+ //  var origen, destino;
  function dropIt(e) {
    var box = e.target.parentNode.nodeName;
    if (e.target.nodeName == 'path')
@@ -93,6 +93,13 @@
        box = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
    else if (e.target.nodeName == 'SPAN')
        box = e.target.parentNode.parentNode.parentNode.parentNode;
+   origen = box;
+   console.log(box);
+   console.log(box.attributes['data-new'].value);
+   if (box.attributes['data-new'].value == 'true') {
+       console.log('Borrar de la lista');
+       
+   }
    box.remove();
    //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove()
  }
@@ -337,7 +344,6 @@
        boxTgt = e.target.parentNode.parentNode;
    else if (e.target.nodeName == 'BUTTON') 
        boxTgt = e.target.parentNode;
-
    
    console.log('drop - boxTgt:', boxTgt);
 //    console.log('drop - boxTgt:', e.target.id);
@@ -397,23 +403,22 @@
 // boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
 //    boxTgt.parentNode);  //  "lastOne"
 
- var origen, destino;
-
 var iFoto = 0;
 function addPhotos() {
   console.log('addPhotos', iFoto);
   const album = document.getElementById('album');
 //   if (album.children.length )
-  var sf = $("<input>", {
-               //  class: "form-control",
-                class: "d-none newPhotos",
+  var sf = $("<input>", { // sf = Selected Files
+                class: "form-control newPhotos", // 4 testing
+               //  class: "d-none newPhotos",    // Ok - Release like this
                  type: "file",
                accept:"image/png,.jpg",
               multiple: "",
-                    id: "fotos" + iFoto
+                    id: "newPhotos" + iFoto
   });
 
   sf[0].addEventListener("change", ()=> {
+    const lastOne = document.getElementById('lastOne');
     const selFiles = sf[0].files;
     //  if (selFiles.length == 0)
     if (!selFiles || !selFiles.length)
@@ -422,35 +427,41 @@ function addPhotos() {
        return;
     }
     album.appendChild(sf[0]);
-   //previewImagen
-   origen = selFiles;
+    //previewImagen
+    // origen = selFiles;
+    for (i = 0; i < selFiles.length; i++) {
+      //const img = document.createElement('img');
+     /* test model done - Delete it
+      const img = document.createElement('IMG');
+      const objectURL = URL.createObjectURL(selFiles[i]);
+      //  img.id = 'foto' + i ;
+      img.id = selFiles[i].name;
+      img.src = objectURL;
+      img.classList.add('item');
+      img.setAttribute ('dragable', true);
+    
+      //const attr document.createAttribute('draggable');
+      //attr.value = 'true';
+      //  previewImagen.appendChild(img);
+      //  img.insertBefore(sf[0], lastOne.parentNode);
+      //  lastOne.parentNode.insertBefore(img, lastOne)
+      // lastOne.insertBefore(sf[0], lastOne.parentNode);
+      //  boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
+      //    boxTgt.parentNode);
+      //  <div id="lastOne"
+     */
+      //
+      // return; // * tmp
 
-   for (i = 0; i < selFiles.length; i++) {
-    //const img = document.createElement('img');
-    const img = document.createElement('IMG');
-    const objectURL = URL.createObjectURL(selFiles[i]);
-   //  img.id = 'foto' + i ;
-    img.id = selFiles[i].name;
-    img.src = objectURL;
-    img.classList.add('item');
-    img.setAttribute ('dragable', true);
-    //const attr document.createAttribute('draggable');
-       //attr.value = 'true';
-   //  previewImagen.appendChild(img);
-    const lastOne = document.getElementById('lastOne');
-   //  img.insertBefore(sf[0], lastOne.parentNode);
-    lastOne.parentNode.insertBefore(img, lastOne)
-   // lastOne.insertBefore(sf[0], lastOne.parentNode);
-   //  boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
-   //    boxTgt.parentNode);
-    //  <div id="lastOne"
+      const item = SetPhotoHolder(selFiles[i], iFoto);
+      lastOne.parentNode.insertBefore(item, lastOne);
    }
+   viewMode();
    setDraggables();
-   iFoto++; // input/output or true /false
+   iFoto++; // input/output or true /false?
   });
-
-
   sf.click();
+
   //   items.length
   /*
   $("<input>", {
@@ -459,6 +470,81 @@ function addPhotos() {
     accept:"image/png,.jpg",
     multiple: "",
         id: "fotos2"}).insertAfter('#fotos1');
+  */
+
+}
+
+function packText(text, lftChars, rgtChars, maxSize) {
+  if(text.length > maxSize) 
+     return text.slice(0,lftChars) + 
+            text.slice(text.length - rgtChars).padStart(lftChars + rgtChars,".");
+  else return text;
+}
+
+function SetPhotoHolder(info, seq) {
+   console.log(info);
+   // return;
+   const obj = URL.createObjectURL(info);
+   const hdn = $('<input>', {
+                   type: "hidden",
+                   name: "imgs[]",
+                   value: info.name
+   })[0];
+   const img = $("<img></img>", { 
+                     class: "figure-img img-fluid rounded mt-3",
+                       src: obj,
+                       alt: info.name + "- Foto",
+                 draggable: "false"
+   })[0];
+   const fc1 = $("<figcaption></figcaption>", { class: "figure-caption" })[0];
+   const btn = $("<button></button>", {
+                     class: "btn btn-light position-relative item",
+                      type: "button",
+                 draggable: "true",
+                        id: info.name + seq,
+   })[0];
+   const tms = $('<i></i>', { class: "fa fa-times", "aria-hidden": "true" })[0];
+   const spn = $("<span></span>", { 
+                    class: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark",
+                  onclick: "dropIt(event)", 
+                    title: "Eliminar"
+               })[0];
+   const fig = $("<figure></figure>", { class: "figure text-center" })[0];
+   const dcb = $("<div></div>", { class: "col box" })[0];
+   const dvm = $("<div></div>", {
+                    class: "text-center mt-3 view-mode",
+                    "data-new": "true"
+   })[0];
+   fc1.innerHTML = info.name;
+   spn.appendChild(tms);
+   fig.appendChild(img);
+   fig.appendChild(spn);
+   fig.appendChild(fc1);
+   fig.appendChild(hdn);
+   btn.appendChild(fig);
+   dcb.appendChild(btn);
+   dvm.appendChild(dcb);
+   return dvm;
+   /*
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
+      <div class="col box">
+        <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true">
+          <figure class="figure text-center">
+            <img src="<?=$imagen?>" draggable="false"
+                  class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+                  onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
+            </span>
+            <figcaption class="figure-caption text-center"><?=$foto?></figcaption>
+            <figcaption class="figure-caption text-danger">Pendiente</figcaption>
+            <figcaption class="figure-caption text-success">Cargada</figcaption>
+            <figcaption class="figure-caption text-primary">Cargada</figcaption>
+            <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
+            <input type="hidden" name="imgs[]" value="<?=$foto?>">
+          </figure>
+        </button>
+      </div>
+    </div>
   */
 }
 

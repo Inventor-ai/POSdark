@@ -209,7 +209,7 @@
         ?>
           <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
           <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode" data-new="false">
             <!-- <div class="col box" style="border: #26e18a 2px dashed;"> -->
               <!-- <div class="col box" style="border: #777 1px solid;"> -->
             <div class="col box">
@@ -226,10 +226,10 @@
                   <!-- <figcaption class="figure-caption text-center">Cargada</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Pendiente</figcaption> -->
-                  <figcaption class="figure-caption text-danger">Pendiente</figcaption>
-                  <figcaption class="figure-caption text-success">Cargada</figcaption>
+                  <figcaption class="figure-caption text-danger">Nuevo</figcaption>
+                  <!-- <figcaption class="figure-caption text-success">Cargada</figcaption>
                   <figcaption class="figure-caption text-primary">Cargada</figcaption>
-                  <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
+                  <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
                   <input type="hidden" name="imgs[]" value="<?=$foto?>">
