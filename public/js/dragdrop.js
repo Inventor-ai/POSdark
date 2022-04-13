@@ -84,7 +84,7 @@
       }
  }
 
- //  var origen, destino;
+//  var orien, destino;
  function dropIt(e) {
    var box = e.target.parentNode.nodeName;
    if (e.target.nodeName == 'path')
@@ -93,17 +93,68 @@
        box = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
    else if (e.target.nodeName == 'SPAN')
        box = e.target.parentNode.parentNode.parentNode.parentNode;
-   origen = box;
+   // origen = box;
+   // destino = e;
    console.log(box);
    console.log(box.attributes['data-new'].value);
+   const id = box.children[0].children[0].id;
    if (box.attributes['data-new'].value == 'true') {
-       console.log('Borrar de la lista');
-       
+      fileListRemove(id);
    }
+   else {  //
+      console.log('Agregar a Lista para borrar el nombre:', id);
+      const hdn = $('<input>', {
+                     type: "hidden",
+                     name: "remove[]",
+                     value: box.children[0].children[0].id
+      })[0];
+      box.appendChild(hdn);
+   }
+   console.log('Removed simulated of: ', box.children[0].children[0].id);
    box.remove();
+   getItemsCount();
    //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove()
  }
-  
+
+ function fileListRemove(fileIDs) {
+   const items = fileIDs.split('|');
+   console.log('Borrar de la lista', items[1]);
+   console.log('El archivo: ', items[0]);
+   const dt = new DataTransfer();
+   const input = document.getElementById(items[1]);
+   const { files } = input;
+   console.log(input);
+   console.log(files);
+   for (let i = 0; i < files.length; i++) {
+      const fileItem = files[i];
+      if (fileItem.name != items[0]) {
+         dt.items.add(fileItem);
+      }
+   }
+   input.files = dt.files;
+ }
+
+ function removeFileFromFileList(index) {
+   const dt = new DataTransfer();
+   const input = document.getElementById('files');
+   const { files } = input;
+   
+   for (let i = 0; i < files.length; i++) {
+     const file = files[i];
+     if (index !== i)
+       dt.items.add(file); // here you exclude the file. thus removing it.
+   }
+   
+   input.files = dt.files; // Assign the updates list
+ }
+
+ function packText(text, lftChars, rgtChars, maxSize) {
+   if(text.length > maxSize) 
+      return text.slice(0,lftChars) + 
+             text.slice(text.length - rgtChars).padStart(lftChars + rgtChars,".");
+   else return text;
+ }
+   
   //  function t(p1, p2 = 10) {
   //    console.log(p1, p2);
   //  }
@@ -196,6 +247,13 @@
    totItems.innerHTML = num;
  }
 
+ function getItemsCount() {
+   const items = document.querySelectorAll('.item');
+   setItemsCount(items.length - 1);
+ }
+
+ 
+
  function setDraggables() {
     const items = document.querySelectorAll('.item'),
           boxes = document.querySelectorAll('.box');
@@ -244,8 +302,10 @@
    }, 0);
  }
 
+ var origenTgt;
  function dragEnd(e) {
    e.preventDefault();
+   origenTgt = e;
    const itemDragged = document.getElementById(e.target.id);
    if (photoScroll) 
       itemDragged.parentNode.parentNode.classList.remove('hide');  // Ok Original fix place 2/2
@@ -327,8 +387,9 @@
     }
  }
 
+ var origen, destino;
  function drop(e) {
-   const IMGinfo  = imgInfo();
+   const IMGinfo  = imgInfo(); // '|IMG|FIGCAPTION';
    //e.target.classList.remove('drag-over');
    //  origen = e;
     // console.log('drop - e:', e);
@@ -338,7 +399,9 @@
    const itemDragged = document.getElementById(id);
    // const itemDragged = document.getElementById(e.target.id);
    var boxTgt;
-   if (IMGinfo.indexOf(e.target.nodeName) > -1) 
+   if (e.target.nodeName == 'INPUT') 
+       boxTgt = e.target.parentNode.parentNode.parentNode.parentNode; //.parentNode
+   else if (IMGinfo.indexOf(e.target.nodeName) > -1) 
        boxTgt = e.target.parentNode.parentNode.parentNode;
    else if (e.target.nodeName == 'FIGURE')
        boxTgt = e.target.parentNode.parentNode;
@@ -347,9 +410,9 @@
    
    console.log('drop - boxTgt:', boxTgt);
 //    console.log('drop - boxTgt:', e.target.id);
-//    origen  = e;
+   origen  = e;
 //    origen  = itemDragged;
-//    destino = boxTgt;
+   destino = boxTgt;
    // Optimizar no volviendo a bajar por la estructura del DOM
 //    console.log('drop on', e.target.nodeName, 
 //        '|path|svg|SPAN'.indexOf(e.target.nodeName) < 0
@@ -452,7 +515,6 @@ function addPhotos() {
      */
       //
       // return; // * tmp
-
       const item = SetPhotoHolder(selFiles[i], iFoto);
       lastOne.parentNode.insertBefore(item, lastOne);
    }
@@ -474,53 +536,53 @@ function addPhotos() {
 
 }
 
-function packText(text, lftChars, rgtChars, maxSize) {
-  if(text.length > maxSize) 
-     return text.slice(0,lftChars) + 
-            text.slice(text.length - rgtChars).padStart(lftChars + rgtChars,".");
-  else return text;
-}
-
 function SetPhotoHolder(info, seq) {
+  const srcName = "|newPhotos" + seq;
    console.log(info);
    // return;
    const obj = URL.createObjectURL(info);
-   const hdn = $('<input>', {
-                   type: "hidden",
-                   name: "imgs[]",
-                   value: info.name
+   const ifn = $('<input>', {
+         name: "imgs[]",
+        class: "form-control-plaintext text-center",
+         type: "text",
+     readonly: "readonly",
+        title: info.name,
+        value: info.name
+        //   id: info.name,
    })[0];
    const img = $("<img></img>", { 
-                     class: "figure-img img-fluid rounded mt-3",
-                       src: obj,
-                       alt: info.name + "- Foto",
-                 draggable: "false"
+        class: "figure-img img-fluid rounded mt-3",
+          src: obj,
+          alt: info.name + "- Foto",
+    draggable: "false"
    })[0];
-   const fc1 = $("<figcaption></figcaption>", { class: "figure-caption" })[0];
+   const fcn = $("<figcaption></figcaption>", { class: "figure-caption" })[0];
+   const fcs = $("<figcaption></figcaption>", { class: "figure-caption text-danger" })[0];
    const btn = $("<button></button>", {
-                     class: "btn btn-light position-relative item",
-                      type: "button",
-                 draggable: "true",
-                        id: info.name + seq,
+        class: "btn btn-light position-relative item",
+         type: "button",
+    draggable: "true",
+           id: info.name + srcName
    })[0];
    const tms = $('<i></i>', { class: "fa fa-times", "aria-hidden": "true" })[0];
    const spn = $("<span></span>", { 
-                    class: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark",
-                  onclick: "dropIt(event)", 
-                    title: "Eliminar"
+        class: "position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark",
+      onclick: "dropIt(event)", 
+        title: "Eliminar"
                })[0];
    const fig = $("<figure></figure>", { class: "figure text-center" })[0];
    const dcb = $("<div></div>", { class: "col box" })[0];
    const dvm = $("<div></div>", {
-                    class: "text-center mt-3 view-mode",
-                    "data-new": "true"
+         class: "text-center mt-3 view-mode",
+    "data-new": "true"
    })[0];
-   fc1.innerHTML = info.name;
+   fcs.innerHTML = "Nueva";
+   fcn.appendChild(ifn);
    spn.appendChild(tms);
    fig.appendChild(img);
    fig.appendChild(spn);
-   fig.appendChild(fc1);
-   fig.appendChild(hdn);
+   fig.appendChild(fcn);
+   fig.appendChild(fcs);
    btn.appendChild(fig);
    dcb.appendChild(btn);
    dvm.appendChild(dcb);
@@ -536,6 +598,10 @@ function SetPhotoHolder(info, seq) {
                   onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
             </span>
             <figcaption class="figure-caption text-center"><?=$foto?></figcaption>
+            <figcaption class="figure-caption text-center">
+               <input type="text" class="form-control-plaintext text-center" name="imgs[]" readonly 
+                     id="<?=$foto?>" value="<?=$foto?>">
+            </figcaption>
             <figcaption class="figure-caption text-danger">Pendiente</figcaption>
             <figcaption class="figure-caption text-success">Cargada</figcaption>
             <figcaption class="figure-caption text-primary">Cargada</figcaption>
@@ -546,18 +612,4 @@ function SetPhotoHolder(info, seq) {
       </div>
     </div>
   */
-}
-
-function removeFileFromFileList(index) {
-  const dt = new DataTransfer();
-  const input = document.getElementById('files');
-  const { files } = input;
-  
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    if (index !== i)
-      dt.items.add(file); // here you exclude the file. thus removing it.
-  }
-  
-  input.files = dt.files; // Assign the updates list
 }

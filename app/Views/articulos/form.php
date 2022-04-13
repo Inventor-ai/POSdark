@@ -213,8 +213,8 @@
             <!-- <div class="col box" style="border: #26e18a 2px dashed;"> -->
               <!-- <div class="col box" style="border: #777 1px solid;"> -->
             <div class="col box">
+              <!-- <button id="<?="box$foto"?>" type="button" class="btn btn-light position-relative item" draggable="true"> -->
               <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true">
-              <!-- <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true"> -->
                 <figure class="figure text-center">
                   <img src="<?=$imagen?>" draggable="false"
                        class="figure-img img-fluid rounded mt-3" alt="<?=$data['nombre']?> - Foto">
@@ -222,17 +222,24 @@
                         onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
                   </span>
                   <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
-                  <figcaption class="figure-caption text-center"><?=$foto?></figcaption>
+                  <!-- <figcaption class="figure-caption text-center"><?=$foto?></figcaption> -->
+                  <figcaption class="figure-caption text-center">
+                    <input type="text" class="form-control-plaintext text-center" name="imgs[]" readonly 
+                           title="<?=$foto?>" value="<?=$foto?>">
+                  </figcaption>
                   <!-- <figcaption class="figure-caption text-center">Cargada</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Pendiente</figcaption> -->
-                  <figcaption class="figure-caption text-danger">Nuevo</figcaption>
-                  <!-- <figcaption class="figure-caption text-success">Cargada</figcaption>
-                  <figcaption class="figure-caption text-primary">Cargada</figcaption>
-                  <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption> -->
+                  <!-- <figcaption class="figure-caption text-danger">Nuevo</figcaption> -->
+                  <!-- <figcaption class="figure-caption text-success">Cargada</figcaption> -->
+                  <figcaption class="figure-caption text-success">Guardada</figcaption>
+                  <!-- 
+                       <figcaption class="figure-caption text-primary">Cargada</figcaption>
+                       <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
+                 -->
                   <!-- <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption> -->
                   <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
-                  <input type="hidden" name="imgs[]" value="<?=$foto?>">
+                  <!-- <input type="hidden" name="imgs[]" value="<?=$foto?>"> -->
                 </figure>
               </button>
               <!-- <div class="mb-2" style="border: #900 1px dashed;"></div> -->
