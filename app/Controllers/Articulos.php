@@ -112,13 +112,10 @@ class Articulos extends BaseController
     if ($dataSet['stock_minimo']  == '') $dataSet['stock_minimo']  = 0;
     if ($dataSet['inventariable'] == '') $dataSet['inventariable'] = 1;
     if ($dataSet['remove']        == '') $dataSet['remove'] = [];
-    if ($dataSet['fotos']         == '') $dataSet['fotos']  = 0;
-    $this->photosLoaded();
     return $dataSet;
   }
 
 /** 
-
   public function isFile($file) {
     $f = pathinfo($file, PATHINFO_EXTENSION);
     var_dump($f);
@@ -127,64 +124,159 @@ class Articulos extends BaseController
   }
 
 */
-  private function thumbNail($path, $file, $ext)  // Ok
+
+  private function thumbNail($path, $file)  // Ok
   { // https://codeigniter.com/user_guide/libraries/images.html
     $size  = 50; //75; // 100; // 
     $image = \Config\Services::image()
-           ->withFile("$path/$file.$ext")
+           ->withFile("$path/$file")
          //  ->fit(100, 100, 'center')  // Ok
            ->fit($size, $size, 'center')
-           ->save("$path/$file"."_thumb".".$ext");
+           ->save("$path/tn_$file");
     var_dump($image);
+  }
+  // https://codeigniter.com/user_guide/libraries/images.html
+  private function waterMark($path, $file, $text = '') {
+    // var_dump(base_url('assets/fonts/comic.ttf')); // fail
+    // var_dump(APPPATH); // 'C:\wamp64\www\posCI4\app\'
+    // *********** Config section - Begin ***************
+    // $fontPath = APPPATH . '../public/assets/fonts/CURLZ___.TTF';
+    $fontPath = APPPATH . '../public/assets/fonts/ALGER.TTF';
+    $fontPath = APPPATH . '../public/assets/fonts/COOPBL.TTF';
+    $fontPath = APPPATH . '../public/assets/fonts/comic.ttf';
+    $fontPath = APPPATH . '../public/assets/fonts/lucon.ttf';
+    $fontSize = 20;
+    $opacity  = 0.1;  // 0.1 - 0.9              // Config
+    $shdwDisp = true; // false;                 // Config
+    $shdwDist = 2;    // 10; // px              // Config
+    $hAlign   = 'center';                       // Config
+    $vAlign   = 'middle'; // 'top' // 'bottom'  // Config
+    // *********** Config section - End   ***************
+    \Config\Services::image('imagick')
+       ->withFile("$path/$file")
+    // ->text('Copyright 2017 My Photo Co', [
+       ->text($text, [
+          //  'color'      => '#fff',
+           'color'        => '#4c9',
+          //  'opacity'    => 0.5,
+           'opacity'      => $opacity,
+           'withShadow'   => $shdwDisp,
+           'shadowOffset' => $shdwDist,
+          //  'withShadow' => false,
+           'hAlign'       => $hAlign,
+          //  'vAlign'     => 'bottom',
+          //  'vAlign'     => 'top',
+           'vAlign'       => $vAlign,
+          //  'fontSize'   => 20 // Src - Fail?
+          //  'fontPath'   => 'https://fonts.googleapis.com/css2?family=Pacifico&family=Permanent+Marker&family=Roboto+Slab:wght@600&display=swap',  // fail
+          //  'fontPath'   => 'C:\Windows\Fonts\comic.ttf',
+           'fontPath'     => $fontPath,
+           'fontSize'     => $fontSize
+    ])->save("$path/wm_$file");
   }
 
   private function thumbNail01($path, $file, $ext) {
 
   }
 
-  private function waterMark($path, $file, $ext, $text) {
-    \Config\Services::image('imagick')
-    // ->withFile('/path/to/image/mypic.jpg')
-    ->withFile("$path/$file.$ext")
-    // ->text('Copyright 2017 My Photo Co', [
-    ->text($text, [
-          //  'color'      => '#fff',
-           'color'      => '#006',
-          //  'opacity'    => 0.5,
-           'opacity'    => 0.1,
-          //  'withShadow' => true,
-           'withShadow' => false,
-           'hAlign'     => 'center',
-          //  'vAlign'     => 'bottom',
-           'vAlign'     => 'top',
-           'fontSize'   => 20
-    ])
-    // ->save('/path/to/new/image.jpg');
-    ->save("$path/$file"."_wm".".$ext");
-  }
+  // private function loadFiles($path, $file, $ext) {
+  // private function loadFiles() {
+  private function loadFiles($id) {
+    $imgFiles = $this->request->getFileMultiple('images');
+    var_dump(WRITEPATH); // 'C:\wamp64\www\posCI4\writable\' (length=30)
+    $path = WRITEPATH . "../public/images/$this->module/$id";
+    foreach ($imgFiles as $key => $file) {
+      if ($file->getSize()) { // Validar el tamaño máximo
+          // Get the file's basename
 
+          echo "<br>getRandomName(): ". $file->getRandomName();
+          // echo "<br>originalName(): ". $file->originalName();
+          echo "<br>getBasename(): ". $file->getBasename();
+          echo "<br>guessExtension(): ". $file->guessExtension();
+          echo "<br>getMimeType(): ". $file->getMimeType();
+          // Get last modified time
+          echo "<br>getMTime(): ". $file->getMTime();
+          // Get the true real path
+          echo "<br>getRealPath(): ". $file->getRealPath();
+          // Get the file permissions
+          echo "<br>getPerms(): ". $file->getPerms();
+          var_dump($path);
+          var_dump($file);
+          echo "<br>getName(): ". $file->getName();
+          // move_uploaded_file
+          // $file->move($path);
+          $text     = "ArmyStore.com"; // Leer de la configuración
+          $newName  = $file->getRandomName();
+          // $ext      = $file->guessExtension();
+          
+          // var_dump($ext);
+          var_dump($text);
+          $file->move($path, $newName);
+          $this->thumbNail($path, $newName);
+          $this->waterMark($path, $newName, $text);
+      } else {
+        echo "Omitido: $key";
+      }
+      echo $file->getSize();
+      echo "<br>";
+      echo $key;
+      var_dump($file);
+    }
+    var_dump($imgFiles);
+    return;
+    $file = new \CodeIgniter\Files\File($path);
+    // Get the file's basename
+    echo $file->getBasename() . '<br>';
+    // Get last modified time
+    echo $file->getMTime()    . '<br>';
+    // Get the true real path
+    echo $file->getRealPath() . '<br>';
+    // Get the file permissions
+    echo $file->getPerms()    . '<br>';
+    // Write CSV rows to it.
+    // if ($file->isWritable()) {
+    //     $csv = $file->openFile('w');
+    //     foreach ($rows as $row) {
+    //         $csv->fputcsv($row);
+    //     }
+    // }
+    //*
+  }
 
   // *** Fotos - Inicio
   public function photosLoaded() {
+    $text  = 'ArmyStore';
     $path  = base_url("images/articulos/1");  // Read Only - Fail
+    $file  = "foto5";
+    $file  = "foto3";
+    $file  = "foto2";
+    $file  = "foto1";
     $file  = "foto4";
     $ext   = "jpg";
 
-    $file  = "foto0";
-    $ext   = "png";
+    // $file  = "foto0";
+    // $ext   = "png";
 
     $path  = "C:/wamp64/www/posCI4/public/images/articulos/1"; // Ok - Try WRITABLE dir
     $size  = 50; //75; // 100; // 
     // $text  = 'Copyright 2017 My Photo Co';
-    $text  = 'ArmyStore';
+
+    /*
+    // images/articulos/2
+    $path  = "C:/wamp64/www/posCI4/public/images/articulos/2"; // Ok - Try WRITABLE dir
+    $file  = "foto1";
+    $file  = "foto2";
+    $file  = "foto3";
+    $ext   = "jpg";
+    */
 
     // var_dump ($this->isfile("$path/$file.$ext"));
     // var_dump("$path/$file.$ext");
     // var_dump(is_file("$path/$file.$ext"));
     // var_dump(is_file("http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg")); // Fail
 
-    $this->thumbNail($path, $file, $ext);
-    $this->waterMark($path, $file, $ext, $text);
+    $this->thumbNail($path, $file.$ext);
+    $this->waterMark($path, $file.$ext, $text);
     
     echo "<br>PhotoLoaded";
   }
@@ -221,34 +313,35 @@ class Articulos extends BaseController
     return view("$this->module/viewer");
   }
   
-    function XuploadImage() {         
-      helper(['form', 'url']);
-      // $database = \Config\Database::connect();
-      // $db = $database->table('profile');    
-      $file = $this->validate([
-          'file' => [
-              'uploaded[file]',
-              'mime_in[file,image/png,image/jpg,image/jpeg]',
-              'max_size[file,4096]',
-          ]
-      ]);
-      print_r($file);
-      var_dump($file);
-      if (!$file) {
-          print_r('Wrong file type selected');
-      } else {
-          $imageFile = $this->request->getFile('file');
-          $imageFile->move(WRITEPATH . 'uploads');    
-          $data = [
-             'ile_name'  => $imageFile->getName(),
-             'file_type' => $imageFile->getClientMimeType()
-          ];
-          // $save = $db->insert($data);
-          print_r('Image uploaded correctly!');
-          var_dump($data);
-          print_r($data);
-        }
+  function XuploadImage() {
+    helper(['form', 'url']);
+    // $database = \Config\Database::connect();
+    // $db = $database->table('profile');    
+    $file = $this->validate([
+       'file' => [
+          'uploaded[file]',
+          'mime_in[file,image/png,image/jpg,image/jpeg]',
+          'max_size[file,4096]',
+       ]
+    ]);
+    print_r($file);
+    var_dump($file);
+    if (!$file) {
+        print_r('Wrong file type selected');
+    } 
+    else {
+        $imageFile = $this->request->getFile('file');
+        $imageFile->move(WRITEPATH . 'uploads');    
+        $data = [
+           'ile_name'  => $imageFile->getName(),
+           'file_type' => $imageFile->getClientMimeType()
+        ];
+        // $save = $db->insert($data);
+        print_r('Image uploaded correctly!');
+        var_dump($data);
+        print_r($data);
     }
+  }
   // *** Fotos - Fin
 
   private function getValidate($method = "post")
@@ -396,7 +489,18 @@ class Articulos extends BaseController
     var_dump($_POST);
     var_dump($_FILES);
     var_dump($dataWeb);
+    $fotos = implode("|", $dataWeb['imgs']);
+    var_dump($fotos);
+    // $fotos = implode("|", $_FILES);
+    // var_dump($fotos);
+
+    $dataSet['fotos'] = $this->loadFiles($id);
     return;
+    // if ($dataSet['fotos']         == '') $dataSet['fotos']  = 0;
+    $dataSet['fotos'] = implode("|", $dataSet['imgs']); // Enviar a ???
+    $this->photosLoaded();
+
+
     // **** 1
     if ($this->getValidate( $this->request->getMethod() )) {
         // $msg = "¡Actualización exitosa!";

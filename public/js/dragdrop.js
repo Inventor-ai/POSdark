@@ -470,15 +470,15 @@ function addPhotos() {
   const album = document.getElementById('album');
   var   iFoto = album.children.length - 1;
   console.log('addPhotos', iFoto);
-  const album = document.getElementById('album');
 //   if (album.children.length )
   var sf = $("<input>", { // sf = Selected Files
-               //  class: "form-control newPhotos", // 4 testing
-                class: "d-none newPhotos",    // Ok - Release like this
+                class: "form-control newPhotos", // 4 testing
+              //  class: "d-none newPhotos",    // Ok - Release like this
                  type: "file",
-               accept:"image/png,.jpg",
-              multiple: "",
-                    id: "newPhotos" + iFoto
+               accept: "image/png,.jpg",
+                 name: "images[]",
+             multiple: "",
+                   id: "newPhotos" + iFoto
   });
 
   sf[0].addEventListener("change", ()=> {
