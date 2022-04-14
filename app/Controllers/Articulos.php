@@ -96,8 +96,9 @@ class Articulos extends BaseController
       'inventariable' => $this->request->getPost('inventariable'),
       'id_unidad'     => $this->request->getPost('id_unidad'),
       'id_categoria'  => $this->request->getPost('id_categoria'),
-      'fotos'         => $this->request->getPost('fotos'),
       'imgs'          => $this->request->getPost('imgs'),
+      'remove'        => $this->request->getPost('remove'),
+      'fotos'         => $this->request->getPost('fotos'),
         // 'activo'        => $this->request->getPost('activo')
     ];
     // Custom initialize section. Set default value by field
@@ -110,13 +111,83 @@ class Articulos extends BaseController
     if ($dataSet['existencias']   == '') $dataSet['existencias']   = 0;
     if ($dataSet['stock_minimo']  == '') $dataSet['stock_minimo']  = 0;
     if ($dataSet['inventariable'] == '') $dataSet['inventariable'] = 1;
+    if ($dataSet['remove']        == '') $dataSet['remove'] = [];
     if ($dataSet['fotos']         == '') $dataSet['fotos']  = 0;
     $this->photosLoaded();
     return $dataSet;
   }
 
+/** 
+
+  public function isFile($file) {
+    $f = pathinfo($file, PATHINFO_EXTENSION);
+    var_dump($f);
+    var_dump(strlen($f));
+    return (strlen($f) > 0) ? true : false;
+  }
+
+*/
+  private function thumbNail($path, $file, $ext)  // Ok
+  { // https://codeigniter.com/user_guide/libraries/images.html
+    $size  = 50; //75; // 100; // 
+    $image = \Config\Services::image()
+           ->withFile("$path/$file.$ext")
+         //  ->fit(100, 100, 'center')  // Ok
+           ->fit($size, $size, 'center')
+           ->save("$path/$file"."_thumb".".$ext");
+    var_dump($image);
+  }
+
+  private function thumbNail01($path, $file, $ext) {
+
+  }
+
+  private function waterMark($path, $file, $ext, $text) {
+    \Config\Services::image('imagick')
+    // ->withFile('/path/to/image/mypic.jpg')
+    ->withFile("$path/$file.$ext")
+    // ->text('Copyright 2017 My Photo Co', [
+    ->text($text, [
+          //  'color'      => '#fff',
+           'color'      => '#006',
+          //  'opacity'    => 0.5,
+           'opacity'    => 0.1,
+          //  'withShadow' => true,
+           'withShadow' => false,
+           'hAlign'     => 'center',
+          //  'vAlign'     => 'bottom',
+           'vAlign'     => 'top',
+           'fontSize'   => 20
+    ])
+    // ->save('/path/to/new/image.jpg');
+    ->save("$path/$file"."_wm".".$ext");
+  }
+
+
   // *** Fotos - Inicio
-  public function photosLoaded() {}
+  public function photosLoaded() {
+    $path  = base_url("images/articulos/1");  // Read Only - Fail
+    $file  = "foto4";
+    $ext   = "jpg";
+
+    $file  = "foto0";
+    $ext   = "png";
+
+    $path  = "C:/wamp64/www/posCI4/public/images/articulos/1"; // Ok - Try WRITABLE dir
+    $size  = 50; //75; // 100; // 
+    // $text  = 'Copyright 2017 My Photo Co';
+    $text  = 'ArmyStore';
+
+    // var_dump ($this->isfile("$path/$file.$ext"));
+    // var_dump("$path/$file.$ext");
+    // var_dump(is_file("$path/$file.$ext"));
+    // var_dump(is_file("http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg")); // Fail
+
+    $this->thumbNail($path, $file, $ext);
+    $this->waterMark($path, $file, $ext, $text);
+    
+    echo "<br>PhotoLoaded";
+  }
 
   public function galleryPhotos($id)
   {

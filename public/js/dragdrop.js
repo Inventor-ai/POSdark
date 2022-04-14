@@ -84,7 +84,7 @@
       }
  }
 
-//  var orien, destino;
+ var orien;
  function dropIt(e) {
    var box = e.target.parentNode.nodeName;
    if (e.target.nodeName == 'path')
@@ -93,7 +93,7 @@
        box = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
    else if (e.target.nodeName == 'SPAN')
        box = e.target.parentNode.parentNode.parentNode.parentNode;
-   // origen = box;
+   orien = box;
    // destino = e;
    console.log(box);
    console.log(box.attributes['data-new'].value);
@@ -108,7 +108,7 @@
                      name: "remove[]",
                      value: box.children[0].children[0].id
       })[0];
-      box.appendChild(hdn);
+      box.parentNode.appendChild(hdn);
    }
    console.log('Removed simulated of: ', box.children[0].children[0].id);
    box.remove();
@@ -148,12 +148,12 @@
    input.files = dt.files; // Assign the updates list
  }
 
- function packText(text, lftChars, rgtChars, maxSize) {
-   if(text.length > maxSize) 
-      return text.slice(0,lftChars) + 
-             text.slice(text.length - rgtChars).padStart(lftChars + rgtChars,".");
-   else return text;
- }
+//  function packText(text, lftChars, rgtChars, maxSize) {
+//    if(text.length > maxSize) 
+//       return text.slice(0,lftChars) + 
+//              text.slice(text.length - rgtChars).padStart(lftChars + rgtChars,".");
+//    else return text;
+//  }
    
   //  function t(p1, p2 = 10) {
   //    console.log(p1, p2);
@@ -466,14 +466,15 @@
 // boxTgt.parentNode.parentNode.insertBefore(itemDragged.parentNode.parentNode, 
 //    boxTgt.parentNode);  //  "lastOne"
 
-var iFoto = 0;
 function addPhotos() {
+  const album = document.getElementById('album');
+  var   iFoto = album.children.length - 1;
   console.log('addPhotos', iFoto);
   const album = document.getElementById('album');
 //   if (album.children.length )
   var sf = $("<input>", { // sf = Selected Files
-                class: "form-control newPhotos", // 4 testing
-               //  class: "d-none newPhotos",    // Ok - Release like this
+               //  class: "form-control newPhotos", // 4 testing
+                class: "d-none newPhotos",    // Ok - Release like this
                  type: "file",
                accept:"image/png,.jpg",
               multiple: "",
@@ -520,7 +521,6 @@ function addPhotos() {
    }
    viewMode();
    setDraggables();
-   iFoto++; // input/output or true /false?
   });
   sf.click();
 
