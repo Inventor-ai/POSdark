@@ -134,6 +134,3 @@ public/images/
 # testing invoices
 app/Libraries/cfdi_sat/tmp
 app/Libraries/cfdi_sat/cfdi
-
-# true type fonts
-public/assets/fonts

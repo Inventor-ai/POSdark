@@ -19,6 +19,7 @@ class Articulos extends BaseController
   protected $xlsFile  = 'helloWorld.xlsx';
   protected $carrier  = [];
   protected $module;
+  protected $imgsPath;
   protected $dataModel;
 
   public function __construct()
@@ -27,6 +28,7 @@ class Articulos extends BaseController
     $replaceBy        = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
     $this->items      = $this->item.$this->items;
     $this->module     = strtolower(str_replace($search, $replaceBy, $this->items));
+    $this->imgsPath   = WRITEPATH . "../public/images/$this->module";
     $this->dataModel  = new ArticulosModel();
     $this->unidades   = new UnidadesModel();
     $this->categorias = new CategoriasModel();
@@ -96,9 +98,9 @@ class Articulos extends BaseController
       'inventariable' => $this->request->getPost('inventariable'),
       'id_unidad'     => $this->request->getPost('id_unidad'),
       'id_categoria'  => $this->request->getPost('id_categoria'),
-      'imgs'          => $this->request->getPost('imgs'),
-      'remove'        => $this->request->getPost('remove'),
-      'fotos'         => $this->request->getPost('fotos'),
+      // 'imgs'          => $this->request->getPost('imgs'),
+      // 'remove'        => $this->request->getPost('remove'),
+      // 'fotos'         => $this->request->getPost('fotos'),
         // 'activo'        => $this->request->getPost('activo')
     ];
     // Custom initialize section. Set default value by field
@@ -111,7 +113,7 @@ class Articulos extends BaseController
     if ($dataSet['existencias']   == '') $dataSet['existencias']   = 0;
     if ($dataSet['stock_minimo']  == '') $dataSet['stock_minimo']  = 0;
     if ($dataSet['inventariable'] == '') $dataSet['inventariable'] = 1;
-    if ($dataSet['remove']        == '') $dataSet['remove'] = [];
+    // if ($dataSet['remove']        == '') $dataSet['remove'] = [];
     return $dataSet;
   }
 
@@ -122,29 +124,35 @@ class Articulos extends BaseController
     var_dump(strlen($f));
     return (strlen($f) > 0) ? true : false;
   }
-
 */
 
-  private function thumbNail($path, $file)  // Ok
+  private function imgThumbNail($path, $file, $size  = 50, $sufix = '_tn.')  // Ok
   { // https://codeigniter.com/user_guide/libraries/images.html
-    $size  = 50; //75; // 100; // 
-    $image = \Config\Services::image()
-           ->withFile("$path/$file")
+    // $size  = 50; //75; // 100; // 
+    \Config\Services::image()
+       ->withFile("$path/$file")
          //  ->fit(100, 100, 'center')  // Ok
-           ->fit($size, $size, 'center')
-           ->save("$path/tn_$file");
-    var_dump($image);
+       ->fit($size, $size, 'center')
+          //  ->save("$path/tn_$file");
+          //  ->save("$path/$file");
+       ->save("$path/".str_replace(".", $sufix, $file));
   }
-  // https://codeigniter.com/user_guide/libraries/images.html
-  private function waterMark($path, $file, $text = '') {
+  // https://codeigniter.com/user_guide/libraries/images.
+  private function imgWaterMark($path, $file, $text = '', $sufix = "_wm.") {
     // var_dump(base_url('assets/fonts/comic.ttf')); // fail
     // var_dump(APPPATH); // 'C:\wamp64\www\posCI4\app\'
     // *********** Config section - Begin ***************
     // $fontPath = APPPATH . '../public/assets/fonts/CURLZ___.TTF';
+    // $fontPath = APPPATH . '../public/assets/fonts/RubikWetPaint-Regular.ttf';
+    // $fontPath = APPPATH . '../public/assets/fonts/Creepster-Regular.ttf';
+    // $fontPath = APPPATH . '../public/assets/fonts/Yellowtail-Regular.ttf';
+    // $fontPath = APPPATH . '../public/assets/fonts/Nosifer-Regular.ttf';
+    // $fontPath = APPPATH . '../public/assets/fonts/Molle-Italic.ttf';
     $fontPath = APPPATH . '../public/assets/fonts/ALGER.TTF';
     $fontPath = APPPATH . '../public/assets/fonts/COOPBL.TTF';
     $fontPath = APPPATH . '../public/assets/fonts/comic.ttf';
     $fontPath = APPPATH . '../public/assets/fonts/lucon.ttf';
+
     $fontSize = 20;
     $opacity  = 0.1;  // 0.1 - 0.9              // Config
     $shdwDisp = true; // false;                 // Config
@@ -172,19 +180,41 @@ class Articulos extends BaseController
           //  'fontPath'   => 'C:\Windows\Fonts\comic.ttf',
            'fontPath'     => $fontPath,
            'fontSize'     => $fontSize
-    ])->save("$path/wm_$file");
+    // ])->save("$path/wm_$file");
+    // ])->save("$path/$file");
+    ])->save("$path/".str_replace(".", $sufix, $file));
   }
 
-  private function thumbNail01($path, $file, $ext) {
-
+  public function imgResize($path, $file, $width, $height, $sufix = "_th.")
+  {
+    \Config\Services::image('imagick')
+    // ->withFile('/path/to/image/mypic.jpg')
+    ->withFile("$path/$file")
+    // ->resize(200, 100, true, 'height')
+    ->resize($width, $height, true, 'auto')
+    // ->save('/path/to/new/image.jpg');
+    // ->save("$path/th_$file");
+    // ->save("$path/$file");
+    ->save("$path/".str_replace(".", $sufix, $file));
   }
+
+  /*
+  public function testRename() // test ok - done -clear
+  {
+    $pathA = WRITEPATH . "../public/images/$this->module/1b";
+    $pathB = WRITEPATH . "../public/images/$this->module/1";
+    echo rename ($pathA, $pathB) ? "Exito" : "Falló";
+  }
+  */
 
   // private function loadFiles($path, $file, $ext) {
-  // private function loadFiles() {
+  // private function loadFiles()  // usar uniqid() para id
+  /** 
   private function loadFiles($id) {
     $imgFiles = $this->request->getFileMultiple('images');
     var_dump(WRITEPATH); // 'C:\wamp64\www\posCI4\writable\' (length=30)
-    $path = WRITEPATH . "../public/images/$this->module/$id";
+    $path    = WRITEPATH . "../public/images/$this->module/$id";
+    $imgsLst = [];
     foreach ($imgFiles as $key => $file) {
       if ($file->getSize()) { // Validar el tamaño máximo
           // Get the file's basename
@@ -202,18 +232,24 @@ class Articulos extends BaseController
           echo "<br>getPerms(): ". $file->getPerms();
           var_dump($path);
           var_dump($file);
-          echo "<br>getName(): ". $file->getName();
           // move_uploaded_file
           // $file->move($path);
           $text     = "ArmyStore.com"; // Leer de la configuración
-          $newName  = $file->getRandomName();
+          $nameSrc  = $file->getName();
+          $nameNew  = $file->getRandomName();
+          echo "<br>getName(): ". $nameSrc;
           // $ext      = $file->guessExtension();
           
           // var_dump($ext);
           var_dump($text);
-          $file->move($path, $newName);
-          $this->thumbNail($path, $newName);
-          $this->waterMark($path, $newName, $text);
+          $file->move($path, $nameNew);
+          $this->imgThumbNail($path, $nameNew);
+          $this->imgWaterMark($path, $nameNew, $text);
+          $width  = 130;
+          $height =  65;
+          $width  = $height;
+          $this->imgResize($path, $nameNew, $width, $height);
+          $imgsLst[$nameSrc] = $nameNew;
       } else {
         echo "Omitido: $key";
       }
@@ -223,31 +259,14 @@ class Articulos extends BaseController
       var_dump($file);
     }
     var_dump($imgFiles);
-    return;
-    $file = new \CodeIgniter\Files\File($path);
-    // Get the file's basename
-    echo $file->getBasename() . '<br>';
-    // Get last modified time
-    echo $file->getMTime()    . '<br>';
-    // Get the true real path
-    echo $file->getRealPath() . '<br>';
-    // Get the file permissions
-    echo $file->getPerms()    . '<br>';
-    // Write CSV rows to it.
-    // if ($file->isWritable()) {
-    //     $csv = $file->openFile('w');
-    //     foreach ($rows as $row) {
-    //         $csv->fputcsv($row);
-    //     }
-    // }
-    //*
+    return $imgsLst;
   }
+  */
 
+  /**
   // *** Fotos - Inicio
   public function photosLoaded() {
     $text  = 'ArmyStore';
-    $path  = base_url("images/articulos/1");  // Read Only - Fail
-    $file  = "foto5";
     $file  = "foto3";
     $file  = "foto2";
     $file  = "foto1";
@@ -259,24 +278,24 @@ class Articulos extends BaseController
 
     $path  = "C:/wamp64/www/posCI4/public/images/articulos/1"; // Ok - Try WRITABLE dir
     $size  = 50; //75; // 100; // 
+    
     // $text  = 'Copyright 2017 My Photo Co';
 
-    /*
+    
     // images/articulos/2
-    $path  = "C:/wamp64/www/posCI4/public/images/articulos/2"; // Ok - Try WRITABLE dir
-    $file  = "foto1";
-    $file  = "foto2";
-    $file  = "foto3";
-    $ext   = "jpg";
-    */
+    // $path  = "C:/wamp64/www/posCI4/public/images/articulos/2"; // Ok - Try WRITABLE dir
+    // $file  = "foto1";
+    // $file  = "foto2";
+    // $file  = "foto3";
+    // $ext   = "jpg";
 
     // var_dump ($this->isfile("$path/$file.$ext"));
     // var_dump("$path/$file.$ext");
     // var_dump(is_file("$path/$file.$ext"));
     // var_dump(is_file("http://192.168.1.65/posci4/public/images/articulos/1/foto4.jpg")); // Fail
 
-    $this->thumbNail($path, $file.$ext);
-    $this->waterMark($path, $file.$ext, $text);
+    $this->imgThumbNail($path, $file.$ext);
+    $this->imgWaterMark($path, $file.$ext, $text);
     
     echo "<br>PhotoLoaded";
   }
@@ -343,6 +362,7 @@ class Articulos extends BaseController
     }
   }
   // *** Fotos - Fin
+  */
 
   private function getValidate($method = "post")
   {
@@ -468,41 +488,192 @@ class Articulos extends BaseController
     echo view('/includes/footer');
   }
 
-  private function photos01($imgs = [])
+  /*
+  private function textDel($id) // test it - ok - Done - Clear
   {
+    echo $id;
+    $file ="foto6.jpg";
+    echo str_replace(".", "*.", $file);
+    var_dump("$this->imgsPath/$id/$file");
+    
+    echo "realpath<br>";
+    $fileG = realpath("$this->imgsPath/$id/$file");
+    var_dump($fileG);
+    var_dump( glob($fileG) );
+
+    // $fileG = realpath("$this->imgsPath/$id/".str_replace(".", "*.", $file));
+    $fileG = str_replace(".", "*.", $file);
+    $fileG = "$this->imgsPath/$id/".str_replace(".", "*.", $file);
+    // $fileG = realpath ("$this->imgsPath/$id/".str_replace(".", "*.", $file));
+    var_dump($fileG);
+    var_dump( glob($fileG) );
+    var_dump( glob("$this->imgsPath/$id/".str_replace(".", "*.", $file)) );
+    var_dump (array_map( 'realpath', glob("$this->imgsPath/$id/".str_replace(".", "*.", $file)) ));
+
+    array_map( 'unlink', glob("$this->imgsPath/$id/".str_replace(".", "*.", $file)) );
+    
+    // $fileG = str_replace(".", "*.", $fileG);
+    // var_dump($fileG);
+
+    // var_dump("$this->imgsPath/$id/".str_replace(".", "*.", $file));
+    // var_dump(realpath("$this->imgsPath/$id/".str_replace(".", "*.", $file)));
+    // unlink ($fileG);
+    // unlink ("$this->imgsPath/$id/".str_replace(".", "*.", $file));
+  }
+  */
+
+  /* */
+  private function photosDriver($id)
+  
+  { // Al insertar renombrar $idTmp por nuevo $id
+    // get 
+    $path = "$this->imgsPath/$id";
+    $remove = $this->request->getPost('remove');
+    $album = [];
+    if (isset($remove)) 
+       foreach ($remove as $key => $file) 
+          array_map( 'unlink', glob("$path/".str_replace(".", "*.", $file)) );
+
+    // **** 0
+    // $this->photos01($_POST['imgs']);
+    // var_dump($_POST);
+    // var_dump($_FILES);
+    // 'fotos'         => $this->request->getPost('fotos'),   // Fotos con nombres finales segùn orden
+    // $fotos = implode("|", $_FILES);
+    // var_dump($fotos);
+
+    // *0
+    $imgFiles = $this->request->getFileMultiple('images');
+      // var_dump(WRITEPATH); // 'C:\wamp64\www\posCI4\writable\' (length=30)
+      // $path    = WRITEPATH . "../public/images/$this->module/$id";
+    if (isset($imgFiles)) {
+      # code...
+      $filesLoaded = [];
+      $text        = Usuarios::getSettingValue('tienda_nombre');
+      foreach ($imgFiles as $key => $file) {
+        if ($file->getSize()) { // Validar el tamaño máximo
+              // // Get the file's basename
+    
+              // echo "<br>getRandomName(): ". $file->getRandomName();
+              // // echo "<br>originalName(): ". $file->originalName();
+              // echo "<br>getBasename(): ". $file->getBasename();
+              // echo "<br>guessExtension(): ". $file->guessExtension();
+              // echo "<br>getMimeType(): ". $file->getMimeType();
+              // // Get last modified time
+              // echo "<br>getMTime(): ". $file->getMTime();
+              // // Get the true real path
+              // echo "<br>getRealPath(): ". $file->getRealPath();
+              // // Get the file permissions
+              // echo "<br>getPerms(): ". $file->getPerms();
+              // var_dump($path);
+              // var_dump($file);
+              // // move_uploaded_file
+              // // $file->move($path);
+              // $text     = "ArmyStore.com"; // Leer de la configuración
+              // $text     = Usuarios::getSettingValue('tienda_siglas');
+            
+              $nameSrc  = $file->getName();
+              $nameNew  = $file->getRandomName();
+              // echo "<br>getName(): ". $nameSrc;
+              // $ext      = $file->guessExtension();
+              
+              // var_dump($ext);
+              // var_dump($text);
+              $file->move($path, $nameNew);
+              $this->imgThumbNail($path, $nameNew);
+              // $this->imgThumbNail($path, str_replace(".", "_tn.", $nameNew));
+              $this->imgWaterMark($path, $nameNew, $text);
+              // $this->imgWaterMark($path, str_replace(".", "_wm.", $nameNew), $text);
+              $width  = 130;
+              $height =  65;
+              $width  = $height;
+              $this->imgResize($path, $nameNew, $width, $height);
+              // $this->imgResize($path, str_replace(".", "_th.", $nameNew), $width, $height);
+              // $imgsLst[$nameSrc] = $nameNew;
+              // $filesLoaded[$file->getName()] = $nameNew;
+              $filesLoaded[$nameSrc] = $nameNew;
+        } 
+        // else {
+        //     echo "Omitido: $key";
+        // }
+        //   echo $file->getSize();
+        //   echo "<br>";
+        //   echo $key;
+        //   var_dump($file);
+      }    
+      $album = $this->request->getPost('imgs');    // Orden de las fotos
+      // var_dump($album);
+      foreach ($album as $key => $imgName) {
+        // echo "<br>$imgName: ";
+        // echo isset($filesLoaded[$imgName]) ? $filesLoaded[$imgName]: " .F.";
+        if (isset($filesLoaded[$imgName])) {
+            $album[$key] = $filesLoaded[$imgName];
+            // $imgName = $filesLoaded[$imgName];
+            // echo "-> $imgName <-";
+        }
+      }
+      // var_dump($filesLoaded);
+    } else {
+      # code...
+      $album = $this->request->getPost('imgs');    // Orden de las fotos
+    }
+      // var_dump($imgFiles);
+    // return $imgsLst; // Fotos
+    // *1
+    // $filesLoaded = $this->loadFiles($id);
+    // $imgsLst
+
+    // var_dump( $album );
+    return $album;
+    /*
+    echo "After renamed ";
+    $dataWeb['fotos'] = implode('|', $album);
+    var_dump( $dataWeb['fotos']);
+
+    // if ($dataSet['fotos']         == '') $dataSet['fotos']  = 0;
+    $dataSet['fotos'] = implode("|", $dataSet['imgs']); // Enviar a ???
+    // $fotos = implode("|", $dataWeb['imgs']);
+    // var_dump($fotos);
+    $this->photosLoaded();
+    // **** 1
+        // Cargar fotos del producto $id
+        // Crear marcas de agua
+        // Crear tumbnails
+        // Crear miniaturas
+        // Completar: $dataWeb con los campos
+        //   Foto 
+        //   Fotos
     echo "Processing " . count($imgs);
     foreach ($imgs as $img) {
       var_dump($img);
     }
+    */
   }
+  /**/
 
   public function actualizar()
   {
     // $texto = 'foto0.png|foto1.jpg|foto2.jpeg|foto3.png|foto4.jpg|foto5.jpeg|foto6.png|foto7.jpg|foto8.jpeg|foto9.png';
     // var_dump($texto);
     // print_r (explode ("|", $texto));
-
     $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
-    // **** 0
-    $this->photos01($_POST['imgs']);
-    var_dump($_POST);
-    var_dump($_FILES);
-    var_dump($dataWeb);
-    $fotos = implode("|", $dataWeb['imgs']);
-    var_dump($fotos);
-    // $fotos = implode("|", $_FILES);
-    // var_dump($fotos);
-
-    $dataSet['fotos'] = $this->loadFiles($id);
-    return;
-    // if ($dataSet['fotos']         == '') $dataSet['fotos']  = 0;
-    $dataSet['fotos'] = implode("|", $dataSet['imgs']); // Enviar a ???
-    $this->photosLoaded();
-
-
-    // **** 1
     if ($this->getValidate( $this->request->getMethod() )) {
+        // Validar Fotos:
+        //   Cantidad: Array.lengh < 11
+        //   Tamaño (Bytes) 
+        //   Resolución?
+        // var_dump($dataWeb); // Ya fue validado
+        $album = $this->photosDriver($id); // Devolver valores para
+        
+        // Completar: $dataWeb con los campos
+        //   Foto 
+        //   Fotos
+        $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
+        // $dataWeb['foto']  = str_replace(".", "_th", $album[0]);
+        $dataWeb['fotos'] = implode('|', $album);
+        // var_dump( $dataWeb );
+        // return;
         // $msg = "¡Actualización exitosa!";
         $this->dataModel->update( $id, $dataWeb );
         return redirect()->to(base_url()."/$this->module");

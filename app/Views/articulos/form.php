@@ -1,6 +1,7 @@
 <?php
 // $imgExt = "jpg";
 // var_dump($data);
+// var_dump($data);
 ?>
 <link href="<?=base_url("css/dragdrop.css")?>" rel="stylesheet" />
 
@@ -200,8 +201,8 @@
         <?php
          $fotos = explode('|', $data['fotos']);
          $items = count($fotos);
-         var_dump($items);
-         var_dump($fotos);
+        //  var_dump($items);
+        //  var_dump($fotos);
          foreach ($fotos as $key => $foto) {
             // var_dump($key);
             // var_dump($foto);
@@ -265,11 +266,22 @@
     </div>
 
     <hr>
+
    /* Sección de pruebas - Eliminar - Inicio */
     <p>line 1</p>
     <div class="form-group mt-2">
       <div class="row row-cols-auto" >
-        <?php for ($i=0; $i < $data['fotos']; $i++) {
+        <?php 
+        // for ($i=0; $i < $data['fotos']; $i++) {
+        //  $fotos = explode('|', $data['fotos']);
+        //  $items = count($fotos);
+        //  var_dump($items);
+        //  var_dump($fotos);
+         foreach ($fotos as $key => $foto) {
+            // var_dump($key);
+            // var_dump($foto);
+           $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
+
           // $j = $i + 1;
           // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
           // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
@@ -281,13 +293,13 @@
           //  $imagen = 'images/'."$path/".$data['id'].$imagen;
           //  $imagen = base_url ($imagen);
 
-           $imagen = base_url ("images/$path/".$data['id']."/foto$i");
+          //  $imagen = base_url ("images/$path/".$data['id']."/foto$i");
         ?>
           <div class="col mb-3">
             <!-- <div class="mb-1"> -->
               <a href="<?=$imagen?>">
                 <img src="<?=$imagen?>" 
-                     alt="foto de <?=$data['nombre']?>" style="width: 80px;">
+                     alt="<?=$data['nombre']?> - foto" style="width: 80px;">
                <!--  class="img-thumbnail"  -->
               </a>
             <!-- </div> -->
@@ -297,7 +309,15 @@
         <hr>
         <div class="row row cols-auto">
           <p>line 2</p>
-          <?php for ($i=0; $i < $data['fotos']; $i++) {
+          <?php 
+            // for ($i=0; $i < $data['fotos']; $i++) {
+            $i=0;
+            foreach ($fotos as $key => $foto) {
+              // var_dump($key);
+              // var_dump($foto);
+              $i++;
+             $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
+  
             //  $j = $i + 1;
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
@@ -310,7 +330,7 @@
               // $imagen = base_url ($imagen);
 
               // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+              // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
           ?>
             <div class="col-4 col-sm-2">
             <!-- <a href="<?=$imagen?>"> -->
@@ -323,7 +343,8 @@
         <hr>
         <div class="row row cols-auto">
           <p>line 3</p>
-          <?php for ($i=0; $i < $data['fotos']; $i++) {
+          <?php 
+          // for ($i=0; $i < $data['fotos']; $i++) {
             //  $j = $i + 1;
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
@@ -336,7 +357,11 @@
               // $imagen = base_url ($imagen);
 
               // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+              // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+              foreach ($fotos as $key => $foto) {
+                // var_dump($key);
+                // var_dump($foto);
+               $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
           ?>
             <div class="col mb-3">
             <a href="<?=$imagen?>">
@@ -347,7 +372,8 @@
         </div>
         <div class="row row cols-auto">
           <p>line 4</p>
-          <?php for ($i=0; $i < $data['fotos']; $i++) {
+          <?php
+          //  for ($i=0; $i < $data['fotos']; $i++) {
             //  $j = $i + 1;
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j < 10 ? "0" : "") . "$j.png";
              // $imagen = 'images/'."$path/".$data['id']."/foto".($j<10?"0":"")."$j.png";
@@ -360,7 +386,12 @@
               // $imagen = base_url ($imagen);
 
               // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i.jpg");
-              $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+              // $imagen = base_url ('images/'."$path/".$data['id']."/foto$i");
+              foreach ($fotos as $key => $foto) {
+                // var_dump($key);
+                // var_dump($foto);
+               $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
+    
           ?>
             <!-- <div class="col mb-3">
               <a href="<?=$imagen?>">
@@ -730,7 +761,9 @@
         <p>line 6</p>
       </div>
     </div>
-   /* Sección de pruebas - Eliminar - Fin    */     
+   /* Sección de pruebas - Eliminar - Fin    */
+
+   
   </form> 
 </div>
 <?php if ($validation) {?>
