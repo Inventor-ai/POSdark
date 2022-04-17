@@ -1,11 +1,8 @@
 <?php
 $session_user = session();
-
 $tabTitle  = $session_user->tabTitle;
 $brandName = $session_user->brandName;
 $webpage   = $session_user->webpage;
-
-
 // if ($session_user->nombre == null) {
 //     return redirect()->to(base_url().'/');
 // }

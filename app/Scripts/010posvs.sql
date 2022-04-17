@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 04-04-2022 a las 11:50:45
+-- Tiempo de generación: 14-04-2022 a las 21:02:31
 -- Versión del servidor: 8.0.21
 -- Versión de PHP: 7.3.21
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `articulos` (
   `id_unidad` smallint NOT NULL,
   `id_categoria` smallint NOT NULL,
   `foto` varchar(15) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL,
-  `fotos` varchar(110) CHARACTER SET utf8 COLLATE utf8_spanish_ci DEFAULT '',
+  `fotos` varchar(400) CHARACTER SET utf8 COLLATE utf8_spanish_ci DEFAULT '',
   `activo` tinyint NOT NULL DEFAULT '1',
   `fecha_alta` timestamp NOT NULL,
   `fecha_edit` timestamp NULL DEFAULT NULL,

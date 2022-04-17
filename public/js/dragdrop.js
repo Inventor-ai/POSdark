@@ -84,7 +84,7 @@
       }
  }
 
- var orien;
+//  var orien;
  function dropIt(e) {
    var box = e.target.parentNode.nodeName;
    if (e.target.nodeName == 'path')
@@ -93,16 +93,16 @@
        box = e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
    else if (e.target.nodeName == 'SPAN')
        box = e.target.parentNode.parentNode.parentNode.parentNode;
-   orien = box;
+   // orien = box;
    // destino = e;
-   console.log(box);
-   console.log(box.attributes['data-new'].value);
+   // console.log(box);
+   // console.log(box.attributes['data-new'].value);
    const id = box.children[0].children[0].id;
    if (box.attributes['data-new'].value == 'true') {
       fileListRemove(id);
    }
-   else {  //
-      console.log('Agregar a Lista para borrar el nombre:', id);
+   else {  // Agrega el nombre a la lista para borrarlo
+      // console.log('Agregar a Lista para borrar el nombre:', id);
       const hdn = $('<input>', {
                      type: "hidden",
                      name: "remove[]",
@@ -110,10 +110,8 @@
       })[0];
       box.parentNode.appendChild(hdn);
    }
-   console.log('Removed simulated of: ', box.children[0].children[0].id);
    box.remove();
    getItemsCount();
-   //e.target.parentElement.parentElement.parentElement.parentElement.parentElement.remove()
  }
 
  function fileListRemove(fileIDs) {
@@ -240,26 +238,43 @@
  }
 */
 
-// var src;
-// var origen, destino;
- function setItemsCount(num) {
-   const totItems = document.getElementById('imgsCount');
-   totItems.innerHTML = num;
- }
-
  function getItemsCount() {
-   const items = document.querySelectorAll('.item');
-   setItemsCount(items.length - 1);
+   const totItems = document.getElementById('imgsCount'),
+         items    = document.querySelectorAll('.item');
+   totItems.innerHTML = items.length - 1;
+   return items;
  }
 
- 
+//  function setItemsCount(num) {
+//    const totItems = document.getElementById('imgsCount');
+//    totItems.innerHTML = num;
+//    // totItems.innerHTML = (num < 0 ? 0 : num);
+//  }
+
+//  function getItemsCount() {
+//    const items = document.querySelectorAll('.item');
+//    setItemsCount(items.length - 1);
+//    return items;
+//  }
+
+//  function getItemsCountOk() {
+//    const items = document.querySelectorAll('.item');
+//    setItemsCount(items.length - 1);
+//  } 
+
+//  function getItemsCount01() {
+//    return document.querySelectorAll('.item');
+//  } 
 
  function setDraggables() {
-    const items = document.querySelectorAll('.item'),
-          boxes = document.querySelectorAll('.box');
+   //  const items = document.querySelectorAll('.item'),  // Ok - Old
+   //        boxes = document.querySelectorAll('.box');   // Ok - Old
+
     //   imgHolder = document.querySelector('.box');
     // console.log(imgHolder);
-    setItemsCount(items.length - 1);
+    const boxes = document.querySelectorAll('.box'),
+    items = getItemsCount();
+   //  setItemsCount(items.length - 1);
     items.forEach ( item => {
       item.addEventListener('dragstart', dragStart);
       item.addEventListener('dragend', dragEnd);
@@ -516,7 +531,7 @@ function addPhotos() {
      */
       //
       // return; // * tmp
-      const item = SetPhotoHolder(selFiles[i], iFoto);
+      const item = setPhotoHolder(selFiles[i], iFoto);
       lastOne.parentNode.insertBefore(item, lastOne);
    }
    viewMode();
@@ -536,7 +551,7 @@ function addPhotos() {
 
 }
 
-function SetPhotoHolder(info, seq) {
+function setPhotoHolder(info, seq) {
   const srcName = "|newPhotos" + seq;
    console.log(info);
    // return;

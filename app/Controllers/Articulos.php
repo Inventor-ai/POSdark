@@ -437,12 +437,12 @@ class Articulos extends BaseController
     // foreach (glob("*.*") as $nombre_fichero) {
     //   echo "Tamaño de $nombre_fichero " . filesize($nombre_fichero) . "\n";
     // }
-    $lista = glob("images/articulos/*.*");
-    echo '<script>
-      console.log("Agregar - dataSet:", '. json_encode($dataSet) .' );
-      console.log("Agregar - dataWeb:", '. json_encode($dataWeb) .' );
-      console.log("Agregar - lista:", '. json_encode($lista) .' );
-    </script>';
+    // $lista = glob("images/articulos/*.*");
+    // echo '<script>
+    //   // console.log("Agregar - dataSet:", '. json_encode($dataSet) .' );
+    //   // console.log("Agregar - dataWeb:", '. json_encode($dataWeb) .' );
+    //   // console.log("Agregar - lista:", '. json_encode($lista) .' );
+    // </script>';
     echo view('/includes/header');
     echo view("$this->module/form", $dataWeb);
     echo view('/includes/footer');
@@ -456,7 +456,49 @@ class Articulos extends BaseController
     </script>';
     if ($this->getValidate( $this->request->getMethod() )) {
         // $msg = "Insercci´n";
-        $this->dataModel->save($dataWeb);
+        // *
+        // Validar Fotos:
+        //   Cantidad: Array.lengh < 11
+        //   Tamaño (Bytes) 
+        //   Resolución?
+        var_dump($dataWeb); // Ya fue validado
+        $id = uniqid();
+
+        $uploaded = $this->request->getFileMultiple('images');
+        $arranged = $this->request->getPost('imgs');    // Orden de las fotos
+        var_dump(isset($uploaded));
+        var_dump($uploaded);
+        var_dump(isset($arranged));
+        var_dump($arranged);
+        
+        $album = $this->photosDriver($id); // Devolver valores para
+        var_dump(isset($album));
+        var_dump($album);
+        /**
+        // Completar: $dataWeb con los campos
+        //   Foto 
+        //   Fotos
+        **/
+        // if (isset($album)) {
+        //     $dataWeb['foto']  = str_replace(".", "_th.", $album[0]);
+        //     $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
+        //     $dataWeb['fotos'] = implode('|', $album);
+        // }
+        $dataWeb = $this->getPhotoData($dataWeb, $album);
+        // $dataWeb = $this->getPhotoData($dataWeb, $this->photosDriver($id));  // Ok ?
+        // $this->dataModel->save($dataWeb);  // Ok
+        echo "insertar() simulated: dataWeb";
+        // $path = "$this->imgsPath/$id"; // necesaria para
+        //   crear el directorio TEMPORAL ANTES de cargar las fotos
+        //   Cambiar el nombre del directorio para aspciarlo al id prod.
+
+        /// Quizá sea más conveniente
+        //    Crear otro campo en la tabla para el nombre del directorio destino
+        //    Guardar  nombre del directorio -ahora temporal- en nuevo campo de la tabla
+        // echo rename ($pathA, $pathB) ? "Exito" : "Falló";
+        var_dump($id);
+        var_dump($dataWeb);
+        return;
         return redirect()->to(base_url()."/$this->module");
     }
     $this->setCarrier($dataWeb, '');
@@ -484,7 +526,8 @@ class Articulos extends BaseController
         $dataModel
     );
     echo view('/includes/header');
-    echo view("$this->module/form", $dataWeb);
+    echo view("$this->module/form", $dataWeb);  // Ok - 
+    // echo view("$this->module/formEdit", $dataWeb); // Demo - Testing only
     echo view('/includes/footer');
   }
 
@@ -613,8 +656,8 @@ class Articulos extends BaseController
         }
       }
       // var_dump($filesLoaded);
-    } else {
-      # code...
+    } 
+    else {
       $album = $this->request->getPost('imgs');    // Orden de las fotos
     }
       // var_dump($imgFiles);
@@ -651,6 +694,17 @@ class Articulos extends BaseController
   }
   /**/
 
+  public function getPhotoData($dataWeb, $album)
+  {
+    // $dataWeb = getPhotoData($dataWeb, $this->photosDriver($id));
+    if (isset($album)) {
+        $dataWeb['foto']  = str_replace(".", "_th.", $album[0]);
+        $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
+        $dataWeb['fotos'] = implode('|', $album);
+    }
+    return $dataWeb;
+  }
+
   public function actualizar()
   {
     // $texto = 'foto0.png|foto1.jpg|foto2.jpeg|foto3.png|foto4.jpg|foto5.jpeg|foto6.png|foto7.jpg|foto8.jpeg|foto9.png';
@@ -664,14 +718,20 @@ class Articulos extends BaseController
         //   Tamaño (Bytes) 
         //   Resolución?
         // var_dump($dataWeb); // Ya fue validado
-        $album = $this->photosDriver($id); // Devolver valores para
+        // $album = $this->photosDriver($id); // Devolver valores para
         
         // Completar: $dataWeb con los campos
         //   Foto 
         //   Fotos
-        $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
-        // $dataWeb['foto']  = str_replace(".", "_th", $album[0]);
-        $dataWeb['fotos'] = implode('|', $album);
+        // $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
+        // $dataWeb['foto']  = str_replace(".", "_th.", $album[0]);
+        // $dataWeb['fotos'] = implode('|', $album);
+        $dataWeb = $this->getPhotoData($dataWeb, $this->photosDriver($id));
+        // if (isset($album)) {
+        //   $dataWeb['foto']  = str_replace(".", "_th.", $album[0]);
+        //   $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
+        //   $dataWeb['fotos'] = implode('|', $album);
+        // }
         // var_dump( $dataWeb );
         // return;
         // $msg = "¡Actualización exitosa!";
