@@ -213,17 +213,23 @@
         // console.log(" data-fotos (content)", '. json_encode($data['fotos']) .');
         // console.log(" data-fotos (isset)", "'. (isset($data['fotos']) ? ".T." : ".F.") .'");
         // </script>';
-         $fotos  = [];
-         $imagen = base_url('assets/img/img-no-disponible.jpg');
-         if ( isset($data['fotos']) ) $fotos = explode('|', $data['fotos']);
-        //  $items = count($fotos); // No se usa?
-        
+          $fotos  = [];
+          $imagen = base_url('assets/img/img-no-disponible.jpg');
+        //  if ( isset($data['fotos']) ) $fotos = explode('|', $data['fotos']);
+          if ( isset($data['fotos']) && $data['fotos'] != '' ) $fotos = explode('|', $data['fotos']);
+        //  $items = count($fotos); // No se usa?        
         //  var_dump($items);
+
+        //  var_dump($data);
         //  var_dump($fotos);
-         foreach ($fotos as $key => $foto) {
+        //  var_dump(count($fotos));
+        //  var_dump($fotos[0]);
+        //  var_dump( isset ($fotos[0]) );
+        //  var_dump( ($fotos[0]) != '' );
+          foreach ($fotos as $key => $foto) {
             // var_dump($key);
             // var_dump($foto);
-           $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
+            $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
         ?>
           <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
           <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
@@ -265,8 +271,8 @@
           </div>
         <?php }
         // $noImg   = base_url('assets/img/img-no-disponible.jpg'); // No se usa?
-        $lastPos = "Última posición. Arrastrar y soltar aquí la que será la última foto";
-        $lastPos = "";        
+          $lastPos = "Última posición. Arrastrar y soltar aquí la que será la última foto";
+          $lastPos = "";        
         ?>
         <div id="lastOne" class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode">
           <div class="col box">

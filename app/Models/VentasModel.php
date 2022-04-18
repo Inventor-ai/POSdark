@@ -37,8 +37,8 @@ class VentasModel extends Model
       'folio'      => $venta_id,
       'total'      => preg_replace('/[\$,]/', "", $total ), // to prevent formatted number
       'usuario_id' => $usuario_id,
-      'caja_id'    =>  $caja_id,
-      'cliente_id' =>  $cliente_id,
+      'caja_id'    => $caja_id,
+      'cliente_id' => $cliente_id,
       'forma_pago' => $forma_pago
     ]);
     return $this->insertID();

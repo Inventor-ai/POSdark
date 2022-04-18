@@ -406,7 +406,7 @@
  function drop(e) {
    const IMGinfo  = imgInfo(); // '|IMG|FIGCAPTION';
    //e.target.classList.remove('drag-over');
-   //  origen = e;
+    origen = e;
     // console.log('drop - e:', e);
     // console.log(e.target.nodeName);
    dragLeave(e);
@@ -425,7 +425,7 @@
    
    console.log('drop - boxTgt:', boxTgt);
 //    console.log('drop - boxTgt:', e.target.id);
-   origen  = e;
+   // origen  = e;
 //    origen  = itemDragged;
    destino = boxTgt;
    // Optimizar no volviendo a bajar por la estructura del DOM
@@ -487,8 +487,8 @@ function addPhotos() {
   console.log('addPhotos', iFoto);
 //   if (album.children.length )
   var sf = $("<input>", { // sf = Selected Files
-                class: "form-control newPhotos", // 4 testing
-              //  class: "d-none newPhotos",    // Ok - Release like this
+               //  class: "form-control newPhotos", // 4 testing
+               class: "d-none newPhotos",    // Ok - Release like this
                  type: "file",
                accept: "image/png,.jpg",
                  name: "images[]",

@@ -83,4 +83,11 @@ class ArticulosModel extends Model
     return $this->findAll();
   }
 
+  public function getIdOfCode($codigo = null)
+  {
+    $this->select('id')->where('codigo', $codigo);
+    return $this->first()['id'];
+    // return $this->findAll();
+  }
+
 }

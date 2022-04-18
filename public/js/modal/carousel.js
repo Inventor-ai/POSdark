@@ -4,13 +4,12 @@ function setAtt(nodo, attrName, attrVal) {
   nodo.setAttributeNode(attrObj);
 }
 
-function showPhotos(path, itemText, photoItems) {
+function showPhotos(path, itemText, photoItems, itemInfo) {
   if ( !(photoItems) ) return;
   const itemImgs = photoItems.split("|");
   // if (itemImgs.length == 0 || !(photoItems) ) return;
   const title = document.getElementById("ModalCarouselLabel");
-
-  title.innerHTML = itemText;
+  title.innerHTML = itemText + itemInfo;
   const IG = 'itemsGallery';
   var vsCarousel = document.querySelector(IG);
   const indicators = $('#'+IG+' .carousel-indicators');

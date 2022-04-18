@@ -198,15 +198,6 @@ class Articulos extends BaseController
     ->save("$path/".str_replace(".", $sufix, $file));
   }
 
-  /*
-  public function testRename() // test ok - done -clear
-  {
-    $pathA = WRITEPATH . "../public/images/$this->module/1b";
-    $pathB = WRITEPATH . "../public/images/$this->module/1";
-    echo rename ($pathA, $pathB) ? "Exito" : "Falló";
-  }
-  */
-
   // private function loadFiles($path, $file, $ext) {
   // private function loadFiles()  // usar uniqid() para id
   /** 
@@ -364,21 +355,198 @@ class Articulos extends BaseController
   // *** Fotos - Fin
   */
 
-  private function getValidate($method = "post")
+  /*
+  public function testRename() // test ok - done -clear
   {
+    // $pathA = WRITEPATH . "../public/images/$this->module/1b";
+    // $pathB = WRITEPATH . "../public/images/$this->module/1";
+    // echo rename ($pathA, $pathB) ? "Exito" : "Falló";
+    $id = "xx";  // Edit
+    // $id = "";    // New
     $rules = [
       //  'id'            => 'required',
-       'codigo'        => 'required',
-       'nombre'        => 'required',
-       'precio_venta'  => 'required|decimal',
-       'existencias'   => 'required|numeric',
-       'id_unidad'     => 'required',
-       'id_categoria'  => 'required',
-       'stock_minimo'  => 'required|is_natural_no_zero',
-       'inventariable' => 'required',
-       'precio_compra' => 'required|decimal'
+      //  'codigo'        => [
+      //     'rules'  => "required|is_unique[$this->module.codigo]",
+      //     'errors' => [
+      //        'required'  => "DEBE proporcionarse el código|{field}",
+      //        'is_unique' => "¡El código DEBE ser único! ¡Está repetido!|{field}"
+      //     ]
+      //  ],
+      //  'codigo'        => [
+      //     'rules'  => "required".(isset($id)?"":"|is_unique[$this->module.codigo]"),
+      //     'errors' => [
+      //        'required'  => "DEBE proporcionarse el código|{field}",
+      //        'is_unique' => "¡El código DEBE ser único! ¡Está repetido!|{field}"
+      //     ]
+      //  ],
+      //  'nombre'        => [
+      //     'rules'  => "required".(isset($id)?"":"|is_unique[$this->module.nombre]"),
+      //     'errors' => [
+      //       'required'  => "Debe proporcionarse el {field}|{field}",
+      //       'is_unique' => "¡Nombre del $this->item repetido! ¡DEBE ser ÚNICO!|{field}"
+      //       ]
+      //  ],
+       'codigo'        => [
+          'rules'  => "required".($id == '' ? "|is_unique[$this->module.codigo]":""),
+          'errors' => [
+             'required'  => "DEBE proporcionarse el código|{field}",
+             'is_unique' => "¡El código DEBE ser único! ¡Está repetido!|{field}"
+          ]
+       ],
+       'nombre'        => [
+          'rules'  => "required".($id == '' ? "|is_unique[$this->module.nombre]":""),
+          'errors' => [
+            'required'  => "Debe proporcionarse el {field}|{field}",
+            'is_unique' => "¡Nombre del $this->item repetido! ¡DEBE ser ÚNICO!|{field}"
+            ]
+       ],
+       'precio_venta'  => [
+          'rules'  => 'required|decimal',
+          'errors' => [
+             'required' => 'El precio de venta es indispensable|{field}'
+          ]
+       ],
+       'existencias'   => [
+          'rules'  => 'required|numeric',
+          'errors' => [
+             'required' => 'Proporcionar las existencias es indispensable|{field}',
+             'numeric'  => 'Debe proporcionarse un nùmero positivo|{field}'
+          ]
+       ],
+       'id_unidad'     => [
+          'rules'  => 'required',
+          'errors' => [
+             'required' => 'DEBE elegirse una unidad|{field}'
+          ]
+       ],
+       'id_categoria'  => [
+          'rules'  => 'required',
+          'errors' => [
+             'required' => 'DEBE elegirse una categoría|{field}'
+          ]
+       ],
+       'stock_minimo'  => [
+          'rules'  => 'required|is_natural_no_zero',
+          'errors' => [
+             'required' => 'Proporcionar el Stock mínimo es indispensable.|{field}',
+             'is_natural_no_zero' => 'El stock mìnimo DEBE ser un cifra mayor a cero|{field}'
+          ]
+       ],
+       'inventariable' => [
+          'rules'  => 'required',
+          'errors' => [
+             'required' => 'DEBE seleccionarse una opción.|{field}'
+          ]
+       ],
+       'precio_compra' => [
+          'rules'  => 'required|decimal',
+          'errors' => [
+             'required' => 'Falta proporcionar el precio de compra|{field}',
+             'decimal'  => 'El precio de compra DEBE ser una cifra mayor a cero con o sin punto decimal|{field}'
+          ]
+       ],
       //  'activo'        => 'required'
     ];
+    var_dump($rules);
+  }
+  */
+
+  private function getValidate($method = "post")
+  {
+    $id = $_POST['id'];
+    echo '<script>
+      console.log("Agregar - dataSet:", '. json_encode($_POST) .' );
+      // console.log("Agregar - dataSet:", '. json_encode($_POST) .' );
+    </script>';
+    $rules = [
+      //  'id'            => 'required',
+      //  'codigo'        => [
+      //     'rules'  => "required|is_unique[$this->module.codigo]",
+      //     'errors' => [
+      //        'required'  => "DEBE proporcionarse el código|{field}",
+      //        'is_unique' => "¡El código DEBE ser único! ¡Está repetido!|{field}"
+      //     ]
+      //  ],
+      //  'nombre'        => [
+      //     'rules'  => "required|is_unique[$this->module.nombre]",
+      //     'errors' => [
+      //       'required'  => "Debe proporcionarse el {field}|{field}",
+      //       'is_unique' => "¡Nombre del $this->item repetido! ¡DEBE ser ÚNICO!|{field}"
+      //       ]
+      //  ],
+       'codigo'        => [
+          'rules'  => "required".($id == '' ? "|is_unique[$this->module.codigo]":""),
+          'errors' => [
+             'required'  => "DEBE proporcionarse el código|{field}",
+             'is_unique' => "¡El código DEBE ser único! ¡Está repetido!|{field}"
+          ]
+       ],
+       'nombre'        => [
+          'rules'  => "required".($id == '' ? "|is_unique[$this->module.nombre]":""),
+          'errors' => [
+            'required'  => "Debe proporcionarse el {field}|{field}",
+            'is_unique' => "¡Nombre del $this->item repetido! ¡DEBE ser ÚNICO!|{field}"
+            ]
+       ],
+       'precio_venta'  => [
+          'rules'  => 'required|decimal',
+          'errors' => [
+             'required' => 'El precio de venta es indispensable|{field}'
+          ]
+       ],
+       'existencias'   => [
+          'rules'  => 'required|numeric',
+          'errors' => [
+             'required' => 'Proporcionar las existencias es indispensable|{field}',
+             'numeric'  => 'Debe proporcionarse un nùmero positivo|{field}'
+          ]
+       ],
+       'id_unidad'     => [
+          'rules'  => 'required',
+          'errors' => [
+             'required' => 'DEBE elegirse una unidad|{field}'
+          ]
+       ],
+       'id_categoria'  => [
+          'rules'  => 'required',
+          'errors' => [
+             'required' => 'DEBE elegirse una categoría|{field}'
+          ]
+       ],
+       'stock_minimo'  => [
+          'rules'  => 'required|is_natural_no_zero',
+          'errors' => [
+             'required' => 'Proporcionar el Stock mínimo es indispensable.|{field}',
+             'is_natural_no_zero' => 'El stock mìnimo DEBE ser un cifra mayor a cero|{field}'
+          ]
+       ],
+       'inventariable' => [
+          'rules'  => 'required',
+          'errors' => [
+             'required' => 'DEBE seleccionarse una opción.|{field}'
+          ]
+       ],
+       'precio_compra' => [
+          'rules'  => 'required|decimal',
+          'errors' => [
+             'required' => 'Falta proporcionar el precio de compra|{field}',
+             'decimal'  => 'El precio de compra DEBE ser una cifra mayor a cero con o sin punto decimal|{field}'
+          ]
+       ],
+      //  'activo'        => 'required'
+    ];
+    // var_dump($rules);
+    /*
+    $rules = [
+      'nombre' => [
+         'rules' => 'required|is_unique[categorias.nombre]',
+         'errors' => [
+            'required'  => "Debe proporcionarse el {field}|{field}",
+            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!"
+         ]
+      ]
+    ];
+    */
     // Validar que:
     //  El precio de venta sea mayor que el de compra
     //  por lo menos, x $ / %, ó ?...
@@ -451,9 +619,9 @@ class Articulos extends BaseController
   public function insertar()
   {
     $dataWeb = $this->setDataSet();
-    echo '<script>
-       console.log("insertar:", '. json_encode($dataWeb) .' );
-    </script>';
+    // echo '<script>
+    //    console.log("insertar:", '. json_encode($dataWeb) .' );
+    // </script>';
     if ($this->getValidate( $this->request->getMethod() )) {
         // $msg = "Insercci´n";
         // *
@@ -461,19 +629,35 @@ class Articulos extends BaseController
         //   Cantidad: Array.lengh < 11
         //   Tamaño (Bytes) 
         //   Resolución?
-        var_dump($dataWeb); // Ya fue validado
-        $id = uniqid();
-
-        $uploaded = $this->request->getFileMultiple('images');
-        $arranged = $this->request->getPost('imgs');    // Orden de las fotos
-        var_dump(isset($uploaded));
-        var_dump($uploaded);
-        var_dump(isset($arranged));
-        var_dump($arranged);
-        
-        $album = $this->photosDriver($id); // Devolver valores para
-        var_dump(isset($album));
-        var_dump($album);
+        // echo "dataWeb 0 ";
+        // var_dump($dataWeb); // Ya fue validado
+        $uploaded = $this->request->getFileMultiple('images'); // Ok
+        // $arranged = $this->request->getPost('imgs');    // Orden de las fotos
+        // var_dump($uploaded);
+        // var_dump(isset($uploaded));
+        // var_dump(isset($arranged));
+        // var_dump($arranged);
+        // $path = ; // necesaria para
+        //   crear el directorio TEMPORAL ANTES de cargar las fotos
+        //   Cambiar el nombre del directorio para aspciarlo al id prod.
+        $idTmp = '';
+        if (isset($uploaded)) {
+            $idTmp = uniqid();
+            $mdOk  = mkdir( "$this->imgsPath/$idTmp", 0777, true);
+            if ($mdOk) {
+                // Tal vez condicionar la carga de fotos...
+            }
+            /*
+            $album = $this->photosDriver($idTmp);
+            // var_dump(isset($album));
+            // var_dump($album);
+            if (isset($album))
+                $dataWeb = $this->getPhotoData($dataWeb, $album);
+            */
+            $dataWeb = $this->getPhotoData($dataWeb, $this->photosDriver($idTmp));
+        }
+        // echo "dataWeb 1 ";
+        // var_dump($dataWeb);
         /**
         // Completar: $dataWeb con los campos
         //   Foto 
@@ -484,26 +668,37 @@ class Articulos extends BaseController
         //     $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
         //     $dataWeb['fotos'] = implode('|', $album);
         // }
-        $dataWeb = $this->getPhotoData($dataWeb, $album);
         // $dataWeb = $this->getPhotoData($dataWeb, $this->photosDriver($id));  // Ok ?
-        // $this->dataModel->save($dataWeb);  // Ok
-        echo "insertar() simulated: dataWeb";
+        $this->dataModel->save($dataWeb);        // Ok
+        // $id = $this->db->insert_id();         // Fail
+        // $id = $this->dataModel->insert_id();  // 
+        // $id = $this->dataModel->insert_id;    // 
         // $path = "$this->imgsPath/$id"; // necesaria para
         //   crear el directorio TEMPORAL ANTES de cargar las fotos
         //   Cambiar el nombre del directorio para aspciarlo al id prod.
-
-        /// Quizá sea más conveniente
-        //    Crear otro campo en la tabla para el nombre del directorio destino
-        //    Guardar  nombre del directorio -ahora temporal- en nuevo campo de la tabla
-        // echo rename ($pathA, $pathB) ? "Exito" : "Falló";
-        var_dump($id);
-        var_dump($dataWeb);
-        return;
+        if (isset($uploaded)) {
+          /// Quizá sea más conveniente
+          //    Crear otro campo en la tabla para el nombre del directorio destino
+          //    Guardar  nombre del directorio -ahora temporal- en nuevo campo de la tabla
+          $id = $this->dataModel->getIdOfCode($dataWeb['codigo']);  // 
+          // var_dump($idTmp);
+          // var_dump($id);
+          // echo "insertar() idTmp ($idTmp) = > id: ($id)";
+          rename ("$this->imgsPath/$idTmp", "$this->imgsPath/$id");
+        }        
+        // return;
         return redirect()->to(base_url()."/$this->module");
     }
     $this->setCarrier($dataWeb, '');
     $this->agregar();
   }
+
+  // public function testRen() - Done -Clear
+  // {
+  //   $id    = "13";
+  //   $idTmp = "625c9437c64a6";
+  //   echo rename ("$this->imgsPath/$idTmp", "$this->imgsPath/$id") ? "Exito" : "Falló";
+  // }
 
   public function editar($id)
   {
@@ -696,11 +891,13 @@ class Articulos extends BaseController
 
   public function getPhotoData($dataWeb, $album)
   {
-    // $dataWeb = getPhotoData($dataWeb, $this->photosDriver($id));
     if (isset($album)) {
         $dataWeb['foto']  = str_replace(".", "_th.", $album[0]);
         $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
         $dataWeb['fotos'] = implode('|', $album);
+    } else {
+        $dataWeb['foto']  = '';
+        $dataWeb['fotos'] = $dataWeb['foto'];
     }
     return $dataWeb;
   }
@@ -732,11 +929,13 @@ class Articulos extends BaseController
         //   $dataWeb['foto']  = str_replace(".", "_tn.", $album[0]);
         //   $dataWeb['fotos'] = implode('|', $album);
         // }
+        // echo "2 save ";
         // var_dump( $dataWeb );
         // return;
         // $msg = "¡Actualización exitosa!";
         $this->dataModel->update( $id, $dataWeb );
-        return redirect()->to(base_url()."/$this->module");
+        return redirect()->to(base_url()."/$this->module"); // Ok
+
         // develop Only - delete it
     }
     $this->setCarrier($dataWeb, $id);

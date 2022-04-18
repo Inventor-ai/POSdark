@@ -52,12 +52,12 @@ $pathImgs = 'images';
                    base_url('images/articulos/'.$dato['id'].'/'.$dato['foto']):
                    base_url('assets/img/img-no-disponible.jpg');
         $url     = base_url("$pathImgs/$path/".$dato['id']).'/';
-        $caption = "". $dato['nombre'] //;
+        $caption = "". $dato['nombre'];//
                 // Bloque 1 de vista previa una sola foto
-                //  . " - Precio: ".$currency.$dato['precio_venta'] 
-                //  . " - Existencias: ". $dato['existencias'];
+        $info    = " - Precio: ".$currency.$dato['precio_venta'] 
+                 . " - Existencias: ". $dato['existencias'];
                 // Bloque 2
-                . " - Hay: ". $dato['existencias']
+        $info    = " - Hay: ". $dato['existencias']
                  . " - ".$currency.$dato['precio_venta'];
         $prVenta  = $currency.number_format($dato['precio_venta'], 2, ".", ",");
         $prCompra = $currency.number_format($dato['precio_compra'], 2, ".", ",");
@@ -66,10 +66,10 @@ $pathImgs = 'images';
         <tr>
           <td><?=$dato['nombre']?></td>
           <td class="text-end">  <!-- Carousel -->
-            <img style="width: 65px;"
+            <img style="width: 50px;"
                  src="<?=$imagen?>"
                  alt="<?=$dato['nombre']?> - Foto"
-                 onclick="showPhotos('<?=$url?>', '<?=$caption?>', '<?=$dato['fotos']?>')"
+                 onclick="showPhotos('<?=$url?>', '<?=$caption?>', '<?=$dato['fotos']?>', '<?=$info?>')"
             >
           </td>
           <td class="text-end"><?=$prVenta?></td>
