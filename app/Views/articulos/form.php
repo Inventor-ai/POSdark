@@ -1,12 +1,4 @@
-<?php
-// $imgExt = "jpg";
-// var_dump($data);
-// var_dump($data);
-?>
 <link href="<?=base_url("css/dragdrop.css")?>" rel="stylesheet" />
-
-<!-- <style></style> -->
-
 <div class="mb-3">
   <form method="<?=$method?>" enctype="multipart/form-data" action="<?=base_url("$path/$action")?>"
          autocomplete="off">
@@ -23,8 +15,6 @@
         </div>
     </div>
     <input type="hidden" name="id" value="<?=$data['id']?>">
-    <!-- <div class="row mt-4">      
-    </div> -->
     <div class="form-group">
       <div class="row">
         <div class="col-12 col-sm-6 mb-3">
@@ -106,15 +96,6 @@
         </div>
       </div>
     </div>
-    <!-- Ok - Original -->
-    <!-- 
-     <div class="mt-2">
-      <label class="form-label"  for="fotos">Imágenes seleccionadas: <span id="imgsCount" >0</span></label>
-      <input class="form-control" type="file" id="fotos" name="fotos[]" accept="image/png,.jpg" multiple>
-     </div>
-    -->
-    <!-- <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p> -->
-    <!-- test group 0 -->
     <?php if ($validation) {?>
       <div class="alert alert-danger">
         <?= $validation->listErrors();?>
@@ -122,48 +103,20 @@
     <?php }?>
     
     <div class="row mt-3">
-      <!-- <div class="form-group"> -->
-        <label class="form-label"  for="fotos">Fotos en el álbum: <span id="imgsCount">0</span></label>
-        <!-- <div id="album" class="col-10 col-md-11"> -->
-        <div id="album" class="col-12">
-          <!-- <input class="form-control" type="file" id="fotos0" name="fotos[]" accept="image/png,.jpg" multiple>
-          <input class="form-control" type="file" id="fotos1" name="fotos[]" accept="image/png,.jpg" multiple> -->
-        </div>
-        <div class="col-10 col-md-11">
-          <button type="button" onclick="addPhotos()" class="col-12 btn btn-success" 
-                  title="Añadir más fotos">Agregar fotos</button>
-        </div>
-        <div class="col-2 col-md-1 text-end">
-          <button type="button" onClick="viewToggle()" class="btn btn-dark" 
-                  title="Alternar vista tamaño de fotos">
-            <i class="fas fa-grip-horizontal view-toggle-btn"></i>
-          </button>
-        </div>
-      <!-- </div> -->
-    </div>
-   <!--     
-    <div class="row mt-3">
-      <div class="col-1">
-        <button type="button" class="btn btn-danger">&times;</button>
-      </div>  
-      <div class="col-1">
-        <label class="form-label"  for="fotos">1</label>
+      <label class="form-label"  for="fotos">Fotos en el álbum: <span id="imgsCount">0</span></label>
+      <!-- <div id="album" class="col-10 col-md-11"> -->
+      <div id="album" class="col-12"></div>
+      <div class="col-10 col-md-11">
+        <button type="button" onclick="addPhotos()" class="col-12 btn btn-success" 
+                title="Añadir más fotos">Agregar fotos</button>
       </div>
-      <div class="col-10">
-        <input class="form-control" type="file" id="fotos1" name="fotos[]" accept="image/png,.jpg" multiple>
+      <div class="col-2 col-md-1 text-end">
+        <button type="button" onClick="viewToggle()" class="btn btn-dark" 
+                title="Alternar vista tamaño de fotos">
+          <i class="fas fa-grip-horizontal view-toggle-btn"></i>
+        </button>
       </div>
     </div>
-    <div class="row mt-3">
-      <div class="col-2">
-        <button type="button" class="btn btn-danger">&times;</button>
-        <label class="form-label"  for="fotos">2</label>
-      </div>
-      <div class="col-10">
-        <input class="form-control" type="file" id="fotos2" name="fotos[]" accept="image/png,.jpg" multiple>
-      </div>
-    </div>
-   -->
-    <!-- test group 1 -->
     <div class="row">
       <div class="col-10">
         <p class="text-danger">Cargar imagen .png o .jpg de 150x150 pixeles</p>
@@ -177,7 +130,6 @@
         </button>
       </div>
     </div>
-
     <button type="button" onClick="viewToggle()" class="btn btn-dark">
       <i class="fas fa-grip-horizontal view-toggle-btn"></i>
     </button>
@@ -205,39 +157,15 @@
     <hr> <!-- <-- ¿Dejar esta línea? - Preguntar -->
     <div class="form-group mt-2">
       <div class="row row cols-auto">
-      <!-- <div class="row row cols-auto" style="border: 2px solid"> -->
-      <!-- <div class="row row cols-auto" style="border: #ced4da 1px solid"> -->
         <?php
-        // $issetFoto = 
-        // echo '<script>
-        // console.log(" data-fotos (content)", '. json_encode($data['fotos']) .');
-        // console.log(" data-fotos (isset)", "'. (isset($data['fotos']) ? ".T." : ".F.") .'");
-        // </script>';
           $fotos  = [];
           $imagen = base_url('assets/img/img-no-disponible.jpg');
-        //  if ( isset($data['fotos']) ) $fotos = explode('|', $data['fotos']);
           if ( isset($data['fotos']) && $data['fotos'] != '' ) $fotos = explode('|', $data['fotos']);
-        //  $items = count($fotos); // No se usa?        
-        //  var_dump($items);
-
-        //  var_dump($data);
-        //  var_dump($fotos);
-        //  var_dump(count($fotos));
-        //  var_dump($fotos[0]);
-        //  var_dump( isset ($fotos[0]) );
-        //  var_dump( ($fotos[0]) != '' );
           foreach ($fotos as $key => $foto) {
-            // var_dump($key);
-            // var_dump($foto);
             $imagen = base_url ('images/'."$path/".$data['id']."/$foto");
         ?>
-          <!-- <div class="col-12 col-lg-3 col-md-4 col-sm-6 text-center mt-3"> -->
-          <!-- <div class="col-4 col-sm-6 col-md-4 col-lg-3 text-center mt-3"> -->
           <div class="col-12 col-sm-6 col-md-4 col-lg-3 text-center mt-3 view-mode" data-new="false">
-            <!-- <div class="col box" style="border: #26e18a 2px dashed;"> -->
-              <!-- <div class="col box" style="border: #777 1px solid;"> -->
             <div class="col box">
-              <!-- <button id="<?="box$foto"?>" type="button" class="btn btn-light position-relative item" draggable="true"> -->
               <button id="<?=$foto?>" type="button" class="btn btn-light position-relative item" draggable="true">
                 <figure class="figure text-center">
                   <img src="<?=$imagen?>" draggable="false"
@@ -245,32 +173,16 @@
                   <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
                         onClick="dropIt(event)" title="Eliminar"><i class="fa fa-times" aria-hidden="true"></i>
                   </span>
-                  <!-- <figcaption class="figure-caption text-center"><?=$data['nombre']?></figcaption> -->
-                  <!-- <figcaption class="figure-caption text-center"><?=$foto?></figcaption> -->
                   <figcaption class="figure-caption text-center">
                     <input type="text" class="form-control-plaintext text-center" name="imgs[]" readonly 
                            title="<?=$foto?>" value="<?=$foto?>">
                   </figcaption>
-                  <!-- <figcaption class="figure-caption text-center">Cargada</figcaption> -->
-                  <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
-                  <!-- <figcaption class="figure-caption text-center">Pendiente</figcaption> -->
-                  <!-- <figcaption class="figure-caption text-danger">Nuevo</figcaption> -->
-                  <!-- <figcaption class="figure-caption text-success">Cargada</figcaption> -->
                   <figcaption class="figure-caption text-success">Guardada</figcaption>
-                  <!-- 
-                       <figcaption class="figure-caption text-primary">Cargada</figcaption>
-                       <figcaption class="figure-caption text-center">Scr...app.jpg</figcaption>
-                 -->
-                  <!-- <figcaption class="figure-caption text-center">Scr...app.jpeg</figcaption> -->
-                  <!-- <figcaption class="figure-caption text-center">Screenshot_20211217-004145_WhatsApp.jpg</figcaption> -->
-                  <!-- <input type="hidden" name="imgs[]" value="<?=$foto?>"> -->
                 </figure>
               </button>
-              <!-- <div class="mb-2" style="border: #900 1px dashed;"></div> -->
             </div>
           </div>
         <?php }
-        // $noImg   = base_url('assets/img/img-no-disponible.jpg'); // No se usa?
           $lastPos = "Última posición. Arrastrar y soltar aquí la que será la última foto";
           $lastPos = "";        
         ?>
@@ -287,7 +199,7 @@
         <div class="mt-3"></div>
       </div>
     </div>
-    <!-- <hr>     -->
+    <hr>    
   </form> 
 </div>
 <?php if ($validation) {?>
