@@ -7,7 +7,6 @@ function setAtt(nodo, attrName, attrVal) {
 function showPhotos(path, itemText, photoItems, itemInfo) {
   if ( !(photoItems) ) return;
   const itemImgs = photoItems.split("|");
-  // if (itemImgs.length == 0 || !(photoItems) ) return;
   const title = document.getElementById("ModalCarouselLabel");
   title.innerHTML = itemText + itemInfo;
   const IG = 'itemsGallery';
