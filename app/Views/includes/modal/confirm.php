@@ -8,12 +8,8 @@
         </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <!-- <div class="modal-body"> -->
       <div class="modal-body text-center">
-        <!-- <p>¿<span id="conf2Ask" class="mt-2">Eliminar</span>  -->
-            <span id="confInfo" class="mt-2"></span>
-            <!-- ?
-        </p> -->
+        <span id="confInfo" class="mt-2"></span>
       </div>
       <div class="modal-footer">
         <a href="#" class="btn btn-danger">Si</a>

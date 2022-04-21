@@ -23,13 +23,6 @@ class Categorias extends BaseController
     $this->items     = $this->item.$this->items; // Exámenes - No concatenate
     $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
     $this->dataModel = new CategoriasModel();
-    /*
-    // helper (['setupController', $this]);
-    $search          = explode(',',"á,é,í,ó,ú,ñ,Á,É,Í,Ó,Ú,Ñ");
-    $replaceBy       = explode(',',"a,e,i,o,u,ni,A,E,I,O,U,NI");
-    $this->items     = $this->item.$this->items;
-    $this->module    = strtolower(str_replace($search, $replaceBy, $this->items));
-    */
   }
 
   private function setDataSet()
@@ -45,15 +38,12 @@ class Categorias extends BaseController
 
   private function getValidate($method = "post")
   {
-    // $rules = [
-    //    'nombre' => 'required'
-    // ];
     $rules = [
       'nombre' => [
          'rules' => 'required|is_unique[categorias.nombre]',
          'errors' => [
             'required'  => "Debe proporcionarse el {field}|{field}",
-            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!"
+            'is_unique' => "¡Esta $this->item ya existe y DEBE ser ÚNICA!|{field}"
          ]
       ]
     ];
@@ -114,7 +104,6 @@ class Categorias extends BaseController
          $dataSet    = $this->setDataSet();
          $dataSet['id'] = '';
     }
-    // $this->carrier = [];
     $dataWeb = $this->getDataSet( 
         "$this->item - Agregando...", //"Agregar $this->item", //
         "$this->module",
@@ -136,8 +125,6 @@ class Categorias extends BaseController
         $this->dataModel->save($dataWeb);
         return redirect()->to(base_url()."/$this->module");
     }
-     // else {
-      // $dataWeb       = $this->setDataSet();
     $this->setCarrier($dataWeb, '');
     $this->agregar();
     // }
@@ -154,12 +141,12 @@ class Categorias extends BaseController
                             ->where('id', $id)
                             ->first();
     }
-    // $this->carrier = [];
+    $this->carrier = [];
     $dataWeb = $this->getDataSet( 
         "$this->item - Editando...", //"Editar $this->item", //
         $this->module,
-        $this->update, //
-        'post',        //'put', //
+        $this->update,
+        'post',
         $validation,
         $dataModel
     );
@@ -173,7 +160,6 @@ class Categorias extends BaseController
     $id      = $this->request->getPost('id');
     $dataWeb = $this->setDataSet();
     if ($this->getValidate( $this->request->getMethod() )) {
-        // $msg = "¡Actualización exitosa!";
         $this->dataModel->update( $id, $dataWeb );
         return redirect()->to(base_url()."/$this->module");
     }
@@ -184,14 +170,12 @@ class Categorias extends BaseController
   public function eliminar($id, $activo = 0)
   {
     $dataWeb = ['activo' => $activo];
-    // $msg = "¡Eliminación exitosa!";
     $this->dataModel->update($id, $dataWeb);
     return redirect()->to(base_url()."/$this->module");
   }
 
   public function recuperar($id)
   {
-    //   return $this->eliminar($id, 1);
     $this->eliminar($id, 1);
     return redirect()->to(base_url()."/$this->module/index/0");
   }
