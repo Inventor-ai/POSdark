@@ -1,9 +1,9 @@
 .box {
     /* height: 250px;
     width: 150px; */
-    /* border: solid 3px #ccc; */
+    border: solid 3px #ccc; 
+    /* Comentar para quitar el contorno de la foto */
     margin: 10px;
-
     /* align items in the box */
     display: flex;
     flex-direction: column;
